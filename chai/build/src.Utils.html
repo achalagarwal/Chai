@@ -1,0 +1,322 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Utils package &#8212; Chai Official documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="cluster package" href="src.cluster.html" />
+    <link rel="prev" title="src package" href="src.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="utils-package">
+<h1>Utils package<a class="headerlink" href="#utils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src.Utils.Pickler">
+<span id="pickler"></span><h2>Pickler<a class="headerlink" href="#module-src.Utils.Pickler" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="src.Utils.Pickler.pickle_data">
+<code class="descclassname">src.Utils.Pickler.</code><code class="descname">pickle_data</code><span class="sig-paren">(</span><em>data</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/Pickler.html#pickle_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.Pickler.pickle_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.Pickler.pickle_dict">
+<code class="descclassname">src.Utils.Pickler.</code><code class="descname">pickle_dict</code><span class="sig-paren">(</span><em>dictionary</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/Pickler.html#pickle_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.Pickler.pickle_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.Pickler.unpickle_data">
+<code class="descclassname">src.Utils.Pickler.</code><code class="descname">unpickle_data</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/Pickler.html#unpickle_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.Pickler.unpickle_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.Pickler.unpickle_dict">
+<code class="descclassname">src.Utils.Pickler.</code><code class="descname">unpickle_dict</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/Pickler.html#unpickle_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.Pickler.unpickle_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.Utils.logger">
+<span id="logger"></span><h2>Logger<a class="headerlink" href="#module-src.Utils.logger" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src.Utils.scorer">
+<span id="scorer"></span><h2>Scorer<a class="headerlink" href="#module-src.Utils.scorer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="src.Utils.scorer.Scorer">
+<em class="property">class </em><code class="descclassname">src.Utils.scorer.</code><code class="descname">Scorer</code><span class="sig-paren">(</span><em>initial_score=0</em>, <em>initial_incrementer=1</em>, <em>decay_function=None</em>, <em>decay_factor=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scorer.html#Scorer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.scorer.Scorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="src.Utils.scorer.Scorer.decay">
+<code class="descname">decay</code><a class="headerlink" href="#src.Utils.scorer.Scorer.decay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="src.Utils.scorer.Scorer.increment">
+<code class="descname">increment</code><a class="headerlink" href="#src.Utils.scorer.Scorer.increment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="src.Utils.scorer.Scorer.score">
+<code class="descname">score</code><a class="headerlink" href="#src.Utils.scorer.Scorer.score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.Utils.scoring_utils">
+<span id="scoring-utils"></span><h2>Scoring Utils<a class="headerlink" href="#module-src.Utils.scoring_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="src.Utils.scoring_utils.get_brand_word_score">
+<code class="descclassname">src.Utils.scoring_utils.</code><code class="descname">get_brand_word_score</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em>, <em>sku_item_term_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scoring_utils.html#get_brand_word_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.scoring_utils.get_brand_word_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.scoring_utils.get_match_ratio_score">
+<code class="descclassname">src.Utils.scoring_utils.</code><code class="descname">get_match_ratio_score</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scoring_utils.html#get_match_ratio_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.scoring_utils.get_match_ratio_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.scoring_utils.get_meta_match_score">
+<code class="descclassname">src.Utils.scoring_utils.</code><code class="descname">get_meta_match_score</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scoring_utils.html#get_meta_match_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.scoring_utils.get_meta_match_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.scoring_utils.get_root_words_score">
+<code class="descclassname">src.Utils.scoring_utils.</code><code class="descname">get_root_words_score</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em>, <em>sku_item_term_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scoring_utils.html#get_root_words_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.scoring_utils.get_root_words_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.scoring_utils.get_score">
+<code class="descclassname">src.Utils.scoring_utils.</code><code class="descname">get_score</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scoring_utils.html#get_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.scoring_utils.get_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.scoring_utils.get_sequential_score">
+<code class="descclassname">src.Utils.scoring_utils.</code><code class="descname">get_sequential_score</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em>, <em>item_sku_term_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scoring_utils.html#get_sequential_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.scoring_utils.get_sequential_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.scoring_utils.get_user_query_score">
+<code class="descclassname">src.Utils.scoring_utils.</code><code class="descname">get_user_query_score</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em>, <em>item_sku_term_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scoring_utils.html#get_user_query_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.scoring_utils.get_user_query_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.Utils.sku_utils">
+<span id="expression-utils"></span><h2>Expression Utils<a class="headerlink" href="#module-src.Utils.sku_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="src.Utils.sku_utils.clean_item">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">clean_item</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#clean_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.clean_item" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.clean_item_with_meta">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">clean_item_with_meta</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#clean_item_with_meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.clean_item_with_meta" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.clean_word">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">clean_word</code><span class="sig-paren">(</span><em>word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#clean_word"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.clean_word" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.clean_words">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">clean_words</code><span class="sig-paren">(</span><em>words</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#clean_words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.clean_words" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.compute_edit_distance">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">compute_edit_distance</code><span class="sig-paren">(</span><em>word</em>, <em>vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#compute_edit_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.compute_edit_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.extract_alcohol_liquid_quantity">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">extract_alcohol_liquid_quantity</code><span class="sig-paren">(</span><em>expression</em>, <em>additional_dict={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#extract_alcohol_liquid_quantity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.extract_alcohol_liquid_quantity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.flipper">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">flipper</code><span class="sig-paren">(</span><em>flag</em>, <em>option1</em>, <em>option2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#flipper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.flipper" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.get_linear_span">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">get_linear_span</code><span class="sig-paren">(</span><em>words</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#get_linear_span"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.get_linear_span" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.get_min_item_edit_distance">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">get_min_item_edit_distance</code><span class="sig-paren">(</span><em>item</em>, <em>span</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#get_min_item_edit_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.get_min_item_edit_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.get_min_word_edit_distance">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">get_min_word_edit_distance</code><span class="sig-paren">(</span><em>word</em>, <em>span</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#get_min_word_edit_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.get_min_word_edit_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.get_str_from_vec">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">get_str_from_vec</code><span class="sig-paren">(</span><em>vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#get_str_from_vec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.get_str_from_vec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.helper_eligible_pair">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">helper_eligible_pair</code><span class="sig-paren">(</span><em>item1</em>, <em>item2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#helper_eligible_pair"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.helper_eligible_pair" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.is_eligible_pair">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">is_eligible_pair</code><span class="sig-paren">(</span><em>item1</em>, <em>item2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#is_eligible_pair"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.is_eligible_pair" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.is_invalid_word">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">is_invalid_word</code><span class="sig-paren">(</span><em>word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#is_invalid_word"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.is_invalid_word" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.is_liquid_unit">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">is_liquid_unit</code><span class="sig-paren">(</span><em>word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#is_liquid_unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.is_liquid_unit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.is_valid_word">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">is_valid_word</code><span class="sig-paren">(</span><em>word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#is_valid_word"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.is_valid_word" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.meets_match_count_threshold">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">meets_match_count_threshold</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#meets_match_count_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.meets_match_count_threshold" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.remove_special_symbols">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">remove_special_symbols</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#remove_special_symbols"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.remove_special_symbols" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.separate_meta_data">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">separate_meta_data</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.html#separate_meta_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.Utils.sku_utils.separate_meta_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.Utils">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.Utils" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Chai</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="src.html">src package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="src.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.Utils.Pickler">Pickler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.Utils.logger">Logger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.Utils.scorer">Scorer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.Utils.scoring_utils">Scoring Utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.Utils.sku_utils">Expression Utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.Utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.cluster.html">cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.corpus.html">corpus package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.expression.html">expression package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.master.html">master package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.singletons.html">singletons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.temp.html">temporary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.wrappers.html">wrappers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src.SKU_Match">SKU Match</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src.self_test">Self Test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="src.html">src package</a><ul>
+      <li>Previous: <a href="src.html" title="previous chapter">src package</a></li>
+      <li>Next: <a href="src.cluster.html" title="next chapter">cluster package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Achal Agarwal, Shovik Ghosh.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/src.Utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

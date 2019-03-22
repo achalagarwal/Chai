@@ -1,0 +1,744 @@
+INFO:src.Utils.logger:UNPICKLING SKU MATCHING NOTEBOOK
+INFO:src.Utils.logger:UNPICKLING SKU MATCHING NOTEBOOK
+INFO:src.Utils.logger:UNPICKLING SKU MATCHING NOTEBOOK
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=dunzo'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=iamawesome'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=iamawesome'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=anjishgargg'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=ggghhhhshs'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=ggghh%5C'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=achal'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=achal'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=anish'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=garg'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=anshita'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=anil'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=neeetu'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=neetu'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=sour%20punk'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=sourpunk'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=punk'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?textpunk'>
+ERROR:src.Utils.logger:'text'
+ERROR:django.request:Internal Server Error: /sku/autocomplete
+Traceback (most recent call last):
+  File "/home/ubuntu/virtual_environments/sku/lib/python3.6/site-packages/django/utils/datastructures.py", line 77, in __getitem__
+    list_ = super().__getitem__(key)
+KeyError: 'text'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/frappe/extracter/django_wrapper/get_sku/views.py", line 26, in complete_query
+    user_search_query = request.GET['text']
+  File "/home/ubuntu/virtual_environments/sku/lib/python3.6/site-packages/django/utils/datastructures.py", line 79, in __getitem__
+    raise MultiValueDictKeyError(key)
+django.utils.datastructures.MultiValueDictKeyError: 'text'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/virtual_environments/sku/lib/python3.6/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/home/ubuntu/virtual_environments/sku/lib/python3.6/site-packages/django/core/handlers/base.py", line 126, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/home/ubuntu/virtual_environments/sku/lib/python3.6/site-packages/django/core/handlers/base.py", line 124, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/home/ubuntu/frappe/extracter/django_wrapper/get_sku/views.py", line 41, in complete_query
+    return JsonResponse({'code': 400, 'data': {'results': []}, 'error': e})
+  File "/home/ubuntu/virtual_environments/sku/lib/python3.6/site-packages/django/http/response.py", line 558, in __init__
+    data = json.dumps(data, cls=encoder, **json_dumps_params)
+  File "/usr/lib/python3.6/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+  File "/usr/lib/python3.6/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.6/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/home/ubuntu/virtual_environments/sku/lib/python3.6/site-packages/django/core/serializers/json.py", line 104, in default
+    return super().default(o)
+  File "/usr/lib/python3.6/json/encoder.py", line 180, in default
+    o.__class__.__name__)
+TypeError: Object of type 'MultiValueDictKeyError' is not JSON serializable
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=sour'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=zazzy%27'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=zazzy'>
+WARNING:django.request:Not Found: /
+WARNING:django.request:Not Found: /
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=neetu'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=anil'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=polly'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=ivory'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=horse'>
+WARNING:django.request:Not Found: //a2billing/customer/templates/default/footer.tpl
+WARNING:django.request:Not Found: /
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+WARNING:django.request:Not Found: //libs/js/iframe.js
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+WARNING:django.request:Not Found: /
+WARNING:django.request:Not Found: /
+WARNING:django.request:Not Found: /
+WARNING:django.request:Not Found: //a2billing/customer/templates/default/footer.tpl
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Pune Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+WARNING:django.request:Not Found: /
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=beer%205.0%20L'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=beer%205.0l'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Pune Rules Applied
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Grilled Veg And Bocconcini Cheese In Focaccia Bread was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Grilled Veg And Bocconcini Cheese In Focaccia Bread was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Grilled Veg And Bocconcini Cheese In Focaccia Bread was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Grilled Veg And Bocconcini Cheese In Focaccia Bread was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=fgj'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=fgji'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:fgji was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Grilled Veg And Bocconcini Cheese In Focaccia Bread was not detected to be a standard alcohol
+INFO:src.Utils.logger:Paneer Tikka Ciabatta was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Grilled Veg And Bocconcini Cheese In Focaccia Bread was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=fhk'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=fhkj'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:fhkj was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Idli (2 Pcs) was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:dgghh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:dgghh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:dgghh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:dgghh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:dgghh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:dgghh was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=rgj'>
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:rgj was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:rgj was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:rgj was not detected to be a standard alcohol
+WARNING:django.request:Not Found: //a2billing/customer/templates/default/footer.tpl
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Gold Flake Lights was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gold Flake King Lights was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:ffgg was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Gold Flake Lights was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=salt'>
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=salt'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=vhfh'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=salt'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=gldo'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Marlboro Lights/white was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=salt'>
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=salt'>
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=salt'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=salt'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Salad Of The Day was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Salad Of The Day was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Salad Of The Day was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Esse Lights Ciggarette was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Esse Lights Ciggarette was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Esse Lights Ciggarette was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Esse Lights Ciggarette was not detected to be a standard alcohol
+WARNING:django.request:Not Found: /
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Esse Lights Ciggarette was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Esse Lights Ciggarette was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Marlboro Lights/white was not detected to be a standard alcohol
+INFO:src.Utils.logger:Classic Milds was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Marlboro Lights/white was not detected to be a standard alcohol
+INFO:src.Utils.logger:Classic Milds was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Marlboro Lights/white was not detected to be a standard alcohol
+INFO:src.Utils.logger:Classic Milds was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=dgh'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:dgh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:dgh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:dgh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:dgh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:dgh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:dgh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:dgh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:dgh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:dgh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Kadhai Paneer was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:dgh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Cup was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Kadhai Paneer was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Kadhai Paneer was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Kadhai Paneer was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Kadhai Paneer was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Waffles/Pancakes was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Waffles/Pancakes was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Marlboro Lights/white was not detected to be a standard alcohol
+INFO:src.Utils.logger:Classic Milds was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Marlboro Lights/white was not detected to be a standard alcohol
+INFO:src.Utils.logger:Classic Milds was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Gold Flake King Lights was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Marlboro Lights/white was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:hkk was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Bhel was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Grilled Veg And Bocconcini Cheese In Focaccia Bread was not detected to be a standard alcohol
+INFO:src.Utils.logger:Paneer Tikka Ciabatta was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Grilled Veg And Bocconcini Cheese In Focaccia Bread was not detected to be a standard alcohol
+INFO:src.Utils.logger:Paneer Tikka Ciabatta was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Kadhai Paneer was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:hkk was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:hkk was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:hkk was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Kadhai Paneer was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:hkk was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:hkk was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:hkk was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:hkk was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Kadhai Paneer was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:hkk was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Kadhai Paneer was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Kadhai Paneer was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Upma was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Vanilla Cappuccino (King) was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Vanilla Cappuccino (King) was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Vanilla Cappuccino (King) was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Veg Combo Breakfast was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Veg Combo Breakfast was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+WARNING:django.request:Not Found: /
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+WARNING:django.request:Not Found: /ws/2/
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=braa'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=guj'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=gujn'>
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:gujn was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:gujn was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:gujn was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:gujn was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:gujn was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:gujn was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:gujn was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:gujn was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:gujn was not detected to be a standard alcohol
+WARNING:django.request:Not Found: /ws/2/
+WARNING:django.request:Not Found: /
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=Johnnie%20Walker%20Red%20Label%20Blended%20Scotch%20Whisky%201l'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+WARNING:django.request:Not Found: /
+WARNING:django.request:Not Found: /
+WARNING:django.request:Not Found: /
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Egg & Cheese Sub 6" (15 Cm) was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Vanilla Cappuccino (King) was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Vanilla Cappuccino (King) was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=fgh'>
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:fgh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Macchiato was not detected to be a standard alcohol
+INFO:src.Utils.logger:Cafe Americano was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Veg Roll was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Egg & Cheese Sub 6" (15 Cm) was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:shuddj was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Waffles/Pancakes was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:aa was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:ck was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Nsnsn was not detected to be a standard alcohol
+INFO:src.Utils.logger:Nsns was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Cigarette
+ was not detected to be a standard alcohol
+INFO:src.Utils.logger:Classic milds was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:ghh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Gurgaon Rules Applied
+INFO:src.Utils.logger:ghh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Super Food Thali was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=hdhfh'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=hdhfhf'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:hdhfhf was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Vanilla Cappuccino (King) was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Collect charger was not detected to be a standard alcohol
+INFO:src.Utils.logger:Jdjfhfjfjjfjf was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Vanilla Cappuccino (King) was not detected to be a standard alcohol
+INFO:src.Utils.logger:Cafe Latte (King) was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:fgg was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=par'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=para'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=parac'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=parace'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=parac'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:fhdhdh was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Veg Puff was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Waffles/Pancakes was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:medicines was not detected to be a standard alcohol
+WARNING:django.request:Not Found: /
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Cafe Latte (King) was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=fasd'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:fasd was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:sadffa was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=sdfasdf'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:sdfasdf was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=ddf'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=ddfg'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=ddfgg'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=ddfgg'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:ddfgg was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:afdsfasf was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Shd was not detected to be a standard alcohol
+INFO:src.Utils.logger:djf was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Chole Bhature was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Paneer Roll was not detected to be a standard alcohol
+INFO:src.Utils.logger:Veg With Paneer Roll was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Western Egg & Cheese Sub 6" (15 Cm) was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Marlboro Lights/white was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:aa was not detected to be a standard alcohol
+INFO:src.Utils.logger:Not a valid city id hence Bangalore Rules Applied
+INFO:src.Utils.logger:Xx6xxx was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Benson And Hedges Light Ciggarette was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Waffles/Pancakes was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Marlboro Lights/white was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:dsfadf was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:guo was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:sdfasdf was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Grilled Veg And Bocconcini Cheese In Focaccia Bread was not detected to be a standard alcohol
+INFO:src.Utils.logger:Paneer Tikka Ciabatta was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:asdfas was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:asdfas was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:dsafasdfs was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Grilled Veg And Bocconcini Cheese In Focaccia Bread was not detected to be a standard alcohol
+INFO:src.Utils.logger:Paneer Tikka Ciabatta was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Grilled Veg And Bocconcini Cheese In Focaccia Bread was not detected to be a standard alcohol
+INFO:src.Utils.logger:Paneer Tikka Ciabatta was not detected to be a standard alcohol
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=sadfasdf'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=sadfasdff'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:sadfasdff was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Chips And Salsa was not detected to be a standard alcohol
+INFO:src.Utils.logger:Mexican Samosa was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:Veg Puff was not detected to be a standard alcohol
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=bbs'>
+INFO:src.Utils.logger:Bangalore Rules Applied
+INFO:src.Utils.logger:bbs was not detected to be a standard alcohol
+WARNING:django.request:Not Found: /
+INFO:src.Utils.logger:UNPICKLING SKU MATCHING NOTEBOOK
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=df'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=df'>
+INFO:src.Utils.logger:REQUEST: <WSGIRequest: GET '/sku/autocomplete?text=df'>
+WARNING:django.request:Not Found: /

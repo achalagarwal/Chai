@@ -1,0 +1,1312 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>src.SKU_Match &#8212; Chai Official documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.SKU_Match</h1><div class="highlight"><pre>
+<span></span>
+<span class="c1"># coding: utf-8</span>
+<span class="c1"># from fuzzywuzzy import fuzz</span>
+
+<span class="c1"># from autocorrect import spell</span>
+<span class="c1"># import spacy</span>
+<span class="c1"># nlp = spacy.load(&#39;en_core_web_lg&#39;)</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">src.Utils.Pickler</span> <span class="k">import</span> <span class="n">pickle_dict</span><span class="p">,</span><span class="n">unpickle_dict</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">src.expression.Sku</span> <span class="k">import</span> <span class="n">Sku</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="c1"># from sys import maxsize</span>
+<span class="c1"># import csv</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span> <span class="k">as</span> <span class="n">progress</span>
+<span class="c1"># from scoring_utils import *</span>
+<span class="c1"># from Utils.sku_utils import *</span>
+
+
+<div class="viewcode-block" id="getDistance"><a class="viewcode-back" href="../../src.html#src.SKU_Match.getDistance">[docs]</a><span class="k">def</span> <span class="nf">getDistance</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">):</span>
+    <span class="c1"># return typo_distance(word1, word2)</span>
+    <span class="k">return</span> <span class="n">distance</span><span class="o">.</span><span class="n">get_jaro_distance</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">,</span> <span class="n">winkler</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scaling</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="getCSV"><a class="viewcode-back" href="../../src.html#src.SKU_Match.getCSV">[docs]</a><span class="k">def</span> <span class="nf">getCSV</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;data.csv&quot;</span><span class="p">):</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols</span><span class="p">)]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;wt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+        <span class="n">csv_out</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="n">csv_out</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">csv_out</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="getTypoCSV"><a class="viewcode-back" href="../../src.html#src.SKU_Match.getTypoCSV">[docs]</a><span class="k">def</span> <span class="nf">getTypoCSV</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="c1"># data = [(&#39;smith, bob&#39;, 2), (&#39;carol&#39;, 3), (&#39;ted&#39;, 4), (&#39;alice&#39;, 5)]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;typos.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;wt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+        <span class="n">csv_out</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+        <span class="n">csv_out</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s1">&#39;Suggested Spelling&#39;</span><span class="p">,</span> <span class="s1">&#39;Current Spelling&#39;</span><span class="p">,</span> <span class="s1">&#39;Item Name&#39;</span><span class="p">,</span> <span class="s1">&#39;Score&#39;</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">csv_out</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="find_min_char_index"><a class="viewcode-back" href="../../src.html#src.SKU_Match.find_min_char_index">[docs]</a><span class="k">def</span> <span class="nf">find_min_char_index</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="nb">min</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+    <span class="n">found</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span><span class="p">:</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="n">index</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">min</span> <span class="o">-</span> <span class="n">index</span><span class="p">):</span>
+                <span class="nb">min</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="k">if</span> <span class="n">found</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">min</span> <span class="o">-</span> <span class="n">index</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="isVowel"><a class="viewcode-back" href="../../src.html#src.SKU_Match.isVowel">[docs]</a><span class="k">def</span> <span class="nf">isVowel</span><span class="p">(</span><span class="n">char</span><span class="p">):</span>
+    <span class="n">char</span> <span class="o">=</span> <span class="n">char</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;a&#39;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;e&#39;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;i&#39;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;o&#39;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;u&#39;</span></div>
+
+
+<div class="viewcode-block" id="get_decay"><a class="viewcode-back" href="../../src.html#src.SKU_Match.get_decay">[docs]</a><span class="k">def</span> <span class="nf">get_decay</span><span class="p">(</span><span class="n">prev_decay</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">prev_decay</span> <span class="o">&gt;</span> <span class="mf">0.8</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">prev_decay</span> <span class="o">-</span> <span class="mf">0.05</span>
+
+    <span class="k">if</span> <span class="n">prev_decay</span> <span class="o">&gt;</span> <span class="mf">0.6</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">prev_decay</span> <span class="o">-</span> <span class="mf">0.03</span>
+
+    <span class="k">if</span> <span class="n">prev_decay</span> <span class="o">&gt;</span> <span class="mf">0.4</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">prev_decay</span> <span class="o">-</span> <span class="mf">0.01</span>
+
+    <span class="k">return</span> <span class="n">prev_decay</span></div>
+
+
+<div class="viewcode-block" id="helper_typo_distance"><a class="viewcode-back" href="../../src.html#src.SKU_Match.helper_typo_distance">[docs]</a><span class="k">def</span> <span class="nf">helper_typo_distance</span><span class="p">(</span><span class="n">incorrect</span><span class="p">,</span><span class="n">correct</span><span class="p">):</span>
+    <span class="n">sum_first</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">decay</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">penalty</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">incorrect</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">incorrect</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">correct</span><span class="p">)):</span>
+
+        <span class="n">char_index</span> <span class="o">=</span> <span class="n">find_min_char_index</span><span class="p">(</span><span class="n">correct</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">incorrect</span><span class="p">,</span><span class="n">i</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">char_index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">sum_first</span> <span class="o">+=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">penalty</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">isVowel</span><span class="p">(</span><span class="n">correct</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+            <span class="n">sum_first</span> <span class="o">+=</span> <span class="mf">0.9</span><span class="o">*</span><span class="n">decay</span> <span class="o">*</span> <span class="n">char_index</span>
+            <span class="n">decay</span> <span class="o">=</span> <span class="n">get_decay</span><span class="p">(</span><span class="n">decay</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isVowel</span><span class="p">(</span><span class="n">correct</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+            <span class="n">sum_first</span> <span class="o">+=</span> <span class="n">decay</span><span class="o">*</span><span class="n">char_index</span>
+            <span class="n">decay</span> <span class="o">=</span> <span class="n">get_decay</span><span class="p">(</span><span class="n">decay</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+    <span class="k">return</span> <span class="n">sum_first</span></div>
+
+<div class="viewcode-block" id="typo_distance"><a class="viewcode-back" href="../../src.html#src.SKU_Match.typo_distance">[docs]</a><span class="k">def</span> <span class="nf">typo_distance</span><span class="p">(</span><span class="n">incorrect</span><span class="p">,</span> <span class="n">correct</span><span class="p">):</span>
+    <span class="c1"># sum_first = 0</span>
+    <span class="c1"># decay = 1</span>
+    <span class="c1"># penalty = max(len(incorrect), len(incorrect))</span>
+    <span class="c1"># for i in range(len(correct)):</span>
+    <span class="c1">#</span>
+    <span class="c1">#     char_index = find_min_char_index(correct[i],incorrect,i)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     if char_index == -1:</span>
+    <span class="c1">#         sum_first += 0.2 * 1 / penalty</span>
+    <span class="c1">#         continue</span>
+    <span class="c1">#     if isVowel(correct[i]):</span>
+    <span class="c1">#         sum_first += 0.9*decay * char_index</span>
+    <span class="c1">#         decay = get_decay(decay)</span>
+    <span class="c1">#         continue</span>
+    <span class="c1">#     if not isVowel(correct[i]):</span>
+    <span class="c1">#         sum_first += decay*char_index</span>
+    <span class="c1">#         decay = get_decay(decay)</span>
+    <span class="c1">#         continue</span>
+    <span class="c1">#</span>
+    <span class="c1"># if recurse:</span>
+    <span class="c1">#     return min(sum_first, typo_distance(correct,incorrect,False))</span>
+    <span class="c1"># else:</span>
+    <span class="c1">#     return sum_first</span>
+
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">helper_typo_distance</span><span class="p">(</span><span class="n">incorrect</span><span class="p">,</span><span class="n">correct</span><span class="p">),</span><span class="n">helper_typo_distance</span><span class="p">(</span><span class="n">correct</span><span class="p">,</span> <span class="n">incorrect</span><span class="p">))</span></div>
+    <span class="c1"># sum_second = 0</span>
+    <span class="c1"># decay = 1</span>
+    <span class="c1"># for i in range(len(incorrect)):</span>
+    <span class="c1">#     if find_min_char_index(incorrect[i], correct, i) == -1:</span>
+    <span class="c1">#         sum_second += 0.2 * 1 / penalty</span>
+    <span class="c1">#         continue</span>
+    <span class="c1">#     if not isVowel(incorrect[i]):</span>
+    <span class="c1">#         sum_second += decay*find_min_char_index(incorrect[i], correct, i)</span>
+    <span class="c1">#         decay = get_decay(decay)</span>
+    <span class="c1">#     elif isVowel(incorrect[i]):</span>
+    <span class="c1">#         sum_second += 0.9 * decay * find_min_char_index(incorrect[i], correct, i)</span>
+    <span class="c1">#         decay = get_decay(decay)</span>
+    <span class="c1">#</span>
+    <span class="c1"># return min(sum_first, sum_second)</span>
+
+
+
+
+<div class="viewcode-block" id="getLinearSpan"><a class="viewcode-back" href="../../src.html#src.SKU_Match.getLinearSpan">[docs]</a><span class="k">def</span> <span class="nf">getLinearSpan</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+
+    <span class="c1"># start = time()</span>
+    <span class="n">span</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)):</span>
+
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)):</span>
+            <span class="n">vec</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">-</span> <span class="n">j</span><span class="p">):</span>
+                <span class="n">vec</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">k</span><span class="p">])</span>
+            <span class="n">span</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
+
+    <span class="c1"># for vec in span:</span>
+    <span class="c1">#     print(vec)</span>
+    <span class="c1"># end = time()</span>
+    <span class="c1"># print(&quot;Time taken - &quot;,end - start)</span>
+    <span class="k">return</span> <span class="n">span</span></div>
+
+
+<div class="viewcode-block" id="importBigBasketDataFromFile"><a class="viewcode-back" href="../../src.html#src.SKU_Match.importBigBasketDataFromFile">[docs]</a><span class="k">def</span> <span class="nf">importBigBasketDataFromFile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="n">json_data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;/Users/achal/Downloads/all_big_basket.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_data</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">object_hook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">parse_float</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parse_int</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parse_constant</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">object_pairs_hook</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">item_name</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;item_name&#39;</span><span class="p">]</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">items</span></div>
+
+
+<div class="viewcode-block" id="import_madhuloka_data"><a class="viewcode-back" href="../../src.html#src.SKU_Match.import_madhuloka_data">[docs]</a><span class="k">def</span> <span class="nf">import_madhuloka_data</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="n">json_data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./&quot;</span><span class="o">+</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_data</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">object_hook</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">parse_float</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parse_int</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parse_constant</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">object_pairs_hook</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+<div class="viewcode-block" id="importSKUDataFromFile"><a class="viewcode-back" href="../../src.html#src.SKU_Match.importSKUDataFromFile">[docs]</a><span class="k">def</span> <span class="nf">importSKUDataFromFile</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+    <span class="n">json_data</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+        <span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">objects</span></div>
+
+
+<div class="viewcode-block" id="cleanSKUData"><a class="viewcode-back" href="../../src.html#src.SKU_Match.cleanSKUData">[docs]</a><span class="k">def</span> <span class="nf">cleanSKUData</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">extract_tuple</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">extract_name_tag</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">extract_id</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">extract_subtag</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="nb">object</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="c1"># extract_tuple.append((object[&quot;_id&quot;][&quot;$oid&quot;], object[&quot;name&quot;]))</span>
+        <span class="n">extract_name_tag</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">object</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="nb">object</span><span class="p">[</span><span class="s2">&quot;suggest&quot;</span><span class="p">][</span><span class="s2">&quot;contexts&quot;</span><span class="p">][</span><span class="s2">&quot;subTag&quot;</span><span class="p">],</span> <span class="nb">object</span><span class="p">[</span><span class="s1">&#39;_id&#39;</span><span class="p">][</span><span class="s1">&#39;$oid&#39;</span><span class="p">]))</span>
+        <span class="c1"># extract_id.append(object[&quot;_id&quot;][&quot;$oid&quot;])</span>
+
+
+    <span class="n">extract_tuple</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">extract_tuple</span><span class="p">)</span>
+    <span class="n">extract_id</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">extract_id</span><span class="p">)</span>
+    <span class="n">extract_name_tag</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">extract_name_tag</span><span class="p">)</span>
+
+
+    <span class="c1"># print(len(extract_name_tag))</span>
+    <span class="c1"># print(len(extract_id))</span>
+    <span class="c1"># print(len(extract_tuple))</span>
+    <span class="k">return</span> <span class="n">extract_name_tag</span></div>
+
+
+<div class="viewcode-block" id="extract_number_from_string"><a class="viewcode-back" href="../../src.html#src.SKU_Match.extract_number_from_string">[docs]</a><span class="k">def</span> <span class="nf">extract_number_from_string</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">keyword</span><span class="p">):</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">keyword</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;&quot;:\s*&quot;(.+?)&quot;&#39;</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">keyword</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;&quot;:\s*(.+?)\}&#39;</span>
+        <span class="n">matches</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">matches</span><span class="p">:</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">keyword</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s1">&#39;&quot;:\s*(.+?)&quot;&#39;</span>
+        <span class="n">matches</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">))</span>
+
+    <span class="n">numbers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">matches</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">match</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+           <span class="k">return</span> <span class="p">[]</span>
+    <span class="k">return</span> <span class="n">numbers</span></div>
+
+<div class="viewcode-block" id="extractFromString"><a class="viewcode-back" href="../../src.html#src.SKU_Match.extractFromString">[docs]</a><span class="k">def</span> <span class="nf">extractFromString</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;product&#39;</span><span class="p">):</span>
+    <span class="c1"># list_of_products = literal_eval(string)</span>
+
+    <span class="c1"># my_regex = r&quot;\b(?=\w)&quot; + re.escape(TEXTO) + r&quot;\b(?!\w)&quot;</span>
+    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">keyword</span><span class="p">)</span><span class="o">+</span><span class="sa">r</span><span class="s1">&#39;&quot;:\s*&quot;(.+?)&quot;,&#39;</span>
+    <span class="c1"># pattern = keyword+&#39;&quot;:\s*&quot;(.+?)&quot;,&#39;</span>
+    <span class="c1"># pattern = re.escape(pattern)</span>
+    <span class="c1"># pattern = r&#39;product&quot;:\s*&quot;(.+?)&quot;,&#39;</span>
+    <span class="n">matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">matches</span></div>
+
+<div class="viewcode-block" id="get_info_from_order_form"><a class="viewcode-back" href="../../src.html#src.SKU_Match.get_info_from_order_form">[docs]</a><span class="k">def</span> <span class="nf">get_info_from_order_form</span><span class="p">(</span><span class="n">orderform</span><span class="p">):</span>
+
+    <span class="n">orderform_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">orderform</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">products</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">orderform_data</span><span class="p">:</span>
+        <span class="n">userid</span> <span class="o">=</span> <span class="n">orderform</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">dzerid</span> <span class="o">=</span> <span class="n">product</span><span class="p">[</span><span class="s1">&#39;meta&#39;</span><span class="p">][</span><span class="s1">&#39;location&#39;</span><span class="p">][</span><span class="s1">&#39;dzid&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">dzerid</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">subtag</span> <span class="o">=</span> <span class="n">product</span><span class="p">[</span><span class="s1">&#39;meta&#39;</span><span class="p">][</span><span class="s1">&#39;subTag&#39;</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">subtag</span> <span class="o">=</span> <span class="n">orderform</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">products</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">userid</span><span class="p">,</span> <span class="n">product</span><span class="p">[</span><span class="s1">&#39;product&#39;</span><span class="p">],</span> <span class="n">subtag</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">product</span><span class="p">[</span><span class="s1">&#39;quantity&#39;</span><span class="p">]),</span> <span class="n">dzerid</span><span class="p">))</span>
+
+        <span class="c1"># try:</span>
+        <span class="c1">#     dzerid = product[]</span>
+    <span class="c1"># dzerid = extractFromString(orderform[0], keyword=&#39;dzid&#39;)</span>
+    <span class="c1"># # subtag = extractFromString(order[0], keyword=&#39;subTag&#39;)</span>
+    <span class="c1"># if dzerid:</span>
+    <span class="c1">#     dzerid = dzerid[0]</span>
+    <span class="c1"># else:</span>
+    <span class="c1">#     dzerid = None</span>
+
+    <span class="c1"># subtag = orderform[2]</span>
+
+    <span class="k">return</span> <span class="n">products</span></div>
+<div class="viewcode-block" id="getInfoFromOrder"><a class="viewcode-back" href="../../src.html#src.SKU_Match.getInfoFromOrder">[docs]</a><span class="k">def</span> <span class="nf">getInfoFromOrder</span><span class="p">(</span><span class="n">order</span><span class="p">):</span>
+    <span class="c1"># products = None</span>
+    <span class="c1"># userid = None</span>
+    <span class="c1"># dzerid = None</span>
+    <span class="c1"># try:</span>
+    <span class="c1">#     tuple_data = literal_eval(order)</span>
+    <span class="c1">#     products = tuple_data[0]</span>
+    <span class="c1">#     # products = literal_eval(order[0])</span>
+    <span class="c1">#     userid = tuple_data[1]</span>
+    <span class="c1">#     products = [product[&#39;product&#39;] for product in products]</span>
+    <span class="c1">#</span>
+    <span class="c1">#     # for product in products:</span>
+    <span class="c1">#     #     items.append((product[&#39;product&#39;],userid))</span>
+    <span class="c1"># except:</span>
+    <span class="c1">#     pass</span>
+    <span class="n">products</span> <span class="o">=</span> <span class="n">extractFromString</span><span class="p">(</span><span class="n">order</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">dzerid</span> <span class="o">=</span> <span class="n">extractFromString</span><span class="p">(</span><span class="n">order</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">keyword</span><span class="o">=</span><span class="s1">&#39;dzid&#39;</span><span class="p">)</span>
+    <span class="c1"># subtag = extractFromString(order[0], keyword=&#39;subTag&#39;)</span>
+    <span class="k">if</span> <span class="n">dzerid</span><span class="p">:</span>
+        <span class="n">dzerid</span> <span class="o">=</span> <span class="n">dzerid</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dzerid</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">userid</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">subtag</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+
+
+        <span class="c1"># for product in products:</span>
+        <span class="c1">#     items.append((product,userid))</span>
+
+    <span class="k">return</span> <span class="n">products</span><span class="p">,</span><span class="n">userid</span><span class="p">,</span> <span class="n">dzerid</span><span class="p">,</span><span class="n">subtag</span></div>
+
+
+<div class="viewcode-block" id="match_item_to_raw_data"><a class="viewcode-back" href="../../src.html#src.SKU_Match.match_item_to_raw_data">[docs]</a><span class="k">def</span> <span class="nf">match_item_to_raw_data</span><span class="p">(</span><span class="n">item</span><span class="p">,</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">helper_eligible_pair</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">item</span><span class="p">),</span> <span class="n">data</span><span class="p">))</span>
+    <span class="n">best</span><span class="p">,</span> <span class="n">best_sku_matched</span><span class="p">,</span> <span class="n">best_items_matched</span> <span class="o">=</span> <span class="n">getMatch</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="c1"># print(best)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">best</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># all_matched = set(best)</span>
+    <span class="n">best_zipped</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">best</span><span class="p">,</span><span class="n">best_sku_matched</span><span class="p">,</span><span class="n">best_items_matched</span><span class="p">))</span>
+    <span class="n">best_zipped</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">is_good_match</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">best_zipped</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">best_zipped</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="p">[</span><span class="n">best</span><span class="p">,</span><span class="n">best_sku_matched</span><span class="p">,</span><span class="n">best_items_matched</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">best_zipped</span><span class="p">))]</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="n">get_better_from_best</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">best</span><span class="p">,</span> <span class="n">best_sku_matched</span><span class="p">,</span> <span class="n">best_items_matched</span><span class="p">)</span>
+    <span class="c1"># print(best)</span>
+    <span class="k">return</span> <span class="n">best</span></div>
+<div class="viewcode-block" id="match_item_to_sku"><a class="viewcode-back" href="../../src.html#src.SKU_Match.match_item_to_sku">[docs]</a><span class="k">def</span> <span class="nf">match_item_to_sku</span><span class="p">(</span><span class="n">item_data_tuple_with_uid_dzid_tag</span><span class="p">,</span><span class="n">sku_data_tuple_with_tag</span><span class="p">):</span>
+
+    <span class="n">sku_data_tuple_with_tag</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">is_eligible_pair</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">item_data_tuple_with_uid_dzid_tag</span><span class="p">),</span> <span class="n">sku_data_tuple_with_tag</span><span class="p">))</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">sku_data_tuple_with_tag</span>
+    <span class="n">data</span>  <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">data</span><span class="p">))</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">item_data_tuple_with_uid_dzid_tag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">best</span><span class="p">,</span> <span class="n">best_sku_matched</span><span class="p">,</span> <span class="n">best_items_matched</span> <span class="o">=</span> <span class="n">getMatch</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="c1"># print(best)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">best</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1"># all_matched = set(best)</span>
+    <span class="n">best_zipped</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">best</span><span class="p">,</span><span class="n">best_sku_matched</span><span class="p">,</span><span class="n">best_items_matched</span><span class="p">))</span>
+    <span class="n">best_zipped</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">is_good_match</span><span class="p">(</span>
+        <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">best_zipped</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">best_zipped</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="p">[</span><span class="n">best</span><span class="p">,</span><span class="n">best_sku_matched</span><span class="p">,</span><span class="n">best_items_matched</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">best_zipped</span><span class="p">))]</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="n">get_better_from_best</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">best</span><span class="p">,</span> <span class="n">best_sku_matched</span><span class="p">,</span> <span class="n">best_items_matched</span><span class="p">)</span>
+    <span class="c1"># print(best)</span>
+    <span class="k">return</span> <span class="n">best</span></div>
+
+<div class="viewcode-block" id="getCustomOrderFormDataFromFile"><a class="viewcode-back" href="../../src.html#src.SKU_Match.getCustomOrderFormDataFromFile">[docs]</a><span class="k">def</span> <span class="nf">getCustomOrderFormDataFromFile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+
+    <span class="n">orders</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">progress</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sub_tag&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Food&#39;</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sub_tag&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;SAMPLING_PROMO_BUY&#39;</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sub_tag&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Flowers&#39;</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sub_tag&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Sports&#39;</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sub_tag&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Pets&#39;</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sub_tag&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;Exploratory - Buy&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;sub_tag&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Stationary&#39;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">orders</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;list_items&#39;</span><span class="p">],</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;sub_tag&#39;</span><span class="p">]))</span>
+
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">orderform</span> <span class="ow">in</span> <span class="n">progress</span><span class="p">(</span><span class="n">orders</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">products</span> <span class="o">=</span> <span class="n">get_info_from_order_form</span><span class="p">(</span><span class="n">orderform</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span>
+                <span class="c1"># items.append((clean_item(product),userid,dzerid,subtag))</span>
+                <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">product</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+    <span class="k">return</span> <span class="n">items</span></div>
+
+<div class="viewcode-block" id="getOrderFormDataFromFile"><a class="viewcode-back" href="../../src.html#src.SKU_Match.getOrderFormDataFromFile">[docs]</a><span class="k">def</span> <span class="nf">getOrderFormDataFromFile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+
+    <span class="n">orders</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csvfile</span><span class="p">:</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictReader</span><span class="p">(</span><span class="n">csvfile</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+            <span class="n">orders</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;list_items&#39;</span><span class="p">],</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;uuid&#39;</span><span class="p">]))</span>
+
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">:</span>
+        <span class="n">products</span><span class="p">,</span> <span class="n">userid</span> <span class="o">=</span> <span class="n">getInfoFromOrder</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">products</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="n">products</span><span class="p">:</span>
+            <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">clean_item</span><span class="p">(</span><span class="n">product</span><span class="p">),</span> <span class="n">userid</span><span class="p">))</span>
+
+        <span class="c1"># try:</span>
+        <span class="c1">#     tuple_data = literal_eval(order)</span>
+        <span class="c1">#     products = tuple_data[0]</span>
+        <span class="c1">#     # products = literal_eval(order[0])</span>
+        <span class="c1">#     userid = tuple_data[1]</span>
+        <span class="c1">#</span>
+        <span class="c1">#     for product in products:</span>
+        <span class="c1">#         items.append((product[&#39;product&#39;],userid))</span>
+        <span class="c1"># except:</span>
+        <span class="c1">#     products = extractFromString(order[0])</span>
+        <span class="c1">#     userid = order[1]</span>
+        <span class="c1">#     for product in products:</span>
+        <span class="c1">#         items.append((product,userid))</span>
+
+    <span class="k">return</span> <span class="n">items</span></div>
+
+
+
+
+
+<div class="viewcode-block" id="printVector"><a class="viewcode-back" href="../../src.html#src.SKU_Match.printVector">[docs]</a><span class="k">def</span> <span class="nf">printVector</span><span class="p">(</span><span class="n">vec</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Printing Vector&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vec</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="s2">&quot;Printed Vector&quot;</span></div>
+
+
+
+
+
+
+<div class="viewcode-block" id="helperGetElligiblePair"><a class="viewcode-back" href="../../src.html#src.SKU_Match.helperGetElligiblePair">[docs]</a><span class="k">def</span> <span class="nf">helperGetElligiblePair</span><span class="p">(</span><span class="n">item1</span><span class="p">,</span> <span class="n">item2</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">is_eligible_pair</span><span class="p">(</span><span class="n">item1</span><span class="p">,</span> <span class="n">item2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">item1</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+<span class="c1"># Create Sku Objects for  Sku (name,tag) list</span>
+
+
+<div class="viewcode-block" id="get_sku_list_csv"><a class="viewcode-back" href="../../src.html#src.SKU_Match.get_sku_list_csv">[docs]</a><span class="k">def</span> <span class="nf">get_sku_list_csv</span><span class="p">(</span><span class="n">sku_list</span><span class="p">):</span>
+    <span class="n">tuple_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">sku_list</span><span class="p">:</span>
+        <span class="n">tuple_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">sku</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()))</span>
+
+    <span class="n">getCSV</span><span class="p">(</span><span class="n">tuple_list</span><span class="p">,</span> <span class="s1">&#39;popularity.csv&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_name_dict_from_class_dict"><a class="viewcode-back" href="../../src.html#src.SKU_Match.get_name_dict_from_class_dict">[docs]</a><span class="k">def</span> <span class="nf">get_name_dict_from_class_dict</span><span class="p">(</span><span class="n">class_dict</span><span class="p">):</span>
+    <span class="n">name_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">class_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">sku_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">v</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">sku_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sku</span><span class="o">.</span><span class="n">_original_name</span><span class="p">)</span>
+        <span class="n">name_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">sku_names</span>
+
+    <span class="k">return</span> <span class="n">name_dict</span></div>
+
+<div class="viewcode-block" id="get_class_dict_from_name_dict"><a class="viewcode-back" href="../../src.html#src.SKU_Match.get_class_dict_from_name_dict">[docs]</a><span class="k">def</span> <span class="nf">get_class_dict_from_name_dict</span><span class="p">(</span><span class="n">name_dict</span><span class="p">,</span> <span class="n">sku_list</span><span class="p">):</span>
+
+    <span class="n">sku_name_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">sku_list</span><span class="p">:</span>
+        <span class="n">sku_name_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sku</span><span class="o">.</span><span class="n">_original_name</span><span class="p">)</span>
+
+    <span class="n">class_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">item_name_tag</span><span class="p">,</span><span class="n">sku_names</span> <span class="ow">in</span> <span class="n">name_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">skus</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">sku_name</span> <span class="ow">in</span> <span class="n">sku_names</span><span class="p">:</span>
+            <span class="n">skus</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get_corresponding_sku_object</span><span class="p">(</span><span class="n">sku_name</span><span class="p">,</span><span class="n">sku_name_list</span><span class="p">,</span><span class="n">sku_list</span><span class="p">))</span>
+        <span class="n">skus</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">class_dict</span><span class="p">[</span><span class="n">item_name_tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">skus</span>
+
+    <span class="k">return</span> <span class="n">class_dict</span></div>
+
+
+<div class="viewcode-block" id="extract_skus_from_name_dict"><a class="viewcode-back" href="../../src.html#src.SKU_Match.extract_skus_from_name_dict">[docs]</a><span class="k">def</span> <span class="nf">extract_skus_from_name_dict</span><span class="p">(</span><span class="n">item_name_tag</span><span class="p">,</span> <span class="n">item_dict</span><span class="p">,</span> <span class="n">sku_list</span><span class="p">):</span>
+
+    <span class="n">sku_name_list</span> <span class="o">=</span> <span class="n">item_dict</span><span class="p">[</span><span class="n">item_name_tag</span><span class="p">]</span>
+    <span class="n">skus</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sku_name</span> <span class="ow">in</span> <span class="n">sku_name_list</span><span class="p">:</span>
+        <span class="n">skus</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get_corresponding_sku_object</span><span class="p">(</span><span class="n">sku_name</span><span class="p">,</span> <span class="n">sku_names</span><span class="p">,</span> <span class="n">sk</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="test_pickled_data"><a class="viewcode-back" href="../../src.html#src.SKU_Match.test_pickled_data">[docs]</a><span class="k">def</span> <span class="nf">test_pickled_data</span><span class="p">():</span>
+    <span class="n">item_dict</span> <span class="o">=</span> <span class="n">unpickle_dict</span><span class="p">(</span><span class="s1">&#39;dict&#39;</span><span class="p">)</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">getCustomOrderFormDataFromFile</span><span class="p">(</span><span class="s1">&#39;big_data.csv&#39;</span><span class="p">)</span>
+    <span class="n">sku_list</span> <span class="o">=</span> <span class="n">get_sku_list</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">progress</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sku_name_list</span> <span class="o">=</span> <span class="n">item_dict</span><span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">sku_name</span> <span class="ow">in</span> <span class="n">sku_name_list</span><span class="p">:</span>
+            <span class="n">sku</span> <span class="o">=</span> <span class="n">get_corresponding_sku_object</span><span class="p">(</span><span class="n">sku_name</span><span class="p">,</span><span class="n">sku_list</span><span class="p">)</span>
+            <span class="n">sku</span><span class="o">.</span><span class="n">update_count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">sku</span><span class="o">.</span><span class="n">update_score</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">sku</span><span class="o">.</span><span class="n">update_popularity</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">get_sku_list_csv</span><span class="p">(</span><span class="n">sku_list</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+<div class="viewcode-block" id="get_sku_list"><a class="viewcode-back" href="../../src.html#src.SKU_Match.get_sku_list">[docs]</a><span class="k">def</span> <span class="nf">get_sku_list</span><span class="p">():</span>
+    <span class="n">raw_sku_list</span> <span class="o">=</span> <span class="n">cleanSKUData</span><span class="p">(</span><span class="n">importSKUDataFromFile</span><span class="p">(</span><span class="s1">&#39;auto.json&#39;</span><span class="p">))</span>
+    <span class="n">sku_list</span> <span class="o">=</span> <span class="n">build_sku_list</span><span class="p">(</span><span class="n">raw_sku_list</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sku_list</span></div>
+<div class="viewcode-block" id="test_cluster_popularity"><a class="viewcode-back" href="../../src.html#src.SKU_Match.test_cluster_popularity">[docs]</a><span class="k">def</span> <span class="nf">test_cluster_popularity</span><span class="p">():</span>
+
+    <span class="c1"># test_pickled_data()</span>
+    <span class="c1"># from sys import exit</span>
+    <span class="c1"># exit()</span>
+    <span class="n">sku_list</span> <span class="o">=</span> <span class="n">get_sku_list</span><span class="p">()</span>
+    <span class="c1"># / Users / achal / Dunzo / Data / dunzo_tasks_raised_1stJan_dump.csv</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">getCustomOrderFormDataFromFile</span><span class="p">(</span><span class="s1">&#39;/Users/achal/Dunzo/Data/dunzo_tasks_raised_1stJan_dump.csv&#39;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">item_dict</span> <span class="o">=</span> <span class="n">unpickle_dict</span><span class="p">(</span><span class="s1">&#39;dict&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="n">item_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">class_dict</span> <span class="o">=</span> <span class="n">get_class_dict_from_name_dict</span><span class="p">(</span><span class="n">item_dict</span><span class="p">,</span><span class="n">sku_list</span><span class="p">)</span>
+    <span class="n">master_dict</span> <span class="o">=</span> <span class="n">tag_and_score</span><span class="p">(</span><span class="n">items</span><span class="p">,</span> <span class="n">sku_list</span><span class="p">,</span> <span class="n">class_dict</span><span class="p">)</span>
+    <span class="n">pickle_dict</span><span class="p">(</span><span class="n">get_name_dict_from_class_dict</span><span class="p">(</span><span class="n">master_dict</span><span class="p">),</span><span class="s1">&#39;dict&#39;</span><span class="p">)</span>
+    <span class="c1"># test = unpickle_dict(&#39;dict&#39;)</span>
+    <span class="c1"># print(test)</span>
+    <span class="n">sort_sku_list</span><span class="p">(</span><span class="n">sku_list</span><span class="p">)</span>
+    <span class="n">get_sku_list_csv</span><span class="p">(</span><span class="n">sku_list</span><span class="p">)</span></div>
+
+
+    <span class="c1"># printVector(sku_list)</span>
+
+<span class="c1">#list of the worst matches</span>
+<span class="c1">#meta data score</span>
+<span class="c1">#category</span>
+
+<div class="viewcode-block" id="get_corresponding_sku_object"><a class="viewcode-back" href="../../src.html#src.SKU_Match.get_corresponding_sku_object">[docs]</a><span class="k">def</span> <span class="nf">get_corresponding_sku_object</span><span class="p">(</span><span class="n">sku_name</span><span class="p">,</span> <span class="n">sku_names</span><span class="p">,</span> <span class="n">sku_list</span><span class="p">):</span>
+
+
+
+    <span class="k">return</span> <span class="n">sku_list</span><span class="p">[</span><span class="n">sku_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">sku_name</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="build_sku_list"><a class="viewcode-back" href="../../src.html#src.SKU_Match.build_sku_list">[docs]</a><span class="k">def</span> <span class="nf">build_sku_list</span><span class="p">(</span><span class="n">sku_name_tag</span><span class="p">):</span>
+
+    <span class="n">sku_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">sku_name_tag</span><span class="p">:</span>
+        <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sku</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">sku_name</span> <span class="o">=</span> <span class="n">sku</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">sku_subtag</span> <span class="o">=</span> <span class="n">sku</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">sku_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Sku</span><span class="p">(</span><span class="n">sku_name</span><span class="o">=</span><span class="n">sku_name</span><span class="p">,</span><span class="n">sku_subtag</span><span class="o">=</span><span class="n">sku_subtag</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">sku_list</span></div>
+
+
+<div class="viewcode-block" id="sort_sku_list"><a class="viewcode-back" href="../../src.html#src.SKU_Match.sort_sku_list">[docs]</a><span class="k">def</span> <span class="nf">sort_sku_list</span><span class="p">(</span><span class="n">sku_list</span><span class="p">):</span>
+
+    <span class="n">sku_list</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">_popularity</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span></div>
+
+
+<div class="viewcode-block" id="tag_and_score"><a class="viewcode-back" href="../../src.html#src.SKU_Match.tag_and_score">[docs]</a><span class="k">def</span> <span class="nf">tag_and_score</span><span class="p">(</span><span class="n">items</span><span class="p">,</span><span class="n">sku_list</span><span class="p">,</span> <span class="n">item_dict</span><span class="o">=</span><span class="p">{}):</span>
+
+    <span class="c1"># item_dict = {}</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">progress</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
+
+        <span class="n">item_name_tag_tuple</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">item_name_tag_tuple</span> <span class="ow">in</span> <span class="n">item_dict</span><span class="p">:</span>
+            <span class="n">item_match_list</span> <span class="o">=</span> <span class="n">item_dict</span><span class="p">[</span><span class="n">item_name_tag_tuple</span><span class="p">]</span>
+
+            <span class="c1"># The last index of the list stores the frequency of the exact item</span>
+            <span class="n">item_match_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># else</span>
+        <span class="n">item_match_list</span> <span class="o">=</span> <span class="n">get_match</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">sku_list</span><span class="p">,</span> <span class="n">func</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">item_match_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">item_dict</span><span class="p">[</span><span class="n">item_name_tag_tuple</span><span class="p">]</span> <span class="o">=</span> <span class="n">item_match_list</span>
+
+    <span class="k">for</span> <span class="n">item</span><span class="p">,</span><span class="n">item_match_list</span> <span class="ow">in</span> <span class="n">item_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+        <span class="n">score</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">frequency</span> <span class="o">=</span> <span class="n">item_match_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># removing the frequency from the list</span>
+        <span class="n">item_match_list</span> <span class="o">=</span> <span class="n">item_match_list</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">item_match_list</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">decay</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">item_match_list</span><span class="p">)</span>
+        <span class="n">item_match_list</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">_score</span><span class="p">,</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">item_match_list</span><span class="p">:</span>
+            <span class="n">sku</span><span class="o">.</span><span class="n">update_popularity</span><span class="p">(</span><span class="n">score</span><span class="o">*</span><span class="n">frequency</span><span class="p">)</span>
+            <span class="n">score</span> <span class="o">-=</span> <span class="n">decay</span>
+
+    <span class="k">return</span> <span class="n">item_dict</span></div>
+
+<div class="viewcode-block" id="get_match"><a class="viewcode-back" href="../../src.html#src.SKU_Match.get_match">[docs]</a><span class="k">def</span> <span class="nf">get_match</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">sku_list</span><span class="p">,</span> <span class="n">func</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+
+    <span class="nb">min</span> <span class="o">=</span> <span class="mi">10000</span>
+    <span class="n">matched_sku_words_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">matched_item_words</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">matched_sku</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">item_name</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">item_tag</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">item_count</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">sku_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">is_eligible</span><span class="p">(</span><span class="n">item_name</span><span class="p">,</span><span class="n">item_tag</span><span class="p">),</span><span class="n">sku_list</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">sku_list</span><span class="p">:</span>
+        <span class="n">distance</span><span class="p">,</span> <span class="n">item_words_matched</span><span class="p">,</span> <span class="n">sku_words_matched</span> <span class="o">=</span> <span class="n">sku</span><span class="o">.</span><span class="n">match_distance</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">:</span>
+            <span class="nb">min</span> <span class="o">=</span> <span class="n">distance</span>
+            <span class="n">matched_sku</span> <span class="o">=</span> <span class="p">[</span><span class="n">sku</span><span class="p">]</span>
+            <span class="n">matched_item_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">item_words_matched</span><span class="p">]</span>
+            <span class="n">matched_sku_words_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">sku_words_matched</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">distance</span> <span class="o">==</span> <span class="nb">min</span><span class="p">:</span>
+            <span class="n">matched_sku</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sku</span><span class="p">)</span>
+            <span class="n">matched_item_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_words_matched</span><span class="p">)</span>
+            <span class="n">matched_sku_words_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sku_words_matched</span><span class="p">)</span>
+
+
+    <span class="n">match_zipped</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">matched_sku</span><span class="p">,</span><span class="n">matched_sku_words_list</span><span class="p">,</span><span class="n">matched_item_words</span><span class="p">))</span>
+    <span class="n">match_zipped</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">is_good_match</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="n">match_zipped</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">match_zipped</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="p">[</span><span class="n">best</span><span class="p">,</span><span class="n">best_sku_matched</span><span class="p">,</span><span class="n">best_items_matched</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">match_zipped</span><span class="p">))]</span>
+    <span class="n">matched_sku_with_score</span> <span class="o">=</span> <span class="n">get_better_from_best</span><span class="p">(</span><span class="n">item_name</span><span class="p">,</span> <span class="n">best</span><span class="p">,</span> <span class="n">best_sku_matched</span><span class="p">,</span> <span class="n">best_items_matched</span><span class="p">)</span>
+
+    <span class="n">matches</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">match_with_score</span> <span class="ow">in</span> <span class="n">matched_sku_with_score</span><span class="p">:</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">match_with_score</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">matches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">match_with_score</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">match</span><span class="o">.</span><span class="n">update_count</span><span class="p">(</span><span class="n">item_count</span><span class="p">)</span>
+        <span class="n">match</span><span class="o">.</span><span class="n">update_score</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+
+
+
+
+    <span class="k">return</span> <span class="n">matches</span></div>
+
+
+<div class="viewcode-block" id="getMatch"><a class="viewcode-back" href="../../src.html#src.SKU_Match.getMatch">[docs]</a><span class="k">def</span> <span class="nf">getMatch</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="n">getDistance</span><span class="p">):</span>
+
+    <span class="c1"># print(&quot;Item is &quot;, item)</span>
+    <span class="c1"># if  not &#39;thumbs&#39; in item.lower():</span>
+    <span class="c1">#     return []</span>
+
+    <span class="nb">min</span> <span class="o">=</span> <span class="mi">10000</span>
+    <span class="n">best</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">best_indices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">best_items_matched</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">best_sku_matched</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># start = time()</span>
+    <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">sku</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="c1"># if not &#39;thums&#39; in sku:</span>
+        <span class="c1">#     continue</span>
+        <span class="n">span</span> <span class="o">=</span> <span class="n">get_linear_span</span><span class="p">(</span><span class="n">sku</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+        <span class="n">distance</span><span class="p">,</span> <span class="n">item_words_matched</span><span class="p">,</span> <span class="n">sku_words_matched</span> <span class="o">=</span> <span class="n">get_min_item_edit_distance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">span</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">:</span>
+            <span class="nb">min</span> <span class="o">=</span> <span class="n">distance</span>
+            <span class="n">best</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">best_indices</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">best_items_matched</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">best_sku_matched</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">best_items_matched</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_words_matched</span><span class="p">)</span>
+            <span class="n">best_sku_matched</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sku_words_matched</span><span class="p">)</span>
+            <span class="n">best</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sku</span><span class="p">)</span>
+            <span class="n">best_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">sku</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">distance</span> <span class="o">==</span> <span class="nb">min</span><span class="p">:</span>
+            <span class="n">best</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sku</span><span class="p">)</span>
+            <span class="n">best_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">sku</span><span class="p">))</span>
+            <span class="n">best_sku_matched</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sku_words_matched</span><span class="p">)</span>
+            <span class="n">best_items_matched</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item_words_matched</span><span class="p">)</span>
+
+    <span class="c1"># end = time()</span>
+    <span class="c1"># print(&quot;Time taken is &quot;, end - start)</span>
+
+    <span class="c1"># check if words are being used, else best = None</span>
+
+    <span class="c1"># updated_best = []</span>
+    <span class="c1">#</span>
+    <span class="c1"># temp_best = &quot;&quot;</span>
+    <span class="c1"># maximum = 0</span>
+    <span class="c1">#</span>
+    <span class="c1"># for i in range(len(best)):</span>
+    <span class="c1">#     items = len(clean_words(item.split()))</span>
+    <span class="c1">#     skus = len(clean_words(best[i].split()))</span>
+    <span class="c1">#</span>
+    <span class="c1">#     if len(best_sku_matched[i]) &gt;= 0.5*skus and len(best_items_matched[i]) &gt;= 0.5*items:</span>
+    <span class="c1">#         updated_best.append(best[i])</span>
+    <span class="c1">#     # else:</span>
+    <span class="c1">#     #     pass</span>
+    <span class="c1">#     #     # print(&quot;Eliminating &quot;, best[i])</span>
+    <span class="c1">#     if max(len(best_sku_matched[i]), len(best_items_matched[i])) &gt; maximum:</span>
+    <span class="c1">#         maximum = max(len(best_sku_matched[i]), len(best_items_matched[i]))</span>
+    <span class="c1">#         temp_best = best[i]</span>
+    <span class="c1">#</span>
+    <span class="c1"># if not updated_best:</span>
+    <span class="c1">#     if len(temp_best) &gt; 0:</span>
+    <span class="c1">#         # print(&quot;Choosing Sub optimal value &quot;,temp_best)</span>
+    <span class="c1">#         updated_best.append(temp_best)</span>
+
+    <span class="c1"># if not updated_best and not func == edit_distance:</span>
+    <span class="c1">#         # print(&quot;Switching to Edit Distance&quot;)</span>
+    <span class="c1">#         return getMatch(item,data,edit_distance)</span>
+        <span class="c1"># doc = nlp(sku)</span>
+
+    <span class="k">return</span> <span class="n">best</span><span class="p">,</span> <span class="n">best_sku_matched</span><span class="p">,</span> <span class="n">best_items_matched</span></div>
+
+
+
+
+<div class="viewcode-block" id="getLower"><a class="viewcode-back" href="../../src.html#src.SKU_Match.getLower">[docs]</a><span class="k">def</span> <span class="nf">getLower</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="getData"><a class="viewcode-back" href="../../src.html#src.SKU_Match.getData">[docs]</a><span class="k">def</span> <span class="nf">getData</span><span class="p">():</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">getCustomOrderFormDataFromFile</span><span class="p">(</span><span class="s2">&quot;orderform.csv&quot;</span><span class="p">)</span>
+
+    <span class="c1"># items = list(map(clean_item, items))</span>
+
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">cleanSKUData</span><span class="p">(</span><span class="n">importSKUDataFromFile</span><span class="p">(</span><span class="s1">&#39;auto.json&#39;</span><span class="p">))</span>
+
+    <span class="c1"># data = list(map(getLower, data))</span>
+
+    <span class="c1"># getCSV(list(data),&quot;newnew&quot;)</span>
+    <span class="c1"># print(data)</span>
+    <span class="c1"># with open(&quot;sku_data.json&quot;, &quot;w&quot;) as f:</span>
+
+    <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">items</span></div>
+
+
+<div class="viewcode-block" id="getSKUMatch"><a class="viewcode-back" href="../../src.html#src.SKU_Match.getSKUMatch">[docs]</a><span class="k">def</span> <span class="nf">getSKUMatch</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">items</span> <span class="o">=</span> <span class="n">getData</span><span class="p">()</span>
+
+    <span class="n">item</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">val</span> <span class="o">=</span> <span class="n">computeMatchWeight</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="computeMatchWeight"><a class="viewcode-back" href="../../src.html#src.SKU_Match.computeMatchWeight">[docs]</a><span class="k">def</span> <span class="nf">computeMatchWeight</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">item_words</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">sku_words</span> <span class="o">=</span> <span class="n">sku</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">getMatch</span><span class="p">()</span></div>
+<span class="c1"># for sku in data:</span>
+<span class="c1">#     pattern = &#39;u\&#39;&#39;+ sku + &#39;\&#39;&#39;</span>
+<span class="c1"># #     print(pattern)</span>
+<span class="c1">#     doc = nlp(sku)</span>
+<span class="c1">#     for token in doc:</span>
+<span class="c1">#         print(token.text,token.pos_, token.dep_)</span>
+<span class="c1">#     print(&quot;\n&quot;)</span>
+
+
+<div class="viewcode-block" id="curateData"><a class="viewcode-back" href="../../src.html#src.SKU_Match.curateData">[docs]</a><span class="k">def</span> <span class="nf">curateData</span><span class="p">():</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">items</span> <span class="o">=</span> <span class="n">getData</span><span class="p">()</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;data.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+    <span class="c1"># sku_words = set(item1.split())</span>
+    <span class="c1"># item_words = set(item2[0].split())</span>
+    <span class="c1"># if sku_words.intersection(item_words):</span>
+    <span class="c1">#     return True</span>
+    <span class="c1">#</span>
+    <span class="c1"># for word in item_words:</span>
+    <span class="c1">#     for inner_word in sku_words:</span>
+    <span class="c1">#         if fuzz.ratio(word,inner_word) &gt;= 90:</span>
+    <span class="c1">#             return True</span>
+    <span class="c1">#</span>
+    <span class="c1"># return False</span>
+    <span class="c1"># chars1 = set(word[0] for word in words1)</span>
+    <span class="c1"># chars2 = set(word[0] for word in words2)</span>
+    <span class="c1"># return chars1.intersection(chars2)</span>
+    <span class="c1"># common_words = words1.intersection(words2</span>
+    <span class="c1"># return flag</span>
+
+
+<div class="viewcode-block" id="load_english_words"><a class="viewcode-back" href="../../src.html#src.SKU_Match.load_english_words">[docs]</a><span class="k">def</span> <span class="nf">load_english_words</span><span class="p">():</span>
+    <span class="n">word_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;words.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;iso-8859-1&#39;</span><span class="p">)</span>
+
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">word_file</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">s</span></div>
+
+
+<div class="viewcode-block" id="extractWords"><a class="viewcode-back" href="../../src.html#src.SKU_Match.extractWords">[docs]</a><span class="k">def</span> <span class="nf">extractWords</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+            <span class="n">words</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">words</span></div>
+
+
+<div class="viewcode-block" id="minimalSimilarity"><a class="viewcode-back" href="../../src.html#src.SKU_Match.minimalSimilarity">[docs]</a><span class="k">def</span> <span class="nf">minimalSimilarity</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">have_similar_length</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">word1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">word2</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">l1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">word1</span><span class="p">))</span>
+    <span class="n">l2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">word2</span><span class="p">))</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">)</span>
+
+    <span class="n">chars1</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">word1</span><span class="p">)</span>
+    <span class="n">chars2</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">word2</span><span class="p">)</span>
+    <span class="n">chars</span> <span class="o">=</span> <span class="n">chars1</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">chars2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">chars</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">l</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="getAlternate"><a class="viewcode-back" href="../../src.html#src.SKU_Match.getAlternate">[docs]</a><span class="k">def</span> <span class="nf">getAlternate</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">similar</span><span class="p">):</span>
+    <span class="c1"># words = extractWords(data)</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+        <span class="n">magic_value</span> <span class="o">=</span> <span class="mf">0.9</span>
+
+        <span class="k">if</span> <span class="s1">&#39;milk&#39;</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="s1">&#39;johnson&#39;</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">sword</span> <span class="o">=</span> <span class="n">spell</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sword</span> <span class="o">==</span> <span class="n">word</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># printVector(words)</span>
+        <span class="n">similar_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">minimalSimilarity</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">word</span><span class="p">),</span> <span class="n">similar</span><span class="p">))</span>
+        <span class="n">similar_dicts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">minimalSimilarity</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">word</span><span class="p">),</span> <span class="nb">dict</span><span class="p">))</span>
+
+        <span class="c1"># if word == sword:</span>
+        <span class="c1">#     print(&quot;debug&quot;)</span>
+
+        <span class="n">match</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="n">sword</span> <span class="ow">in</span> <span class="n">similar_words</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">similar_words</span><span class="p">:</span>
+                <span class="c1"># match.append(sword)</span>
+                <span class="c1"># print(&quot;For item &quot;, item, &quot; the word &quot;, word, &quot; may be a misspelling of &quot;, sword)</span>
+                <span class="n">magic_value</span> <span class="o">-=</span> <span class="mf">0.3</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">sword</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">getDistance</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">sword</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># print(&quot;For item &quot;, item, &quot; the word &quot;, word, &quot; could be a misspelling of &quot;, sword)</span>
+                <span class="n">magic_value</span> <span class="o">-=</span> <span class="mf">0.1</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">sword</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">getDistance</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">sword</span><span class="p">)))</span>
+
+        <span class="n">magic_value</span> <span class="o">-=</span> <span class="mf">0.1</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">similar_words</span><span class="p">:</span>
+
+            <span class="n">min_dist</span> <span class="o">=</span> <span class="mf">1.5</span>
+            <span class="n">best_match</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">similar_words</span><span class="p">:</span>
+                <span class="n">dist</span> <span class="o">=</span> <span class="n">typo_distance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">word</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="n">min_dist</span><span class="p">:</span>
+                    <span class="n">min_dist</span> <span class="o">=</span> <span class="n">dist</span>
+                    <span class="n">best_match</span> <span class="o">=</span> <span class="n">s</span>
+
+            <span class="n">magic_value</span> <span class="o">-=</span> <span class="n">min_dist</span><span class="o">/</span><span class="mi">3</span>
+
+            <span class="k">if</span> <span class="n">best_match</span><span class="p">:</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">best_match</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">getDistance</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">best_match</span><span class="p">)))</span>
+                <span class="c1"># continue</span>
+
+        <span class="k">continue</span>
+
+        <span class="c1"># for m in match:</span>
+        <span class="c1">#     if not m == word:</span>
+        <span class="c1">#         print(&quot;For item &quot;, item, &quot; the word &quot;, word, &quot; could be a typo of &quot;, m)</span>
+        <span class="c1">#</span>
+        <span class="c1"># continue</span>
+        <span class="c1"># if word == &#39;sausags&#39; or word == &#39;stella&#39;:</span>
+        <span class="c1">#     print(&quot;debug&quot;)</span>
+        <span class="c1">#</span>
+        <span class="c1"># # print(word, &quot; is in consideration&quot;)</span>
+        <span class="c1"># # printVector(elligible_words)</span>
+        <span class="c1"># if (not word in similar_words) and (not word in similar_dicts):</span>
+        <span class="c1">#     if spell(word) in similar_words:</span>
+        <span class="c1">#         print(&quot;For item &quot;, item,&quot; the word &quot;, word, &quot; could be a misspelling of &quot;, spell(word))</span>
+        <span class="c1">#     else:</span>
+        <span class="c1">#         for w in similar_words:</span>
+        <span class="c1">#             dist = typo_distance(w,word)</span>
+        <span class="c1">#             if dist &gt; 0 and dist &lt;= 1.5 and have_similar_length(word, w):</span>
+        <span class="c1">#                 print(&quot;For item &quot;, item,&quot; the word &quot;, word, &quot; could be a misspelling of &quot;, w)</span>
+        <span class="c1">#                 break</span>
+        <span class="c1">#         print(&quot;For item &quot;, item, &quot; the word &quot;, word, &quot; could be a misspelling of &quot;, spell(word))</span>
+        <span class="c1"># continue</span>
+        <span class="c1"># if not word in elligible_words:</span>
+        <span class="c1">#     for w in elligible_words:</span>
+        <span class="c1">#         dist = typo_distance(w,word)</span>
+        <span class="c1">#         if dist &gt; 0 and dist &lt;= 1.5 and have_similar_length(word, w):</span>
+        <span class="c1">#             print(&quot;For item &quot;, item,&quot; the word &quot;, word, &quot; could be a misspelling of &quot;, w)</span>
+    <span class="k">return</span> <span class="n">output</span></div>
+
+
+<div class="viewcode-block" id="have_similar_length"><a class="viewcode-back" href="../../src.html#src.SKU_Match.have_similar_length">[docs]</a><span class="k">def</span> <span class="nf">have_similar_length</span><span class="p">(</span><span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">):</span>
+    <span class="n">l1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word1</span><span class="p">)</span>
+    <span class="n">l2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">word2</span><span class="p">)</span>
+    <span class="n">tolerance</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="p">(</span><span class="n">l1</span><span class="o">+</span><span class="n">l2</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">l1</span> <span class="o">-</span> <span class="n">l2</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">tolerance</span></div>
+
+
+<div class="viewcode-block" id="getTypos"><a class="viewcode-back" href="../../src.html#src.SKU_Match.getTypos">[docs]</a><span class="k">def</span> <span class="nf">getTypos</span><span class="p">():</span>
+    <span class="nb">all</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">data_bb</span> <span class="o">=</span> <span class="n">importBigBasketDataFromFile</span><span class="p">(</span><span class="s2">&quot;all_big_basket.json&quot;</span><span class="p">)</span>
+    <span class="n">data_bb</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">clean_item</span><span class="p">,</span> <span class="n">data_bb</span><span class="p">))</span>
+    <span class="n">data_ma</span> <span class="o">=</span> <span class="n">get_alcohol_data</span><span class="p">()</span>
+    <span class="n">data_ma</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">clean_item</span><span class="p">,</span> <span class="n">data_ma</span><span class="p">))</span>
+    <span class="n">data_dict</span> <span class="o">=</span> <span class="n">load_english_words</span><span class="p">()</span>
+    <span class="n">bad</span><span class="p">,</span> <span class="n">dont</span> <span class="o">=</span> <span class="n">getData</span><span class="p">()</span>
+    <span class="n">bad</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">clean_item</span><span class="p">,</span> <span class="n">bad</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;data received&quot;</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">bad</span><span class="p">)</span>
+    <span class="n">percentage</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">bad</span><span class="p">:</span>
+
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># if not &#39;protien&#39; in i:</span>
+        <span class="c1">#     continue</span>
+        <span class="n">data_bigb</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">is_eligible_pair</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">data_bb</span><span class="p">))</span>
+        <span class="n">data_bigb</span> <span class="o">=</span> <span class="n">extractWords</span><span class="p">(</span><span class="n">data_bigb</span><span class="p">)</span>
+        <span class="n">data_ma</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">is_eligible_pair</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">data_ma</span><span class="p">))</span>
+        <span class="n">data_ma</span> <span class="o">=</span> <span class="n">extractWords</span><span class="p">(</span><span class="n">data_ma</span><span class="p">)</span>
+        <span class="n">data_similar</span> <span class="o">=</span> <span class="n">data_ma</span> <span class="o">|</span> <span class="n">data_bigb</span>
+        <span class="c1"># print(&quot;debug&quot;)</span>
+        <span class="c1"># temp_data = temp_data | data</span>
+        <span class="c1"># printVector(temp_data)</span>
+        <span class="nb">input</span> <span class="o">=</span> <span class="n">getAlternate</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">data_similar</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">xyz</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">xyz</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="nb">all</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">count</span><span class="o">/</span><span class="n">total</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">percentage</span><span class="p">:</span>
+            <span class="n">percentage</span> <span class="o">=</span> <span class="mi">100</span><span class="o">*</span><span class="n">count</span><span class="o">/</span><span class="n">total</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">percentage</span><span class="p">,</span> <span class="s1">&#39; %&#39;</span><span class="p">)</span>
+
+    <span class="n">getTypoCSV</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">all</span><span class="p">))</span></div>
+    <span class="c1"># best = getMatch(i, temp_data)</span>
+    <span class="c1">#</span>
+    <span class="c1"># print(&quot;Item is&quot;,i)</span>
+    <span class="c1"># for match in best:</span>
+    <span class="c1">#     print(match)</span>
+    <span class="c1"># print(&quot;***&quot;)</span>
+
+
+<div class="viewcode-block" id="get_alcohol_data"><a class="viewcode-back" href="../../src.html#src.SKU_Match.get_alcohol_data">[docs]</a><span class="k">def</span> <span class="nf">get_alcohol_data</span><span class="p">():</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">import_madhuloka_data</span><span class="p">(</span><span class="s1">&#39;m.json&#39;</span><span class="p">)</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">items</span></div>
+
+<div class="viewcode-block" id="populate"><a class="viewcode-back" href="../../src.html#src.SKU_Match.populate">[docs]</a><span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="n">item</span><span class="p">,</span><span class="n">sku_matches</span><span class="p">,</span><span class="n">sku_list</span><span class="p">,</span><span class="n">sku_count</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="printPercentage"><a class="viewcode-back" href="../../src.html#src.SKU_Match.printPercentage">[docs]</a><span class="k">def</span> <span class="nf">printPercentage</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">total</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">count</span><span class="o">/</span><span class="n">total</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="s2">&quot; %&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="is_good_match"><a class="viewcode-back" href="../../src.html#src.SKU_Match.is_good_match">[docs]</a><span class="k">def</span> <span class="nf">is_good_match</span><span class="p">(</span><span class="n">sku_name</span><span class="p">,</span> <span class="n">itemname</span><span class="p">,</span> <span class="n">list1</span><span class="p">,</span> <span class="n">list2</span><span class="p">):</span>
+    <span class="c1"># try:</span>
+    <span class="c1">#     assert(len(list1) == len(list2))</span>
+    <span class="c1"># except:</span>
+    <span class="c1">#     print(&quot;******************************&quot;)</span>
+
+    <span class="c1"># count = 0</span>
+
+    <span class="n">words</span> <span class="o">=</span> <span class="n">itemname</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">words</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">sku_name</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">words</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">fuzz</span><span class="o">.</span><span class="n">ratio</span><span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">itemname</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">90</span>
+
+    <span class="n">count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">getDistance</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mf">0.85</span><span class="p">,</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">list1</span><span class="p">,</span><span class="n">list2</span><span class="p">)))))</span>
+
+    <span class="n">item_word_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">itemname</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+    <span class="n">sku_word_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sku_name</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">count</span><span class="o">/</span><span class="n">item_word_count</span> <span class="o">&gt;=</span> <span class="mf">0.75</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">if</span> <span class="n">count</span><span class="o">/</span><span class="n">sku_word_count</span> <span class="o">&gt;=</span> <span class="mf">0.75</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+
+    <span class="c1"># for i in range(len(list1)):</span>
+    <span class="c1">#     if getDistance(list1[i], list2[i]) &gt; 0.85:</span>
+    <span class="c1">#         count += 1</span>
+
+    <span class="n">flag</span> <span class="o">=</span> <span class="p">(</span><span class="n">count</span> <span class="o">&gt;=</span> <span class="mf">0.55</span><span class="o">*</span><span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sku_name</span><span class="o">.</span><span class="n">split</span><span class="p">()),</span> <span class="nb">len</span><span class="p">(</span><span class="n">itemname</span><span class="o">.</span><span class="n">split</span><span class="p">())))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">count</span> <span class="o">&gt;=</span> <span class="mf">0.70</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sku_name</span><span class="o">.</span><span class="n">split</span><span class="p">()),</span> <span class="nb">len</span><span class="p">(</span><span class="n">itemname</span><span class="o">.</span><span class="n">split</span><span class="p">())))</span>
+    <span class="c1"># if not flag:</span>
+    <span class="c1">#     print(sku_name,itemname)</span>
+    <span class="k">return</span> <span class="n">flag</span></div>
+
+    <span class="c1"># print(item1,&quot; &lt;-&gt; &quot;, item2, &quot; has typo &quot;, typo_distance(item1, item2))</span>
+
+
+<div class="viewcode-block" id="merge_list_of_lists"><a class="viewcode-back" href="../../src.html#src.SKU_Match.merge_list_of_lists">[docs]</a><span class="k">def</span> <span class="nf">merge_list_of_lists</span><span class="p">(</span><span class="n">list_of_lists</span><span class="p">):</span>
+    <span class="n">masterlist</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">list_of_lists</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+            <span class="n">masterlist</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">masterlist</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="get_better_from_best"><a class="viewcode-back" href="../../src.html#src.SKU_Match.get_better_from_best">[docs]</a><span class="k">def</span> <span class="nf">get_better_from_best</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">best</span><span class="p">,</span> <span class="n">best_sku_matched</span><span class="p">,</span> <span class="n">best_items_matched</span><span class="p">):</span>
+    <span class="c1"># print(&#39;*&#39;,item,best,best_sku_matched,best_items_matched)</span>
+    <span class="n">item_words</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">filter1</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">max_score</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># print(item)</span>
+    <span class="c1"># print(best_sku_matched)</span>
+
+    <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">best</span><span class="p">:</span>
+        <span class="c1"># match_words = match.split()</span>
+        <span class="n">match_words</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">_name</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">sku_matched</span> <span class="o">=</span> <span class="n">best_sku_matched</span><span class="p">[</span><span class="n">best</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">match</span><span class="p">)]</span>
+        <span class="n">sku_matched_extract</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">sku_matched</span><span class="p">]</span>
+        <span class="n">sku_matched</span> <span class="o">=</span> <span class="n">merge_list_of_lists</span><span class="p">(</span><span class="n">sku_matched</span><span class="p">)</span>
+        <span class="n">score1</span> <span class="o">=</span> <span class="n">get_sequential_score</span><span class="p">(</span><span class="n">sku_matched_extract</span><span class="p">,</span><span class="n">match_words</span><span class="p">)</span>
+        <span class="n">score2</span> <span class="o">=</span> <span class="n">get_brand_word_score</span><span class="p">(</span><span class="n">sku_matched</span><span class="p">,</span><span class="n">match_words</span><span class="p">)</span>
+        <span class="n">score3</span> <span class="o">=</span> <span class="n">get_root_word_score</span><span class="p">(</span><span class="n">sku_matched</span><span class="p">,</span><span class="n">match_words</span><span class="p">)</span>
+        <span class="n">score4</span> <span class="o">=</span> <span class="n">get_match_count_score</span><span class="p">(</span><span class="n">sku_matched</span><span class="p">,</span><span class="n">match_words</span><span class="p">)</span>
+        <span class="c1"># print(score1,score2,score3,score4)</span>
+        <span class="n">total_score</span> <span class="o">=</span> <span class="n">score1</span> <span class="o">+</span> <span class="n">score2</span> <span class="o">+</span> <span class="n">score3</span> <span class="o">+</span> <span class="n">score4</span>
+
+        <span class="c1"># prev_match_index = -1</span>
+        <span class="c1"># score = 0</span>
+        <span class="c1">#</span>
+        <span class="c1"># for i in range(len(item_words)):</span>
+        <span class="c1">#     if item_words[i] not in best_items_matched:</span>
+        <span class="c1">#         continue</span>
+        <span class="c1">#     matched_index = best_items_matched.index(item_words[i])</span>
+        <span class="c1">#     match_in_sku = sku_matched[matched_index][0]</span>
+        <span class="c1">#     check_index = match_words.index(match_in_sku)</span>
+        <span class="c1">#     if check_index &gt;= prev_match_index:</span>
+        <span class="c1">#         score += 1</span>
+        <span class="c1">#         prev_match_index = check_index</span>
+
+        <span class="k">if</span> <span class="n">total_score</span> <span class="o">&gt;=</span> <span class="n">max_score</span> <span class="o">*</span> <span class="mf">1.5</span><span class="p">:</span>
+            <span class="n">filter1</span> <span class="o">=</span> <span class="p">[(</span><span class="n">match</span><span class="p">,</span><span class="n">total_score</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">max_score</span><span class="o">*</span><span class="mf">0.8</span> <span class="o">&lt;=</span> <span class="n">total_score</span> <span class="o">&lt;</span> <span class="n">max_score</span><span class="o">*</span><span class="mf">1.5</span><span class="p">:</span>
+            <span class="n">filter1</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">match</span><span class="p">,</span><span class="n">total_score</span><span class="p">))</span>
+            <span class="n">filter1</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;=</span> <span class="mf">0.8</span> <span class="o">*</span> <span class="n">total_score</span> <span class="p">,</span><span class="n">filter1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">total_score</span> <span class="o">&lt;</span> <span class="n">max_score</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="n">max_score</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_score</span><span class="p">,</span><span class="n">total_score</span><span class="p">)</span>
+    <span class="c1"># filter1 = [f[0] for f in filter1]</span>
+    <span class="c1"># print(set(best).difference(set(filter1)))</span>
+    <span class="k">return</span> <span class="n">filter1</span></div>
+
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../src.html#src.SKU_Match.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+
+    <span class="n">all_items</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">all_missed</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">categories</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">category_count</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># alcohol()</span>
+    <span class="c1"># from sys import exit</span>
+    <span class="c1"># exit()</span>
+
+    <span class="c1"># debug()</span>
+    <span class="c1"># # from sys import exit</span>
+    <span class="c1"># exit()</span>
+
+    <span class="n">data</span><span class="p">,</span> <span class="n">orderform</span> <span class="o">=</span> <span class="n">getData</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">original_data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">data_user_sets</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">original_data_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">original_data</span><span class="p">:</span>
+        <span class="n">data_user_sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">set</span><span class="p">())</span>
+
+
+    <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">original_data</span><span class="p">:</span>
+        <span class="n">original_data_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sku</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># data_unique_users = []</span>
+    <span class="c1"># for t in original_data:</span>
+    <span class="c1">#     data.append(t[0])</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">original_data</span><span class="p">))</span>
+    <span class="n">original_data</span> <span class="o">=</span> <span class="p">[(</span><span class="n">clean_item</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">original_data</span><span class="p">]</span>
+    <span class="n">data_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">original_data</span><span class="p">]</span>
+    <span class="c1"># data = list(map(clean_item, data))</span>
+    <span class="c1"># print(len(data))</span>
+
+
+    <span class="n">count_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">original_data</span><span class="p">),</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="c1"># printVector(data)</span>
+    <span class="c1"># from sys import exit</span>
+    <span class="c1"># exit()</span>
+    <span class="c1"># data = set(data)</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">orderform</span><span class="p">:</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">v</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">))</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[(</span><span class="n">clean_item</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">items</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">))</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">total</span><span class="p">)</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">obtained</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+
+    <span class="n">item_index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">progress</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="mi">100</span><span class="p">:</span><span class="mi">500</span><span class="p">]):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">original_data</span>
+        <span class="n">item_index</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c1"># if &#39;vimal pan&#39; not in item:</span>
+        <span class="c1">#     continue</span>
+        <span class="n">userid</span> <span class="o">=</span> <span class="n">orderform</span><span class="p">[</span><span class="n">item_index</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">itemname</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">item_tag</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">is_eligible_pair</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">item</span><span class="p">),</span> <span class="n">data</span><span class="p">))</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">best</span><span class="p">,</span> <span class="n">best_sku_matched</span><span class="p">,</span> <span class="n">best_items_matched</span> <span class="o">=</span> <span class="n">getMatch</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="c1"># best = get_close_matches(item, data, n=2, cutoff=0.7)</span>
+        <span class="c1"># process.extract(, choices, processor=default_processor, scorer=default_scorer, limit=5)</span>
+        <span class="c1"># best = process.extract(item, data,scorer=fuzz.token_set_ratio, limit=2)</span>
+        <span class="c1"># best = [b[0] for b in best]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">best</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">all_matched</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">best</span><span class="p">)</span>
+
+        <span class="n">best</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">is_good_match</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">best_sku_matched</span><span class="p">[</span><span class="n">best</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">x</span><span class="p">)],</span> <span class="n">best_items_matched</span><span class="p">[</span><span class="n">best</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">x</span><span class="p">)]),</span> <span class="n">best</span><span class="p">))</span>
+
+        <span class="n">best</span> <span class="o">=</span> <span class="n">get_better_from_best</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">best</span><span class="p">,</span> <span class="n">best_sku_matched</span><span class="p">,</span> <span class="n">best_items_matched</span><span class="p">)</span>
+        <span class="c1"># missed = all_matched.intersection(set(best))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">best</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">miss</span> <span class="ow">in</span> <span class="n">all_matched</span><span class="p">:</span>
+                <span class="n">all_missed</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">item</span><span class="p">,</span> <span class="n">miss</span><span class="p">))</span>
+
+        <span class="c1"># best = is_best_match(item,best)</span>
+        <span class="k">if</span> <span class="n">best</span><span class="p">:</span>
+            <span class="n">obtained</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># print(&quot;Item: &quot;,item)</span>
+
+            <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">best</span><span class="p">:</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">data_names</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">match</span><span class="p">)</span>
+                <span class="n">count_arr</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">data_user_sets</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">userid</span><span class="p">)</span>
+                <span class="c1"># print(match)</span>
+                <span class="n">all_items</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">item</span><span class="p">,</span> <span class="n">original_data</span><span class="p">[</span><span class="n">index</span><span class="p">],</span><span class="n">match</span><span class="p">))</span>
+                <span class="n">category</span> <span class="o">=</span> <span class="n">original_data</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="n">category</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">categories</span><span class="p">:</span>
+                    <span class="n">categories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
+                    <span class="n">category_count</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+                <span class="n">c_index</span> <span class="o">=</span> <span class="n">categories</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
+                <span class="n">category_count</span><span class="p">[</span><span class="n">c_index</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+
+        <span class="k">if</span> <span class="n">count</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+            <span class="n">printPercentage</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">total</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Time taken till now&quot;</span><span class="p">,</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+
+        <span class="c1"># if obtained == 100:</span>
+        <span class="c1">#     break</span>
+
+
+        <span class="c1"># print(&quot;Obtained&quot;, obtained)</span>
+
+    <span class="c1"># all_items = []</span>
+    <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">data_user_sets</span><span class="p">[</span><span class="mi">60</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">data_user_sets</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">data_user_sets</span><span class="p">]</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Obtained&quot;</span><span class="p">,</span> <span class="n">obtained</span><span class="p">)</span>
+    <span class="n">getCSV</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">original_data_names</span><span class="p">,</span> <span class="n">count_arr</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span><span class="n">data_user_sets</span><span class="p">)),</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;check.csv&quot;</span><span class="p">)</span>
+    <span class="c1"># getCSV(all_missed, filename=&quot;check1.csv&quot;)</span>
+    <span class="n">getCSV</span><span class="p">(</span><span class="n">all_items</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;check2.csv&quot;</span><span class="p">)</span>
+    <span class="n">getCSV</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">categories</span><span class="p">,</span><span class="n">category_count</span><span class="p">)),</span> <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;check3.csv&quot;</span><span class="p">)</span></div>
+    <span class="c1"># # print(match)</span>
+
+    <span class="c1"># print(&quot;***&quot;)</span>
+
+<span class="c1">#</span>
+<span class="c1"># data,items = getData()</span>
+<span class="c1"># print(1)</span>
+<span class="c1"># data</span>
+
+<span class="c1"># items = getData()</span>
+<span class="c1"># cProfile.run(&#39;test_cluster_popularity()&#39;,&#39;profiler&#39;)</span>
+
+<span class="c1">#</span>
+<span class="c1"># if __name__ == &quot;__main__&quot;:</span>
+<span class="c1">#     cProfile.run(&#39;main()&#39;,&#39;profiler&#39;)</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Chai</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Achal Agarwal, Shovik Ghosh.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

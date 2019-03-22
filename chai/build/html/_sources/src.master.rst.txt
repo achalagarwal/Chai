@@ -1,0 +1,30 @@
+src.master package
+==================
+
+Submodules
+----------
+
+src.master.Match module
+-----------------------
+
+.. automodule:: src.master.Match
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+src.master.Tagger module
+------------------------
+
+.. automodule:: src.master.Tagger
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.master
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,44 @@
+src package
+===========
+
+Subpackages
+-----------
+
+.. toctree::
+
+    src.Utils
+    src.cluster
+    src.corpus
+    src.expression
+    src.master
+    src.singletons
+    src.temp
+    src.wrappers
+
+Submodules
+----------
+
+src.SKU\_Match module
+---------------------
+
+.. automodule:: src.SKU_Match
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+src.self\_test module
+---------------------
+
+.. automodule:: src.self_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src
+    :members:
+    :undoc-members:
+    :show-inheritance:

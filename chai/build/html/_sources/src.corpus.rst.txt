@@ -1,0 +1,30 @@
+src.corpus package
+==================
+
+Submodules
+----------
+
+src.corpus.Corpus module
+------------------------
+
+.. automodule:: src.corpus.Corpus
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+src.corpus.Corpus\_Test module
+------------------------------
+
+.. automodule:: src.corpus.Corpus_Test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.corpus
+    :members:
+    :undoc-members:
+    :show-inheritance:

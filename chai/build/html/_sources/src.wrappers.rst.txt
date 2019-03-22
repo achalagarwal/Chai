@@ -1,0 +1,30 @@
+src.wrappers package
+====================
+
+Submodules
+----------
+
+src.wrappers.alcohol\_limit module
+----------------------------------
+
+.. automodule:: src.wrappers.alcohol_limit
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+src.wrappers.autocomplete module
+--------------------------------
+
+.. automodule:: src.wrappers.autocomplete
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.wrappers
+    :members:
+    :undoc-members:
+    :show-inheritance:

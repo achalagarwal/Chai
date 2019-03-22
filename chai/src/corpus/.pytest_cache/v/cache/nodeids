@@ -1,0 +1,5 @@
+[
+  "Corpus_Test.py::test_whether_match_term_caches_information",
+  "Corpus_Test.py::test_whether_add_term_to_corpus_works_as_intended",
+  "Corpus_Test.py::test_whether_add_leader_works_as_intended"
+]

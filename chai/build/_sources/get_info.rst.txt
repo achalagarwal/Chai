@@ -1,0 +1,69 @@
+get\_info package
+=================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    get_info.migrations
+
+Submodules
+----------
+
+get\_info.admin module
+----------------------
+
+.. automodule:: get_info.admin
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+get\_info.apps module
+---------------------
+
+.. automodule:: get_info.apps
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+get\_info.models module
+-----------------------
+
+.. automodule:: get_info.models
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+get\_info.tests module
+----------------------
+
+.. automodule:: get_info.tests
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+get\_info.urls module
+---------------------
+
+.. automodule:: get_info.urls
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+get\_info.views module
+----------------------
+
+.. automodule:: get_info.views
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: get_info
+    :members:
+    :undoc-members:
+    :show-inheritance:

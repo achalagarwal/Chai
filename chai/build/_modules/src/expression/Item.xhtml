@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.expression.Item</title>
+    <link rel="stylesheet" href="../../../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for src.expression.Item</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">src.Utils.sku_utils</span> <span class="k">import</span> <span class="n">clean_item_with_meta</span>
+<span class="kn">from</span> <span class="nn">src.cluster</span> <span class="k">import</span> <span class="n">Cluster</span>
+
+
+<div class="viewcode-block" id="Item"><a class="viewcode-back" href="../../../src.expression.xhtml#src.expression.Item.Item">[docs]</a><span class="k">class</span> <span class="nc">Item</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="s1">&#39;Test&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;Test&#39;</span><span class="p">,</span> <span class="n">subtag</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">dzer_id</span><span class="o">=</span><span class="s1">&#39;Test&#39;</span><span class="p">):</span>
+
+        <span class="c1"># stores name of the item</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="c1"># stores the subtag of the item</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subtag</span> <span class="o">=</span> <span class="n">subtag</span>
+
+        <span class="c1"># stores the subtag of the item</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">=</span> <span class="n">quantity</span>
+
+        <span class="c1"># stores the subtag of the item</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dzer_id</span> <span class="o">=</span> <span class="n">dzer_id</span>
+
+        <span class="c1"># stores the subtag of the item</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">user_id</span>
+
+        <span class="c1"># stores the cleaned name and the meta data of the item</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clean_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta_data</span> <span class="o">=</span> <span class="n">clean_item_with_meta</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c1"># stores the list of terms in the item</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">clean_name</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+        <span class="c1"># maps term to a cluster</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">term_cluster</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># maps cluster to a list of terms (ordered)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cluster_terms</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="Item.add_cluster"><a class="viewcode-back" href="../../../src.expression.xhtml#src.expression.Item.Item.add_cluster">[docs]</a>    <span class="k">def</span> <span class="nf">add_cluster</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">cluster</span><span class="p">):</span>
+
+        <span class="k">assert</span> <span class="n">term</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">terms</span>
+        <span class="c1"># assert type(cluster) is Cluster.Cluster</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">term_cluster</span><span class="p">[</span><span class="n">term</span><span class="p">]</span> <span class="o">=</span> <span class="n">cluster</span>
+
+        <span class="n">cluster_terms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster_terms</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">cluster</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">cluster_terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cluster_terms</span><span class="p">[</span><span class="n">cluster</span><span class="p">]</span> <span class="o">=</span> <span class="n">cluster_terms</span>
+
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Item.get_subtag"><a class="viewcode-back" href="../../../src.expression.xhtml#src.expression.Item.Item.get_subtag">[docs]</a>    <span class="k">def</span> <span class="nf">get_subtag</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">subtag</span></div>
+
+<div class="viewcode-block" id="Item.get_name"><a class="viewcode-back" href="../../../src.expression.xhtml#src.expression.Item.Item.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div></div>
+</pre></div>
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <title>wrappers</title>
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="wrappers">
+<h1>wrappers</h1>
+<div class="section" id="submodules">
+<h2>Submodules</h2>
+</div>
+<div class="section" id="module-src.wrappers.alcohol_limit">
+<span id="alcohol-limit"></span><h2>Alcohol Limit</h2>
+<dl class="class">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimit">
+<em class="property">class </em><code class="descclassname">src.wrappers.alcohol_limit.</code><code class="descname">AlcoholLimit</code><span class="sig-paren">(</span><em>strategy</em>, <em>matcher</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimit"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a><span class="link-target"> [https://docs.python.org/3/library/functions.html#object]</span></p>
+<dl class="method">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimit.check_order">
+<code class="descname">check_order</code><span class="sig-paren">(</span><em>order</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimit.check_order"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimit.get_ml">
+<code class="descname">get_ml</code><span class="sig-paren">(</span><em>quantity</em>, <em>metric</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimit.get_ml"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimit.get_order_details">
+<code class="descname">get_order_details</code><span class="sig-paren">(</span><em>order</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimit.get_order_details"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimit.update_default_values">
+<code class="descname">update_default_values</code><span class="sig-paren">(</span><em>alcohol_tag</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimit.update_default_values"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimit.update_values">
+<code class="descname">update_values</code><span class="sig-paren">(</span><em>tag</em>, <em>lower</em>, <em>upper</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimit.update_values"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimitBangalore">
+<em class="property">class </em><code class="descclassname">src.wrappers.alcohol_limit.</code><code class="descname">AlcoholLimitBangalore</code><span class="sig-paren">(</span><em>matcher</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimitBangalore"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.wrappers.alcohol_limit.AlcoholLimit" title="src.wrappers.alcohol_limit.AlcoholLimit"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.wrappers.alcohol_limit.AlcoholLimit</span></code></a></p>
+<dl class="method">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimitBangalore.get_rule_details">
+<code class="descname">get_rule_details</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimitBangalore.get_rule_details"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimitBangalore.hit_item">
+<code class="descname">hit_item</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimitBangalore.hit_item"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimitGurgaon">
+<em class="property">class </em><code class="descclassname">src.wrappers.alcohol_limit.</code><code class="descname">AlcoholLimitGurgaon</code><span class="sig-paren">(</span><em>matcher</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimitGurgaon"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.wrappers.alcohol_limit.AlcoholLimit" title="src.wrappers.alcohol_limit.AlcoholLimit"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.wrappers.alcohol_limit.AlcoholLimit</span></code></a></p>
+<dl class="method">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimitGurgaon.get_rule_details">
+<code class="descname">get_rule_details</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimitGurgaon.get_rule_details"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimitGurgaon.hit_item">
+<code class="descname">hit_item</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimitGurgaon.hit_item"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimitPune">
+<em class="property">class </em><code class="descclassname">src.wrappers.alcohol_limit.</code><code class="descname">AlcoholLimitPune</code><span class="sig-paren">(</span><em>matcher</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimitPune"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.wrappers.alcohol_limit.AlcoholLimit" title="src.wrappers.alcohol_limit.AlcoholLimit"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.wrappers.alcohol_limit.AlcoholLimit</span></code></a></p>
+<dl class="method">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimitPune.get_rule_details">
+<code class="descname">get_rule_details</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimitPune.get_rule_details"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.wrappers.alcohol_limit.AlcoholLimitPune.hit_item">
+<code class="descname">hit_item</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#AlcoholLimitPune.hit_item"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="src.wrappers.alcohol_limit.get_strategy">
+<code class="descclassname">src.wrappers.alcohol_limit.</code><code class="descname">get_strategy</code><span class="sig-paren">(</span><em>city_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#get_strategy"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.wrappers.alcohol_limit.hit_order">
+<code class="descclassname">src.wrappers.alcohol_limit.</code><code class="descname">hit_order</code><span class="sig-paren">(</span><em>order</em>, <em>city_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/alcohol_limit.xhtml#hit_order"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.wrappers.autocomplete">
+<span id="autocomplete"></span><h2>AutoComplete</h2>
+<dl class="class">
+<dt id="src.wrappers.autocomplete.AutoComplete">
+<em class="property">class </em><code class="descclassname">src.wrappers.autocomplete.</code><code class="descname">AutoComplete</code><span class="sig-paren">(</span><em>match_book</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/autocomplete.xhtml#AutoComplete"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a><span class="link-target"> [https://docs.python.org/3/library/functions.html#object]</span></p>
+<dl class="method">
+<dt id="src.wrappers.autocomplete.AutoComplete.get_cached_results">
+<code class="descname">get_cached_results</code><span class="sig-paren">(</span><em>query</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/autocomplete.xhtml#AutoComplete.get_cached_results"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="src.wrappers.autocomplete.AutoComplete.get_cluster_match_score">
+<em class="property">static </em><code class="descname">get_cluster_match_score</code><span class="sig-paren">(</span><em>sku</em>, <em>query_clusters</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/autocomplete.xhtml#AutoComplete.get_cluster_match_score"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="src.wrappers.autocomplete.AutoComplete.get_meta_match_score">
+<em class="property">static </em><code class="descname">get_meta_match_score</code><span class="sig-paren">(</span><em>query</em>, <em>sku</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/autocomplete.xhtml#AutoComplete.get_meta_match_score"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.wrappers.autocomplete.AutoComplete.hit_query">
+<code class="descname">hit_query</code><span class="sig-paren">(</span><em>query</em>, <em>limit=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/wrappers/autocomplete.xhtml#AutoComplete.hit_query"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.wrappers">
+<span id="module-contents"></span><h2>Module contents</h2>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

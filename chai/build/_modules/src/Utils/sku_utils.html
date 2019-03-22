@@ -1,0 +1,381 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>src.Utils.sku_utils &#8212; Chai Official documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.Utils.sku_utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">fuzzywuzzy</span> <span class="k">import</span> <span class="n">fuzz</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="k">import</span> <span class="n">maxsize</span>
+
+
+<div class="viewcode-block" id="is_valid_word"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.is_valid_word">[docs]</a><span class="k">def</span> <span class="nf">is_valid_word</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">word</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">char</span><span class="p">)</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">is_invalid_word</span><span class="p">(</span><span class="n">word</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="clean_words"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.clean_words">[docs]</a><span class="k">def</span> <span class="nf">clean_words</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+    <span class="n">cleaned_words</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="ow">not</span> <span class="n">is_invalid_word</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">words</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">cleaned_words</span></div>
+
+
+<div class="viewcode-block" id="is_invalid_word"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.is_invalid_word">[docs]</a><span class="k">def</span> <span class="nf">is_invalid_word</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+
+    <span class="n">num_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="s2">&quot;two&quot;</span><span class="p">,</span> <span class="s2">&quot;three&quot;</span><span class="p">,</span> <span class="s2">&quot;four&quot;</span><span class="p">,</span> <span class="s2">&quot;five&quot;</span><span class="p">,</span> <span class="s2">&quot;hlf&quot;</span><span class="p">,</span> <span class="s2">&quot;six&quot;</span><span class="p">,</span> <span class="s2">&quot;seven&quot;</span><span class="p">,</span> <span class="s2">&quot;some&quot;</span><span class="p">,</span> <span class="s2">&quot;eight&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;nine&quot;</span><span class="p">,</span> <span class="s2">&quot;ten&quot;</span><span class="p">,</span> <span class="s2">&quot;twenty&quot;</span><span class="p">,</span> <span class="s2">&quot;thirty&quot;</span><span class="p">,</span> <span class="s2">&quot;fourty&quot;</span><span class="p">,</span> <span class="s2">&quot;fifty&quot;</span><span class="p">,</span> <span class="s2">&quot;hundred&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;full&quot;</span><span class="p">,</span> <span class="s2">&quot;half&quot;</span><span class="p">,</span> <span class="s2">&quot;quarter&quot;</span><span class="p">]</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;kg&quot;</span><span class="p">,</span> <span class="s2">&quot;KG&quot;</span><span class="p">,</span> <span class="s2">&quot;gm&quot;</span><span class="p">,</span> <span class="s2">&quot;grm&quot;</span><span class="p">,</span> <span class="s2">&quot;kilo&quot;</span><span class="p">,</span> <span class="s2">&quot;gram&quot;</span><span class="p">,</span> <span class="s2">&quot;kilos&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;pack&quot;</span><span class="p">,</span> <span class="s2">&quot;bottled&quot;</span><span class="p">,</span> <span class="s2">&quot;crate&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;basket&quot;</span><span class="p">,</span> <span class="s2">&quot;litre&quot;</span><span class="p">,</span> <span class="s2">&quot;cans&quot;</span> <span class="s2">&quot;carton&quot;</span><span class="p">,</span> <span class="s2">&quot;tablet&quot;</span><span class="p">,</span> <span class="s2">&quot;scoop&quot;</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="s2">&quot;bunch&quot;</span><span class="p">,</span> <span class="s2">&quot;portion&quot;</span><span class="p">,</span> <span class="s2">&quot;case&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;portion&quot;</span><span class="p">,</span> <span class="s2">&quot;liter&quot;</span><span class="p">,</span> <span class="s2">&quot;mg&quot;</span><span class="p">,</span> <span class="s2">&quot;ml&quot;</span><span class="p">,</span> <span class="s2">&quot;cm&quot;</span><span class="p">,</span> <span class="s2">&quot;pc&quot;</span><span class="p">,</span> <span class="s2">&quot;no&quot;</span><span class="p">,</span> <span class="s2">&quot;dozen&quot;</span><span class="p">,</span> <span class="s2">&quot;peice&quot;</span><span class="p">,</span> <span class="s2">&quot;piece&quot;</span><span class="p">,</span> <span class="s2">&quot;box&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;boxes&quot;</span><span class="p">,</span> <span class="s2">&quot;ltr&quot;</span><span class="p">,</span> <span class="s2">&quot;bottle&quot;</span><span class="p">,</span> <span class="s2">&quot;Rs&quot;</span><span class="p">,</span> <span class="s2">&quot;packet&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;slice&quot;</span><span class="p">,</span> <span class="s2">&quot;pkt&quot;</span><span class="p">,</span> <span class="s2">&quot;strip&quot;</span><span class="p">,</span> <span class="s2">&quot;percent&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;metre&quot;</span><span class="p">,</span> <span class="s2">&quot;meter&quot;</span><span class="p">,</span> <span class="s2">&quot;inches&quot;</span><span class="p">,</span> <span class="s2">&quot;inch&quot;</span><span class="p">,</span> <span class="s2">&quot;%&quot;</span><span class="p">,</span> <span class="s2">&quot;feet&quot;</span><span class="p">,</span> <span class="s2">&quot;ft&quot;</span><span class="p">,</span> <span class="s2">&quot;pack&quot;</span><span class="p">,</span> <span class="s2">&quot;plate&quot;</span><span class="p">,</span> <span class="s2">&quot;kgs&quot;</span><span class="p">,</span> <span class="s2">&quot;KGs&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;gms&quot;</span><span class="p">,</span> <span class="s2">&quot;grms&quot;</span><span class="p">,</span> <span class="s2">&quot;grams&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;packs&quot;</span><span class="p">,</span> <span class="s2">&quot;baskets&quot;</span><span class="p">,</span> <span class="s2">&quot;litres&quot;</span><span class="p">,</span> <span class="s2">&quot;cartons&quot;</span><span class="p">,</span> <span class="s2">&quot;tablets&quot;</span><span class="p">,</span> <span class="s2">&quot;portions&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;cases&quot;</span><span class="p">,</span> <span class="s2">&quot;liters&quot;</span><span class="p">,</span> <span class="s2">&quot;mgs&quot;</span><span class="p">,</span> <span class="s2">&quot;cms&quot;</span><span class="p">,</span> <span class="s2">&quot;pcs&quot;</span><span class="p">,</span> <span class="s2">&quot;nos&quot;</span><span class="p">,</span> <span class="s2">&quot;dozens&quot;</span><span class="p">,</span> <span class="s2">&quot;peices&quot;</span><span class="p">,</span> <span class="s2">&quot;boxes&quot;</span><span class="p">,</span> <span class="s2">&quot;ltrs&quot;</span><span class="p">,</span> <span class="s2">&quot;pint&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;pints&quot;</span><span class="p">,</span> <span class="s2">&quot;bottles&quot;</span><span class="p">,</span> <span class="s2">&quot;bags&quot;</span><span class="p">,</span> <span class="s2">&quot;packets&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;slices&quot;</span><span class="p">,</span> <span class="s2">&quot;pkts&quot;</span><span class="p">,</span> <span class="s2">&quot;strips&quot;</span><span class="p">,</span> <span class="s2">&quot;qty&quot;</span><span class="p">,</span> <span class="s2">&quot;metres&quot;</span><span class="p">,</span> <span class="s2">&quot;meters&quot;</span><span class="p">,</span>
+             <span class="s2">&quot;inches&quot;</span><span class="p">,</span> <span class="s2">&quot;%&quot;</span><span class="p">,</span> <span class="s2">&quot;fts&quot;</span><span class="p">,</span> <span class="s2">&quot;packs&quot;</span><span class="p">,</span> <span class="s2">&quot;plates&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">,</span> <span class="s2">&quot;magnum&quot;</span><span class="p">]</span>
+    <span class="n">probable_other</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;the&quot;</span><span class="p">,</span> <span class="s2">&quot;to&quot;</span><span class="p">,</span> <span class="s2">&quot;up&quot;</span><span class="p">,</span> <span class="s2">&quot;from&quot;</span><span class="p">,</span>
+                      <span class="s2">&quot;for&quot;</span><span class="p">,</span> <span class="s2">&quot;is&quot;</span><span class="p">,</span> <span class="s2">&quot;there&quot;</span><span class="p">,</span> <span class="s2">&quot;and&quot;</span><span class="p">,</span> <span class="s2">&quot;wid&quot;</span><span class="p">,</span> <span class="s2">&quot;n&quot;</span><span class="p">]</span>
+    <span class="n">joining_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;no&quot;</span><span class="p">,</span> <span class="s2">&quot;without&quot;</span><span class="p">,</span> <span class="s2">&quot;(&quot;</span><span class="p">,</span> <span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;not&quot;</span><span class="p">,</span> <span class="s2">&quot;or&quot;</span><span class="p">,</span> <span class="s2">&quot;with&quot;</span><span class="p">]</span>
+
+    <span class="n">flag</span> <span class="o">=</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">num_words</span> <span class="ow">or</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">probable_other</span> <span class="ow">or</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">joining_words</span> <span class="ow">or</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">units</span>
+
+    <span class="k">return</span> <span class="n">word</span> <span class="ow">in</span> <span class="s1">&#39;pieces&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="ow">in</span> <span class="s1">&#39;kilos&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="ow">in</span> <span class="s1">&#39;kgs&#39;</span> \
+           <span class="ow">or</span> <span class="n">word</span> <span class="ow">in</span> <span class="s1">&#39;rupees&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="ow">in</span> <span class="s1">&#39;rs&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="ow">in</span> <span class="s1">&#39;packets&#39;</span>\
+           <span class="ow">or</span> <span class="n">word</span> <span class="ow">in</span> <span class="s1">&#39;dozens&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="ow">in</span> <span class="s1">&#39;ltrs&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="ow">in</span> <span class="s1">&#39;litres&#39;</span> \
+           <span class="ow">or</span> <span class="s1">&#39;gms&#39;</span> <span class="o">==</span> <span class="n">word</span> <span class="ow">or</span> <span class="n">word</span> <span class="ow">in</span> <span class="s1">&#39;mls&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="ow">in</span> <span class="s1">&#39;pcs&#39;</span> <span class="ow">or</span> <span class="s1">&#39;litre&#39;</span> <span class="o">==</span> <span class="n">word</span> <span class="ow">or</span> <span class="n">word</span> <span class="ow">in</span> <span class="s1">&#39;grams&#39;</span>\
+           <span class="ow">or</span> <span class="n">flag</span></div>
+
+
+<div class="viewcode-block" id="remove_special_symbols"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.remove_special_symbols">[docs]</a><span class="k">def</span> <span class="nf">remove_special_symbols</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">string</span></div>
+
+
+<div class="viewcode-block" id="clean_word"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.clean_word">[docs]</a><span class="k">def</span> <span class="nf">clean_word</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">cleaned_word</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="n">flag</span><span class="p">:</span>
+            <span class="n">cleaned_word</span><span class="o">+=</span><span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">flag</span><span class="p">:</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">cleaned_word</span><span class="o">+=</span><span class="s1">&#39; &#39;</span><span class="o">+</span><span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">())</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">flag</span><span class="p">:</span>
+            <span class="n">cleaned_word</span> <span class="o">+=</span> <span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">())</span> <span class="ow">and</span> <span class="n">flag</span><span class="p">:</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">cleaned_word</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">word</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">cleaned_word</span></div>
+
+
+<div class="viewcode-block" id="clean_item_with_meta"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.clean_item_with_meta">[docs]</a><span class="k">def</span> <span class="nf">clean_item_with_meta</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">remove_special_symbols</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">clean_word</span><span class="p">,</span> <span class="n">words</span><span class="p">))</span>
+    <span class="n">meta_words</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">term_words</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">is_valid_word</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+            <span class="n">term_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">meta_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+
+    <span class="c1"># meta_words = list(filter(lambda x: not is_valid_word(x), words))</span>
+    <span class="c1"># term_words = list(filter(is_valid_word, words))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">term_words</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">separate_meta_data</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">meta_words</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="clean_item"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.clean_item">[docs]</a><span class="k">def</span> <span class="nf">clean_item</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">remove_special_symbols</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">clean_word</span><span class="p">,</span> <span class="n">words</span><span class="p">))</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">is_valid_word</span><span class="p">,</span> <span class="n">words</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">words</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="get_linear_span"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.get_linear_span">[docs]</a><span class="k">def</span> <span class="nf">get_linear_span</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+    <span class="n">span</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">)):</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="n">i</span><span class="p">:]</span>
+
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">temp</span><span class="p">)):</span>
+            <span class="n">span</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">span</span></div>
+
+
+<div class="viewcode-block" id="get_min_item_edit_distance"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.get_min_item_edit_distance">[docs]</a><span class="k">def</span> <span class="nf">get_min_item_edit_distance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">span</span><span class="p">):</span>
+    <span class="n">item_words</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">item_words_matched</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">sku_words_matched</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">item_words</span><span class="p">:</span>
+        <span class="n">tolerance</span> <span class="o">=</span> <span class="mf">0.014</span>
+        <span class="n">word_distance</span><span class="p">,</span> <span class="n">best_vec</span> <span class="o">=</span> <span class="n">get_min_word_edit_distance</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">span</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">word_distance</span> <span class="o">&lt;</span> <span class="n">tolerance</span><span class="p">:</span>
+
+            <span class="n">dist</span> <span class="o">+=</span> <span class="n">word_distance</span>
+            <span class="n">item_words_matched</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+            <span class="n">sku_words_matched</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get_str_from_vec</span><span class="p">(</span><span class="n">best_vec</span><span class="p">))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">dist</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">dist</span><span class="p">,</span> <span class="n">item_words_matched</span><span class="p">,</span> <span class="n">sku_words_matched</span></div>
+
+
+<div class="viewcode-block" id="get_min_word_edit_distance"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.get_min_word_edit_distance">[docs]</a><span class="k">def</span> <span class="nf">get_min_word_edit_distance</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">span</span><span class="p">):</span>
+    <span class="n">min_dist</span> <span class="o">=</span> <span class="n">maxsize</span>
+    <span class="n">best_vec</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">vec</span> <span class="ow">in</span> <span class="n">span</span><span class="p">:</span>
+        <span class="n">computed_distance</span> <span class="o">=</span> <span class="n">compute_edit_distance</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">vec</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">computed_distance</span> <span class="o">&lt;</span> <span class="n">min_dist</span><span class="p">:</span>
+            <span class="n">min_dist</span> <span class="o">=</span> <span class="n">computed_distance</span>
+            <span class="n">best_vec</span> <span class="o">=</span> <span class="n">vec</span>
+
+    <span class="k">return</span> <span class="n">min_dist</span><span class="p">,</span> <span class="n">best_vec</span></div>
+
+
+<div class="viewcode-block" id="get_str_from_vec"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.get_str_from_vec">[docs]</a><span class="k">def</span> <span class="nf">get_str_from_vec</span><span class="p">(</span><span class="n">vec</span><span class="p">):</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">vec</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="compute_edit_distance"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.compute_edit_distance">[docs]</a><span class="k">def</span> <span class="nf">compute_edit_distance</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">vec</span><span class="p">):</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">get_str_from_vec</span><span class="p">(</span><span class="n">vec</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">fuzz</span><span class="o">.</span><span class="n">ratio</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">string</span><span class="p">))</span></div>
+    <span class="c1"># return 1/(0.1+func(word, str))</span>
+    <span class="c1"># return (typo_distance(word, str) + edit_distance(word, str)) / 2</span>
+    <span class="c1"># # return min(edit_distance(word,str),typo_distance(word,str))</span>
+
+
+<div class="viewcode-block" id="helper_eligible_pair"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.helper_eligible_pair">[docs]</a><span class="k">def</span> <span class="nf">helper_eligible_pair</span><span class="p">(</span><span class="n">item1</span><span class="p">,</span> <span class="n">item2</span><span class="p">):</span>
+    <span class="n">sku_words</span> <span class="o">=</span> <span class="n">item1</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">item_words</span> <span class="o">=</span> <span class="n">item2</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">sku_words</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">item_words</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="n">sku_chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sku_words</span><span class="p">))</span>
+    <span class="n">item_chars</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item_words</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i_char</span> <span class="ow">in</span> <span class="n">item_chars</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">s_char</span> <span class="ow">in</span> <span class="n">sku_chars</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">i_char</span> <span class="o">==</span> <span class="n">s_char</span><span class="p">:</span>
+                <span class="c1"># if distance.get_jaro_distance(item_words[item_chars.index(i_char)], sku_words[sku_chars.index(s_char)],winkler = False, scaling=0.1) &gt; 90:</span>
+                <span class="c1">#     return True</span>
+                <span class="k">if</span> <span class="n">fuzz</span><span class="o">.</span><span class="n">ratio</span><span class="p">(</span><span class="n">item_words</span><span class="p">[</span><span class="n">item_chars</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">i_char</span><span class="p">)],</span> <span class="n">sku_words</span><span class="p">[</span><span class="n">sku_chars</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">s_char</span><span class="p">)])</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="c1"># sku_chars = list(map(lambda x: x[1], sku_words))</span>
+    <span class="c1"># item_chars = list(map(lambda x: x[1], item_words))</span>
+    <span class="c1">#</span>
+    <span class="c1"># for i_char in item_chars:</span>
+    <span class="c1">#     for s_char in sku_chars:</span>
+    <span class="c1">#         if i_char == s_char:</span>
+    <span class="c1">#             if fuzz.ratio(item_words[item_chars.index(i_char)],sku_words[sku_chars.index(s_char)]) &gt;= 90:</span>
+    <span class="c1">#                 return True</span>
+    <span class="c1">#</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="c1"># for word in item_words:</span>
+    <span class="c1">#     for inner_word in sku_words:</span>
+    <span class="c1">#         if fuzz.ratio(word,inner_word) &gt;= 90:</span>
+    <span class="c1">#             return True</span>
+    <span class="c1">#</span>
+    <span class="c1"># return False</span>
+
+
+<span class="c1"># sku = item1</span>
+<span class="c1"># item = item2</span>
+
+<div class="viewcode-block" id="flipper"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.flipper">[docs]</a><span class="k">def</span> <span class="nf">flipper</span><span class="p">(</span><span class="n">flag</span><span class="p">,</span> <span class="n">option1</span><span class="p">,</span> <span class="n">option2</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">flag</span> <span class="o">==</span> <span class="n">option1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">option2</span>
+    <span class="k">if</span> <span class="n">flag</span> <span class="o">==</span> <span class="n">option2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">option1</span>
+
+    <span class="k">raise</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="s2">&quot;The flag must take either of two values&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="separate_meta_data"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.separate_meta_data">[docs]</a><span class="k">def</span> <span class="nf">separate_meta_data</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+
+    <span class="n">status</span> <span class="o">=</span> <span class="s1">&#39;ALPHABET&#39;</span>
+    <span class="n">separated_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">string</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">char</span><span class="p">)</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="n">status</span> <span class="o">==</span> <span class="s1">&#39;ALPHABET&#39;</span><span class="p">:</span>
+            <span class="n">separated_string</span> <span class="o">+=</span> <span class="n">char</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">(</span><span class="n">char</span><span class="p">)</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="n">status</span> <span class="o">==</span> <span class="s1">&#39;SPECIAL&#39;</span><span class="p">:</span>
+            <span class="n">separated_string</span> <span class="o">+=</span> <span class="n">char</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">char</span><span class="p">)</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="n">status</span> <span class="o">==</span> <span class="s1">&#39;SPECIAL&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">str</span><span class="p">(</span><span class="n">char</span><span class="p">)</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">and</span> <span class="n">status</span> <span class="o">==</span> <span class="s1">&#39;ALPHABET&#39;</span><span class="p">):</span>
+            <span class="n">separated_string</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">char</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="n">flipper</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="s1">&#39;SPECIAL&#39;</span><span class="p">,</span> <span class="s1">&#39;ALPHABET&#39;</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+    <span class="k">return</span> <span class="n">separated_string</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="is_eligible_pair"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.is_eligible_pair">[docs]</a><span class="k">def</span> <span class="nf">is_eligible_pair</span><span class="p">(</span><span class="n">item1</span><span class="p">,</span> <span class="n">item2</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">item1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">item2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">item1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">item2</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">item1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Paan&#39;</span> <span class="ow">or</span> <span class="n">item2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Paan&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;cig&#39;</span> <span class="ow">in</span> <span class="n">item1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="s1">&#39;cig&#39;</span> <span class="ow">in</span> <span class="n">item2</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="n">helper_eligible_pair</span><span class="p">(</span><span class="n">item1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="n">helper_eligible_pair</span><span class="p">(</span><span class="n">item1</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item2</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="meets_match_count_threshold"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.meets_match_count_threshold">[docs]</a><span class="k">def</span> <span class="nf">meets_match_count_threshold</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">sku</span><span class="p">):</span>
+
+    <span class="n">item_clusters</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">term_cluster</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">sku_clusters</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">sku</span><span class="o">.</span><span class="n">term_cluster</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">matched_clusters</span> <span class="o">=</span> <span class="n">item_clusters</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">sku_clusters</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">item_clusters</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matched_clusters</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">item_clusters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.65</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matched_clusters</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">sku_clusters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.65</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="is_liquid_unit"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.is_liquid_unit">[docs]</a><span class="k">def</span> <span class="nf">is_liquid_unit</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="n">units</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;litre&quot;</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span><span class="p">,</span> <span class="s2">&quot;liter&quot;</span><span class="p">,</span> <span class="s2">&quot;ml&quot;</span><span class="p">,</span> <span class="s2">&quot;ltr&quot;</span><span class="p">,</span> <span class="s2">&quot;litres&quot;</span><span class="p">,</span> <span class="s2">&quot;liters&quot;</span><span class="p">,</span> <span class="s2">&quot;m&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">units</span></div>
+
+
+<div class="viewcode-block" id="extract_alcohol_liquid_quantity"><a class="viewcode-back" href="../../../src.Utils.html#src.Utils.sku_utils.extract_alcohol_liquid_quantity">[docs]</a><span class="k">def</span> <span class="nf">extract_alcohol_liquid_quantity</span><span class="p">(</span><span class="n">expression</span><span class="p">,</span> <span class="n">additional_dict</span><span class="o">=</span><span class="p">{}):</span>
+
+    <span class="n">expression_meta</span> <span class="o">=</span> <span class="n">expression</span><span class="o">.</span><span class="n">meta_data</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">expression_meta</span><span class="p">)):</span>
+        <span class="n">term</span> <span class="o">=</span> <span class="n">expression_meta</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">is_liquid_unit</span><span class="p">(</span><span class="n">term</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">expression_meta</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">return</span> <span class="n">value</span><span class="p">,</span> <span class="n">term</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+    <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">expression_meta</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">additional_dict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">additional_dict</span><span class="p">[</span><span class="n">term</span><span class="p">],</span> <span class="s2">&quot;ml&quot;</span>
+
+    <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Chai</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Achal Agarwal, Shovik Ghosh.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

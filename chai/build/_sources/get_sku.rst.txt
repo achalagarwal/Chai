@@ -1,0 +1,69 @@
+get\_sku package
+================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    get_sku.migrations
+
+Submodules
+----------
+
+get\_sku.admin module
+---------------------
+
+.. automodule:: get_sku.admin
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+get\_sku.apps module
+--------------------
+
+.. automodule:: get_sku.apps
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+get\_sku.models module
+----------------------
+
+.. automodule:: get_sku.models
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+get\_sku.tests module
+---------------------
+
+.. automodule:: get_sku.tests
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+get\_sku.urls module
+--------------------
+
+.. automodule:: get_sku.urls
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+get\_sku.views module
+---------------------
+
+.. automodule:: get_sku.views
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: get_sku
+    :members:
+    :undoc-members:
+    :show-inheritance:

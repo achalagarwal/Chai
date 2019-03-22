@@ -1,0 +1,7 @@
+[
+  "Cluster_Test.py::test_whether_a_term_is_getting_added_to_the_term_cache_when_add_term_is_called_and_its_score_is_likewise_updated",
+  "Cluster_Test.py::test_whether_the_add_term_is_adding_appropriately_to_prefix_trie",
+  "Cluster_Test.py::test_whether_cluster_leader_update_is_working",
+  "Cluster_Test.py::test_whether_add_leader_adds_to_prefix_trie",
+  "Cluster_Test.py::test_whether_quick_match_score_is_correct"
+]

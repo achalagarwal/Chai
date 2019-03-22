@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <title>Utils package</title>
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="utils-package">
+<h1>Utils package</h1>
+<div class="section" id="submodules">
+<h2>Submodules</h2>
+</div>
+<div class="section" id="module-src.Utils.Pickler">
+<span id="pickler"></span><h2>Pickler</h2>
+<dl class="function">
+<dt id="src.Utils.Pickler.pickle_data">
+<code class="descclassname">src.Utils.Pickler.</code><code class="descname">pickle_data</code><span class="sig-paren">(</span><em>data</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/Pickler.xhtml#pickle_data"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.Pickler.pickle_dict">
+<code class="descclassname">src.Utils.Pickler.</code><code class="descname">pickle_dict</code><span class="sig-paren">(</span><em>dictionary</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/Pickler.xhtml#pickle_dict"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.Pickler.unpickle_data">
+<code class="descclassname">src.Utils.Pickler.</code><code class="descname">unpickle_data</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/Pickler.xhtml#unpickle_data"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.Pickler.unpickle_dict">
+<code class="descclassname">src.Utils.Pickler.</code><code class="descname">unpickle_dict</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/Pickler.xhtml#unpickle_dict"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.Utils.logger">
+<span id="logger"></span><h2>Logger</h2>
+</div>
+<div class="section" id="module-src.Utils.scorer">
+<span id="scorer"></span><h2>Scorer</h2>
+<dl class="class">
+<dt id="src.Utils.scorer.Scorer">
+<em class="property">class </em><code class="descclassname">src.Utils.scorer.</code><code class="descname">Scorer</code><span class="sig-paren">(</span><em>initial_score=0</em>, <em>initial_incrementer=1</em>, <em>decay_function=None</em>, <em>decay_factor=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scorer.xhtml#Scorer"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a><span class="link-target"> [https://docs.python.org/3/library/functions.html#object]</span></p>
+<dl class="attribute">
+<dt id="src.Utils.scorer.Scorer.decay">
+<code class="descname">decay</code></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="src.Utils.scorer.Scorer.increment">
+<code class="descname">increment</code></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="src.Utils.scorer.Scorer.score">
+<code class="descname">score</code></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.Utils.scoring_utils">
+<span id="scoring-utils"></span><h2>Scoring Utils</h2>
+<dl class="function">
+<dt id="src.Utils.scoring_utils.get_brand_word_score">
+<code class="descclassname">src.Utils.scoring_utils.</code><code class="descname">get_brand_word_score</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em>, <em>sku_item_term_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scoring_utils.xhtml#get_brand_word_score"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.scoring_utils.get_match_ratio_score">
+<code class="descclassname">src.Utils.scoring_utils.</code><code class="descname">get_match_ratio_score</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scoring_utils.xhtml#get_match_ratio_score"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.scoring_utils.get_meta_match_score">
+<code class="descclassname">src.Utils.scoring_utils.</code><code class="descname">get_meta_match_score</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scoring_utils.xhtml#get_meta_match_score"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.scoring_utils.get_root_words_score">
+<code class="descclassname">src.Utils.scoring_utils.</code><code class="descname">get_root_words_score</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em>, <em>sku_item_term_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scoring_utils.xhtml#get_root_words_score"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.scoring_utils.get_score">
+<code class="descclassname">src.Utils.scoring_utils.</code><code class="descname">get_score</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scoring_utils.xhtml#get_score"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.scoring_utils.get_sequential_score">
+<code class="descclassname">src.Utils.scoring_utils.</code><code class="descname">get_sequential_score</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em>, <em>item_sku_term_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scoring_utils.xhtml#get_sequential_score"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.scoring_utils.get_user_query_score">
+<code class="descclassname">src.Utils.scoring_utils.</code><code class="descname">get_user_query_score</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em>, <em>item_sku_term_map</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/scoring_utils.xhtml#get_user_query_score"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.Utils.sku_utils">
+<span id="expression-utils"></span><h2>Expression Utils</h2>
+<dl class="function">
+<dt id="src.Utils.sku_utils.clean_item">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">clean_item</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#clean_item"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.clean_item_with_meta">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">clean_item_with_meta</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#clean_item_with_meta"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.clean_word">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">clean_word</code><span class="sig-paren">(</span><em>word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#clean_word"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.clean_words">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">clean_words</code><span class="sig-paren">(</span><em>words</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#clean_words"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.compute_edit_distance">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">compute_edit_distance</code><span class="sig-paren">(</span><em>word</em>, <em>vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#compute_edit_distance"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.extract_alcohol_liquid_quantity">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">extract_alcohol_liquid_quantity</code><span class="sig-paren">(</span><em>expression</em>, <em>additional_dict={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#extract_alcohol_liquid_quantity"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.flipper">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">flipper</code><span class="sig-paren">(</span><em>flag</em>, <em>option1</em>, <em>option2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#flipper"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.get_linear_span">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">get_linear_span</code><span class="sig-paren">(</span><em>words</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#get_linear_span"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.get_min_item_edit_distance">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">get_min_item_edit_distance</code><span class="sig-paren">(</span><em>item</em>, <em>span</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#get_min_item_edit_distance"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.get_min_word_edit_distance">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">get_min_word_edit_distance</code><span class="sig-paren">(</span><em>word</em>, <em>span</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#get_min_word_edit_distance"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.get_str_from_vec">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">get_str_from_vec</code><span class="sig-paren">(</span><em>vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#get_str_from_vec"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.helper_eligible_pair">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">helper_eligible_pair</code><span class="sig-paren">(</span><em>item1</em>, <em>item2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#helper_eligible_pair"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.is_eligible_pair">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">is_eligible_pair</code><span class="sig-paren">(</span><em>item1</em>, <em>item2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#is_eligible_pair"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.is_invalid_word">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">is_invalid_word</code><span class="sig-paren">(</span><em>word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#is_invalid_word"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.is_liquid_unit">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">is_liquid_unit</code><span class="sig-paren">(</span><em>word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#is_liquid_unit"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.is_valid_word">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">is_valid_word</code><span class="sig-paren">(</span><em>word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#is_valid_word"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.meets_match_count_threshold">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">meets_match_count_threshold</code><span class="sig-paren">(</span><em>item</em>, <em>sku</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#meets_match_count_threshold"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.remove_special_symbols">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">remove_special_symbols</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#remove_special_symbols"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.Utils.sku_utils.separate_meta_data">
+<code class="descclassname">src.Utils.sku_utils.</code><code class="descname">separate_meta_data</code><span class="sig-paren">(</span><em>string</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/Utils/sku_utils.xhtml#separate_meta_data"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.Utils">
+<span id="module-contents"></span><h2>Module contents</h2>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

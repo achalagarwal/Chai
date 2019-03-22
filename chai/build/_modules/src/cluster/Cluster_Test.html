@@ -1,0 +1,165 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>src.cluster.Cluster_Test &#8212; Chai Official documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.cluster.Cluster_Test</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">src.cluster</span> <span class="k">import</span> <span class="n">Cluster</span>
+
+<span class="n">Cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="o">.</span><span class="n">Cluster</span>
+
+
+<span class="c1"># 01) Test whether a term is getting added to the cache with its cluster score whenever get score is called</span>
+<span class="c1"># 02)   &quot;     &quot;    a term&#39;s score is getting retrieved from the cache if available in the cache</span>
+<span class="c1"># 03)   &quot;     &quot;    the match score returned is justifiable</span>
+<span class="c1"># 04)   &quot;     &quot;    the add_term is adding a term to the cluster</span>
+<span class="c1"># 05)   &quot;     &quot;    the add_term uses the cache to check if the term has been added before and return appropriately</span>
+<span class="c1"># 06)   &quot;     &quot;    the scores of each term in dict is getting incremented correctly</span>
+<span class="c1"># 07)   &quot;     &quot;    the prefix trie is breaking term in to its prefixes and adding all</span>
+<span class="c1"># 09)   &quot;     &quot;    the cluster leader update is working</span>
+<span class="c1"># 10)   &quot;     &quot;    the get_sorted terms is working correctly</span>
+<span class="c1"># 11)   &quot;     &quot;    the an item is getting added to the prefix trie</span>
+<span class="c1"># 12)   &quot;     &quot;    the add_term adds term in to the prefix trie</span>
+
+<span class="c1"># 01</span>
+
+<div class="viewcode-block" id="test_whether_a_term_is_getting_added_to_the_term_cache_when_add_term_is_called_and_its_score_is_likewise_updated"><a class="viewcode-back" href="../../../src.cluster.html#src.cluster.Cluster_Test.test_whether_a_term_is_getting_added_to_the_term_cache_when_add_term_is_called_and_its_score_is_likewise_updated">[docs]</a><span class="k">def</span> <span class="nf">test_whether_a_term_is_getting_added_to_the_term_cache_when_add_term_is_called_and_its_score_is_likewise_updated</span><span class="p">():</span>
+
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="p">(</span><span class="s1">&#39;leader&#39;</span><span class="p">)</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">add_term</span><span class="p">(</span><span class="s1">&#39;lead&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s1">&#39;lead&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">term_dict</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">add_term</span><span class="p">(</span><span class="s1">&#39;lead&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">cluster</span><span class="o">.</span><span class="n">term_dict</span><span class="p">[</span><span class="s1">&#39;lead&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span></div>
+
+
+<div class="viewcode-block" id="test_whether_the_add_term_is_adding_appropriately_to_prefix_trie"><a class="viewcode-back" href="../../../src.cluster.html#src.cluster.Cluster_Test.test_whether_the_add_term_is_adding_appropriately_to_prefix_trie">[docs]</a><span class="k">def</span> <span class="nf">test_whether_the_add_term_is_adding_appropriately_to_prefix_trie</span><span class="p">():</span>
+
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="p">(</span><span class="s1">&#39;leader&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s1">&#39;leader&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;leade&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;lead&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;lea&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;le&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;l&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+
+    <span class="n">cluster</span><span class="o">.</span><span class="n">add_term</span><span class="p">(</span><span class="s1">&#39;peader&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s1">&#39;peader&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;peade&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;pead&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;pea&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;pe&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;p&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span></div>
+
+
+<div class="viewcode-block" id="test_whether_cluster_leader_update_is_working"><a class="viewcode-back" href="../../../src.cluster.html#src.cluster.Cluster_Test.test_whether_cluster_leader_update_is_working">[docs]</a><span class="k">def</span> <span class="nf">test_whether_cluster_leader_update_is_working</span><span class="p">():</span>
+
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="p">(</span><span class="s1">&#39;leader&#39;</span><span class="p">)</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">add_leader</span><span class="p">(</span><span class="s1">&#39;fake_leader&#39;</span><span class="p">)</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">add_leader</span><span class="p">(</span><span class="s1">&#39;fake_leader&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">cluster</span><span class="o">.</span><span class="n">leader</span> <span class="o">==</span> <span class="s1">&#39;leader&#39;</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">update_leader</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">cluster</span><span class="o">.</span><span class="n">leader</span> <span class="o">==</span> <span class="s1">&#39;fake_leader&#39;</span></div>
+
+
+<div class="viewcode-block" id="test_whether_add_leader_adds_to_prefix_trie"><a class="viewcode-back" href="../../../src.cluster.html#src.cluster.Cluster_Test.test_whether_add_leader_adds_to_prefix_trie">[docs]</a><span class="k">def</span> <span class="nf">test_whether_add_leader_adds_to_prefix_trie</span><span class="p">():</span>
+
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="p">(</span><span class="s1">&#39;leader&#39;</span><span class="p">)</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">add_leader</span><span class="p">(</span><span class="s1">&#39;fake_leader&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s1">&#39;fake_leader&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">term_dict</span>
+    <span class="k">assert</span> <span class="s1">&#39;fake&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span></div>
+
+
+<div class="viewcode-block" id="test_whether_quick_match_score_is_correct"><a class="viewcode-back" href="../../../src.cluster.html#src.cluster.Cluster_Test.test_whether_quick_match_score_is_correct">[docs]</a><span class="k">def</span> <span class="nf">test_whether_quick_match_score_is_correct</span><span class="p">():</span>
+
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="p">(</span><span class="s1">&#39;leader&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">cluster</span><span class="o">.</span><span class="n">quick_match_score</span><span class="p">(</span><span class="s1">&#39;lead&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
+    <span class="k">assert</span> <span class="n">cluster</span><span class="o">.</span><span class="n">quick_match_score</span><span class="p">(</span><span class="s1">&#39;peader&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Chai</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Achal Agarwal, Shovik Ghosh.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

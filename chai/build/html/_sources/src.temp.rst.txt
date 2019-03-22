@@ -1,0 +1,30 @@
+src.temp package
+================
+
+Submodules
+----------
+
+src.temp.clusterer module
+-------------------------
+
+.. automodule:: src.temp.clusterer
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+src.temp.string\_cluster module
+-------------------------------
+
+.. automodule:: src.temp.string_cluster
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.temp
+    :members:
+    :undoc-members:
+    :show-inheritance:

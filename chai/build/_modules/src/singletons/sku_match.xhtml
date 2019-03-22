@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.singletons.sku_match</title>
+    <link rel="stylesheet" href="../../../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for src.singletons.sku_match</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">src.Utils</span> <span class="k">import</span> <span class="n">Pickler</span>
+<span class="kn">from</span> <span class="nn">src.Utils.logger</span> <span class="k">import</span> <span class="n">logger</span>
+
+
+<div class="viewcode-block" id="SkuSingleton"><a class="viewcode-back" href="../../../src.singletons.xhtml#src.singletons.sku_match.SkuSingleton">[docs]</a><span class="k">class</span> <span class="nc">SkuSingleton</span><span class="p">:</span>
+
+    <span class="n">__object</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">SkuSingleton</span><span class="o">.</span><span class="n">__object</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;UNPICKLING SKU MATCHING NOTEBOOK&#39;</span><span class="p">)</span>
+            <span class="n">SkuSingleton</span><span class="o">.</span><span class="n">__object</span> <span class="o">=</span> <span class="n">Pickler</span><span class="o">.</span><span class="n">unpickle_data</span><span class="p">(</span><span class="s1">&#39;./src/sku_matchbook.pickle&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SkuSingleton.get_obj"><a class="viewcode-back" href="../../../src.singletons.xhtml#src.singletons.sku_match.SkuSingleton.get_obj">[docs]</a>    <span class="k">def</span> <span class="nf">get_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">SkuSingleton</span><span class="o">.</span><span class="n">__object</span></div></div>
+</pre></div>
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

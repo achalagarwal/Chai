@@ -1,0 +1,54 @@
+src.Utils package
+=================
+
+Submodules
+----------
+
+src.Utils.Pickler module
+------------------------
+
+.. automodule:: src.Utils.Pickler
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+src.Utils.logger module
+-----------------------
+
+.. automodule:: src.Utils.logger
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+src.Utils.scorer module
+-----------------------
+
+.. automodule:: src.Utils.scorer
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+src.Utils.scoring\_utils module
+-------------------------------
+
+.. automodule:: src.Utils.scoring_utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+src.Utils.sku\_utils module
+---------------------------
+
+.. automodule:: src.Utils.sku_utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.Utils
+    :members:
+    :undoc-members:
+    :show-inheritance:

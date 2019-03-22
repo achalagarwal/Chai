@@ -1,0 +1,10 @@
+get\_info.migrations package
+============================
+
+Module contents
+---------------
+
+.. automodule:: get_info.migrations
+    :members:
+    :undoc-members:
+    :show-inheritance:

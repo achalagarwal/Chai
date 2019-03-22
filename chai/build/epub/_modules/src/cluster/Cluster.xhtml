@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.cluster.Cluster</title>
+    <link rel="stylesheet" href="../../../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for src.cluster.Cluster</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">src.cluster.cluster_utils</span> <span class="k">import</span> <span class="n">match_score</span> <span class="k">as</span> <span class="n">get_match_score</span>
+
+
+<div class="viewcode-block" id="Cluster"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster.Cluster">[docs]</a><span class="k">class</span> <span class="nc">Cluster</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Docstring for class Cluster \# NOTE: TESTING SPHINX</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">leader_term</span><span class="p">):</span>
+
+        <span class="c1"># stores cluster leader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leader</span> <span class="o">=</span> <span class="n">leader_term</span>
+
+        <span class="c1"># stores dict of term and score</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">term_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">leader_term</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+
+        <span class="c1"># stores all corpus (leader) terms in cluster</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leader_terms</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leader_terms</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">leader_term</span><span class="p">)</span>
+
+        <span class="c1"># prefix trie for quick check</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix_trie</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_to_trie</span><span class="p">(</span><span class="n">leader_term</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">leader</span>
+
+<div class="viewcode-block" id="Cluster.has_term"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster.Cluster.has_term">[docs]</a>    <span class="k">def</span> <span class="nf">has_term</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">term</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">term_dict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Cluster.add_term"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster.Cluster.add_term">[docs]</a>    <span class="k">def</span> <span class="nf">add_term</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">,</span> <span class="n">score</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+        <span class="n">prev_term_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">term_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">term_dict</span><span class="p">[</span><span class="n">term</span><span class="p">]</span> <span class="o">=</span> <span class="n">prev_term_score</span> <span class="o">+</span> <span class="n">score</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_to_trie</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Cluster.add_to_trie"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster.Cluster.add_to_trie">[docs]</a>    <span class="k">def</span> <span class="nf">add_to_trie</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">term</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">term</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix_trie</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="c1"># else</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix_trie</span><span class="p">[</span><span class="n">term</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_to_trie</span><span class="p">(</span><span class="n">term</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Cluster.match_score"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster.Cluster.match_score">[docs]</a>    <span class="k">def</span> <span class="nf">match_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_term</span><span class="p">(</span><span class="n">term</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">100</span>
+
+        <span class="c1"># else</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fuzzy_match_score</span><span class="p">(</span><span class="n">term</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Cluster.fuzzy_match_score"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster.Cluster.fuzzy_match_score">[docs]</a>    <span class="k">def</span> <span class="nf">fuzzy_match_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">):</span>
+
+        <span class="n">threshold_score</span> <span class="o">=</span> <span class="mi">80</span>
+
+        <span class="k">for</span> <span class="n">cluster_term</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sorted_terms</span><span class="p">()[:</span><span class="mi">11</span><span class="p">]:</span>
+
+            <span class="n">match_score</span> <span class="o">=</span> <span class="n">get_match_score</span><span class="p">(</span><span class="n">cluster_term</span><span class="p">,</span> <span class="n">term</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">match_score</span> <span class="o">&gt;</span> <span class="n">threshold_score</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">match_score</span>
+
+            <span class="n">threshold_score</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">get_match_score</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leader</span><span class="p">,</span> <span class="n">term</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Cluster.add_leader"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster.Cluster.add_leader">[docs]</a>    <span class="k">def</span> <span class="nf">add_leader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">leader_term</span><span class="p">):</span>
+
+        <span class="c1"># if self.add_term(leader_term) == 1:</span>
+        <span class="c1">#     self.leader_terms.add(leader_term)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_term</span><span class="p">(</span><span class="n">leader_term</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">leader_terms</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">leader_term</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Cluster.update_leader"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster.Cluster.update_leader">[docs]</a>    <span class="k">def</span> <span class="nf">update_leader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">temp_leader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">leader</span>
+        <span class="n">temp_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">term_dict</span><span class="p">[</span><span class="n">temp_leader</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leader_terms</span><span class="p">:</span>
+            <span class="n">term_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">term_dict</span><span class="p">[</span><span class="n">term</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">term_score</span> <span class="o">&gt;</span> <span class="n">temp_max</span><span class="p">:</span>
+                <span class="n">temp_max</span> <span class="o">=</span> <span class="n">term_score</span>
+                <span class="n">temp_leader</span> <span class="o">=</span> <span class="n">term</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">leader</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">temp_leader</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">leader</span> <span class="o">=</span> <span class="n">temp_leader</span>
+
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Cluster.is_leader"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster.Cluster.is_leader">[docs]</a>    <span class="k">def</span> <span class="nf">is_leader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">term</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">leader_terms</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="c1"># else</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Cluster.get_sorted_terms"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster.Cluster.get_sorted_terms">[docs]</a>    <span class="k">def</span> <span class="nf">get_sorted_terms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">term_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">term_list</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">term_dict</span><span class="p">[</span><span class="n">x</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">term_list</span></div>
+
+<div class="viewcode-block" id="Cluster.is_in_trie"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster.Cluster.is_in_trie">[docs]</a>    <span class="k">def</span> <span class="nf">is_in_trie</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">term</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix_trie</span></div>
+
+<div class="viewcode-block" id="Cluster.quick_match_score"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster.Cluster.quick_match_score">[docs]</a>    <span class="k">def</span> <span class="nf">quick_match_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">term</span><span class="p">):</span>
+
+        <span class="n">score</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_in_trie</span><span class="p">(</span><span class="n">term</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">score</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="n">score</span>
+            <span class="n">score</span> <span class="o">-=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">score</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> Name: &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> \
+            <span class="s1">&#39;Followed By: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">leader_terms</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> \
+            <span class="s1">&#39;Terms: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">term_dict</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span></div>
+</pre></div>
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

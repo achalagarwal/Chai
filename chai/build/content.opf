@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" xml:lang="en"
+ unique-identifier="unknown"
+ prefix="ibooks: http://vocabulary.itunes.apple.com/rdf/ibooks/vocabulary-extensions-1.0/">
+  <metadata xmlns:opf="http://www.idpf.org/2007/opf"
+        xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:language>en</dc:language>
+    <dc:title>Chai</dc:title>
+    <dc:description>unknown</dc:description>
+    <dc:creator>Achal Agarwal, Shovik Ghosh</dc:creator>
+    <dc:contributor>unknown</dc:contributor>
+    <dc:publisher>Achal Agarwal, Shovik Ghosh</dc:publisher>
+    <dc:rights>2018, Achal Agarwal, Shovik Ghosh</dc:rights>
+    <dc:identifier id="unknown">unknown</dc:identifier>
+    <dc:date>2018-07-27T12:36:54Z</dc:date>
+    <meta property="dcterms:modified">2018-07-27T12:36:54Z</meta>
+    <meta property="ibooks:version">1.0.0</meta>
+    <meta property="ibooks:specified-fonts">true</meta>
+    <meta property="ibooks:binding">true</meta>
+    <meta property="ibooks:scroll-axis">vertical</meta>
+  </metadata>
+  <manifest>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />
+    <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
+    <item id="epub-0" href="genindex.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-1" href="index.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-2" href="modules.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-3" href="py-modindex.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-4" href="src.Utils.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-5" href="src.cluster.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-6" href="src.corpus.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-7" href="src.expression.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-8" href="src.master.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-9" href="src.singletons.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-10" href="src.temp.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-11" href="src.wrappers.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-12" href="src.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-13" href="_modules/index.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-14" href="_modules/src/SKU_Match.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-15" href="_modules/src/Utils/Pickler.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-16" href="_modules/src/Utils/scorer.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-17" href="_modules/src/Utils/scoring_utils.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-18" href="_modules/src/Utils/sku_utils.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-19" href="_modules/src/cluster/Cluster.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-20" href="_modules/src/cluster/Cluster_Test.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-21" href="_modules/src/cluster/cluster_utils.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-22" href="_modules/src/corpus/Corpus.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-23" href="_modules/src/corpus/Corpus_Test.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-24" href="_modules/src/expression/Item.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-25" href="_modules/src/expression/Sku.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-26" href="_modules/src/master/Match.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-27" href="_modules/src/master/Tagger.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-28" href="_modules/src/singletons/sku_match.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-29" href="_modules/src/temp/clusterer.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-30" href="_modules/src/temp/string_cluster.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-31" href="_modules/src/wrappers/alcohol_limit.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-32" href="_modules/src/wrappers/autocomplete.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-33" href="_static/ajax-loader.gif" media-type="image/gif" />
+    <item id="epub-34" href="_static/alabaster.css" media-type="text/css" />
+    <item id="epub-35" href="_static/basic.css" media-type="text/css" />
+    <item id="epub-36" href="_static/comment-bright.png" media-type="image/png" />
+    <item id="epub-37" href="_static/comment-close.png" media-type="image/png" />
+    <item id="epub-38" href="_static/comment.png" media-type="image/png" />
+    <item id="epub-39" href="_static/custom.css" media-type="text/css" />
+    <item id="epub-40" href="_static/down-pressed.png" media-type="image/png" />
+    <item id="epub-41" href="_static/down.png" media-type="image/png" />
+    <item id="epub-42" href="_static/epub.css" media-type="text/css" />
+    <item id="epub-43" href="_static/file.png" media-type="image/png" />
+    <item id="epub-44" href="_static/minus.png" media-type="image/png" />
+    <item id="epub-45" href="_static/plus.png" media-type="image/png" />
+    <item id="epub-46" href="_static/pygments.css" media-type="text/css" />
+    <item id="epub-47" href="_static/up-pressed.png" media-type="image/png" />
+    <item id="epub-48" href="_static/up.png" media-type="image/png" />
+    <item id="epub-49" href="epub/genindex.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-50" href="epub/index.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-51" href="epub/modules.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-52" href="epub/nav.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-53" href="epub/py-modindex.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-54" href="epub/src.Utils.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-55" href="epub/src.cluster.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-56" href="epub/src.corpus.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-57" href="epub/src.expression.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-58" href="epub/src.master.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-59" href="epub/src.singletons.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-60" href="epub/src.temp.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-61" href="epub/src.wrappers.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-62" href="epub/src.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-63" href="epub/_modules/index.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-64" href="epub/_modules/src/SKU_Match.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-65" href="epub/_modules/src/Utils/Pickler.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-66" href="epub/_modules/src/Utils/scorer.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-67" href="epub/_modules/src/Utils/scoring_utils.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-68" href="epub/_modules/src/Utils/sku_utils.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-69" href="epub/_modules/src/cluster/Cluster.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-70" href="epub/_modules/src/cluster/Cluster_Test.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-71" href="epub/_modules/src/cluster/cluster_utils.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-72" href="epub/_modules/src/corpus/Corpus.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-73" href="epub/_modules/src/expression/Item.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-74" href="epub/_modules/src/expression/Sku.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-75" href="epub/_modules/src/master/Match.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-76" href="epub/_modules/src/master/Tagger.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-77" href="epub/_modules/src/singletons/sku_match.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-78" href="epub/_modules/src/temp/clusterer.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-79" href="epub/_modules/src/temp/string_cluster.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-80" href="epub/_modules/src/wrappers/alcohol_limit.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-81" href="epub/_modules/src/wrappers/autocomplete.xhtml" media-type="application/xhtml+xml" />
+    <item id="epub-82" href="epub/_static/ajax-loader.gif" media-type="image/gif" />
+    <item id="epub-83" href="epub/_static/basic.css" media-type="text/css" />
+    <item id="epub-84" href="epub/_static/comment-bright.png" media-type="image/png" />
+    <item id="epub-85" href="epub/_static/comment-close.png" media-type="image/png" />
+    <item id="epub-86" href="epub/_static/comment.png" media-type="image/png" />
+    <item id="epub-87" href="epub/_static/down-pressed.png" media-type="image/png" />
+    <item id="epub-88" href="epub/_static/down.png" media-type="image/png" />
+    <item id="epub-89" href="epub/_static/epub.css" media-type="text/css" />
+    <item id="epub-90" href="epub/_static/file.png" media-type="image/png" />
+    <item id="epub-91" href="epub/_static/minus.png" media-type="image/png" />
+    <item id="epub-92" href="epub/_static/plus.png" media-type="image/png" />
+    <item id="epub-93" href="epub/_static/pygments.css" media-type="text/css" />
+    <item id="epub-94" href="epub/_static/up-pressed.png" media-type="image/png" />
+    <item id="epub-95" href="epub/_static/up.png" media-type="image/png" />
+    <item id="epub-96" href="html/_static/ajax-loader.gif" media-type="image/gif" />
+    <item id="epub-97" href="html/_static/alabaster.css" media-type="text/css" />
+    <item id="epub-98" href="html/_static/basic.css" media-type="text/css" />
+    <item id="epub-99" href="html/_static/comment-bright.png" media-type="image/png" />
+    <item id="epub-100" href="html/_static/comment-close.png" media-type="image/png" />
+    <item id="epub-101" href="html/_static/comment.png" media-type="image/png" />
+    <item id="epub-102" href="html/_static/custom.css" media-type="text/css" />
+    <item id="epub-103" href="html/_static/down-pressed.png" media-type="image/png" />
+    <item id="epub-104" href="html/_static/down.png" media-type="image/png" />
+    <item id="epub-105" href="html/_static/file.png" media-type="image/png" />
+    <item id="epub-106" href="html/_static/minus.png" media-type="image/png" />
+    <item id="epub-107" href="html/_static/plus.png" media-type="image/png" />
+    <item id="epub-108" href="html/_static/pygments.css" media-type="text/css" />
+    <item id="epub-109" href="html/_static/up-pressed.png" media-type="image/png" />
+    <item id="epub-110" href="html/_static/up.png" media-type="image/png" />
+  </manifest>
+  <spine toc="ncx" page-progression-direction="ltr">
+    <itemref idref="epub-1" />
+    <itemref idref="epub-12" />
+    <itemref idref="epub-4" />
+    <itemref idref="epub-5" />
+    <itemref idref="epub-6" />
+    <itemref idref="epub-7" />
+    <itemref idref="epub-8" />
+    <itemref idref="epub-9" />
+    <itemref idref="epub-10" />
+    <itemref idref="epub-11" />
+    <itemref idref="epub-3" />
+    <itemref idref="epub-0" />
+    <itemref idref="epub-2" linear="no" />
+    <itemref idref="epub-13" linear="no" />
+    <itemref idref="epub-14" linear="no" />
+    <itemref idref="epub-15" linear="no" />
+    <itemref idref="epub-16" linear="no" />
+    <itemref idref="epub-17" linear="no" />
+    <itemref idref="epub-18" linear="no" />
+    <itemref idref="epub-19" linear="no" />
+    <itemref idref="epub-20" linear="no" />
+    <itemref idref="epub-21" linear="no" />
+    <itemref idref="epub-22" linear="no" />
+    <itemref idref="epub-23" linear="no" />
+    <itemref idref="epub-24" linear="no" />
+    <itemref idref="epub-25" linear="no" />
+    <itemref idref="epub-26" linear="no" />
+    <itemref idref="epub-27" linear="no" />
+    <itemref idref="epub-28" linear="no" />
+    <itemref idref="epub-29" linear="no" />
+    <itemref idref="epub-30" linear="no" />
+    <itemref idref="epub-31" linear="no" />
+    <itemref idref="epub-32" linear="no" />
+    <itemref idref="epub-49" linear="no" />
+    <itemref idref="epub-50" linear="no" />
+    <itemref idref="epub-51" linear="no" />
+    <itemref idref="epub-52" linear="no" />
+    <itemref idref="epub-53" linear="no" />
+    <itemref idref="epub-54" linear="no" />
+    <itemref idref="epub-55" linear="no" />
+    <itemref idref="epub-56" linear="no" />
+    <itemref idref="epub-57" linear="no" />
+    <itemref idref="epub-58" linear="no" />
+    <itemref idref="epub-59" linear="no" />
+    <itemref idref="epub-60" linear="no" />
+    <itemref idref="epub-61" linear="no" />
+    <itemref idref="epub-62" linear="no" />
+    <itemref idref="epub-63" linear="no" />
+    <itemref idref="epub-64" linear="no" />
+    <itemref idref="epub-65" linear="no" />
+    <itemref idref="epub-66" linear="no" />
+    <itemref idref="epub-67" linear="no" />
+    <itemref idref="epub-68" linear="no" />
+    <itemref idref="epub-69" linear="no" />
+    <itemref idref="epub-70" linear="no" />
+    <itemref idref="epub-71" linear="no" />
+    <itemref idref="epub-72" linear="no" />
+    <itemref idref="epub-73" linear="no" />
+    <itemref idref="epub-74" linear="no" />
+    <itemref idref="epub-75" linear="no" />
+    <itemref idref="epub-76" linear="no" />
+    <itemref idref="epub-77" linear="no" />
+    <itemref idref="epub-78" linear="no" />
+    <itemref idref="epub-79" linear="no" />
+    <itemref idref="epub-80" linear="no" />
+    <itemref idref="epub-81" linear="no" />
+  </spine>
+  <guide>
+    <reference type="toc" title="Table of Contents" href="index.xhtml" />
+  </guide>
+</package>

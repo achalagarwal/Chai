@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.temp.string_cluster</title>
+    <link rel="stylesheet" href="../../../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for src.temp.string_cluster</h1><div class="highlight"><pre>
+<span></span><span class="c1">#Author - Achal Agarwal</span>
+
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span> <span class="k">as</span> <span class="n">progress</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">temp.clusterer</span> <span class="k">import</span> <span class="n">get_cluster_index</span><span class="p">,</span> <span class="n">cleanItem</span>
+
+<div class="viewcode-block" id="get_local_data_for_testing"><a class="viewcode-back" href="../../../src.temp.xhtml#src.temp.string_cluster.get_local_data_for_testing">[docs]</a><span class="k">def</span> <span class="nf">get_local_data_for_testing</span><span class="p">():</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;data_chunk_6.json&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">batch_cluster</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="map_term"><a class="viewcode-back" href="../../../src.temp.xhtml#src.temp.string_cluster.map_term">[docs]</a><span class="k">def</span> <span class="nf">map_term</span><span class="p">(</span><span class="n">term</span><span class="p">,</span><span class="n">master_dict</span><span class="p">,</span><span class="n">cluster_leaders</span><span class="p">):</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="n">term</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">final_word</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+        <span class="n">final_word</span> <span class="o">+=</span> <span class="n">cluster_leaders</span><span class="p">[</span><span class="n">master_dict</span><span class="p">[</span><span class="n">word</span><span class="p">]]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span>
+    <span class="k">return</span> <span class="n">final_word</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="batch_cluster"><a class="viewcode-back" href="../../../src.temp.xhtml#src.temp.string_cluster.batch_cluster">[docs]</a><span class="k">def</span> <span class="nf">batch_cluster</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;preprocessed_dict.json&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">master_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="n">master_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;preprocessed_clusters.json&#39;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">cluster_terms</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="n">cluster_terms</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+    <span class="n">terms</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">terms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+        <span class="c1"># terms.append(d[&#39;searchTerms&#39;])</span>
+    <span class="n">clean_terms</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">cleanItem</span><span class="p">,</span> <span class="n">terms</span><span class="p">))</span>
+    <span class="n">clean_terms</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span><span class="n">clean_terms</span><span class="p">))</span>
+    <span class="c1"># cluster_terms = []</span>
+    <span class="c1"># master_dict = {}</span>
+    <span class="c1"># print(clean_terms)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">master_dict</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">progress</span><span class="p">(</span><span class="n">clean_terms</span><span class="p">):</span>
+        <span class="c1"># print(&#39;t &#39;,term)</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">term</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">master_dict</span><span class="p">:</span>
+                <span class="n">match_index</span> <span class="o">=</span> <span class="n">master_dict</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># print(&#39;w&#39; , words)</span>
+                <span class="n">match_index</span> <span class="o">=</span> <span class="n">get_cluster_index</span><span class="p">(</span><span class="n">word</span><span class="p">,</span><span class="n">cluster_terms</span><span class="p">)</span>
+                <span class="n">master_dict</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="o">=</span> <span class="n">match_index</span>
+    <span class="n">cluster_leaders</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">cluster_term</span> <span class="ow">in</span> <span class="n">cluster_terms</span><span class="p">:</span>
+        <span class="n">leader</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">max_score</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">term_score</span> <span class="ow">in</span> <span class="n">cluster_term</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">term_score</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="n">max_score</span><span class="p">:</span>
+                <span class="n">max_score</span> <span class="o">=</span> <span class="n">score</span>
+                <span class="n">leader</span> <span class="o">=</span> <span class="n">term_score</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">cluster_leaders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">leader</span><span class="p">)</span>
+
+    <span class="c1"># for term in data:</span>
+    <span class="c1">#     new_terms = []</span>
+    <span class="c1">#     for term in d[&#39;searchTerms&#39;]:</span>
+    <span class="c1">#         new_terms.append(map_term(cleanItem(term),master_dict,cluster_leaders))</span>
+    <span class="c1">#     d[&#39;searchTerms&#39;] = new_terms</span>
+
+            <span class="c1"># d[&#39;searchTerms&#39;] = map_term(cleanItem(d[&#39;searchTerms&#39;]),master_dict,cluster_leaders)</span>
+    <span class="c1"># with open(&#39;preprocessed_dict.json&#39;, &#39;w&#39;) as outfile:</span>
+    <span class="c1">#     json.dump(master_dict, outfile)</span>
+    <span class="c1"># with open(&#39;preprocessed_clusters.json&#39;, &#39;w&#39;) as outfile:</span>
+    <span class="c1">#     json.dump(cluster_terms, outfile)</span>
+    <span class="k">return</span> <span class="n">cluster_leaders</span></div>
+
+<span class="c1"># get_local_data_for_testing()</span>
+</pre></div>
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

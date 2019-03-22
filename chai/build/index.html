@@ -1,0 +1,229 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Welcome to Chai’s documentation! &#8212; Chai Official documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src package" href="src.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-chai-s-documentation">
+<h1>Welcome to Chai’s documentation!<a class="headerlink" href="#welcome-to-chai-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p><strong>Django Framework</strong> has been used to expose the functions to the port 8060 which can be accessed using <a class="reference external" href="https://chai.dunzo.in/sub-directory/function">https://chai.dunzo.in/sub-directory/function</a></p>
+<p>There are two subdirectories: <em>info</em> and <em>sku</em></p>
+<ul class="simple">
+<li><strong>info</strong> -&gt; Contains functions that involve getting some kind of information</li>
+</ul>
+<dl class="function">
+<dt id="check_alcohol_limit">
+<code class="descname">check_alcohol_limit</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="headerlink" href="#check_alcohol_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the Alcohol details in an order when requested.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> – POST Request with order list and city id in the body</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<ul class="simple">
+<li><strong>sku</strong> -&gt; Contains functions that involve getting a list of standard sku match</li>
+</ul>
+<dl class="function">
+<dt id="complete_query">
+<code class="descname">complete_query</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="headerlink" href="#complete_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of probable autocomplete items</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>request</strong> – GET Request containing a parameter i.e. user search query</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="enumerate">
+<code class="descname">enumerate</code><span class="sig-paren">(</span><em>sequence</em><span class="optional">[</span>, <em>start=0</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#enumerate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an iterator that yields tuples of an index and an item of the
+<em>sequence</em>. (And so on.)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="src">
+<h1>src<a class="headerlink" href="#src" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="src.html">src package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.Utils.html">Utils package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.Utils.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.Utils.html#module-src.Utils.Pickler">Pickler</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.Utils.html#module-src.Utils.logger">Logger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.Utils.html#module-src.Utils.scorer">Scorer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.Utils.html#module-src.Utils.scoring_utils">Scoring Utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.Utils.html#module-src.Utils.sku_utils">Expression Utils</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.Utils.html#module-src.Utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.cluster.html">cluster package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.cluster.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.cluster.html#module-src.cluster.Cluster">Cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.cluster.html#module-src.cluster.Cluster_Test">Cluster Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.cluster.html#module-src.cluster.cluster_utils">Cluster Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.cluster.html#module-src.cluster">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.corpus.html">corpus package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.corpus.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.corpus.html#module-src.corpus.Corpus">Corpus</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.corpus.html#module-src.corpus.Corpus_Test">Corpus Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.corpus.html#module-src.corpus">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.expression.html">expression package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.expression.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.expression.html#item">Item</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.expression.html#sku">SKU</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.expression.html#module-src.expression">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.master.html">master package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.master.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.master.html#match-module">Match module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.master.html#tagger">Tagger</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.master.html#module-src.master">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.singletons.html">singletons</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.singletons.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.singletons.html#module-src.singletons.sku_match">Sku Matchbook Singleton</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.singletons.html#module-src.singletons">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.temp.html">temporary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.temp.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.temp.html#module-src.temp.clusterer">clusterer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.temp.html#module-src.temp.string_cluster">string cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.temp.html#module-src.temp">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.wrappers.html">wrappers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="src.wrappers.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.wrappers.html#alcohol-limit">Alcohol Limit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.wrappers.html#module-src.wrappers.autocomplete">AutoComplete</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.wrappers.html#module-src.wrappers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src.SKU_Match">SKU Match</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src.self_test">Self Test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="contents">
+<h1>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Chai</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="src.html" title="next chapter">src package</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Achal Agarwal, Shovik Ghosh.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

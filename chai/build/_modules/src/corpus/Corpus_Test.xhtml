@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.corpus.Corpus_Test</title>
+    <link rel="stylesheet" href="../../../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for src.corpus.Corpus_Test</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">src.corpus</span> <span class="k">import</span> <span class="n">Corpus</span>
+<span class="kn">from</span> <span class="nn">src.cluster</span> <span class="k">import</span> <span class="n">Cluster</span>
+<span class="n">test_term</span> <span class="o">=</span> <span class="s1">&#39;thistermwillneverbeavalidtermforobviousreasonsanditsmeantfortesting&#39;</span>
+<span class="c1"># 1) Chec</span>
+
+
+<div class="viewcode-block" id="test_whether_match_term_caches_information"><a class="viewcode-back" href="../../../src.corpus.xhtml#src.corpus.Corpus_Test.test_whether_match_term_caches_information">[docs]</a><span class="k">def</span> <span class="nf">test_whether_match_term_caches_information</span><span class="p">():</span>
+
+    <span class="n">test_corpus</span> <span class="o">=</span> <span class="n">Corpus</span><span class="o">.</span><span class="n">Corpus</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+    <span class="n">test_corpus</span><span class="o">.</span><span class="n">match_term_cluster</span><span class="p">(</span><span class="n">test_term</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">test_term</span> <span class="ow">in</span> <span class="n">test_corpus</span><span class="o">.</span><span class="n">unused_dict</span></div>
+
+
+<div class="viewcode-block" id="test_whether_add_term_to_corpus_works_as_intended"><a class="viewcode-back" href="../../../src.corpus.xhtml#src.corpus.Corpus_Test.test_whether_add_term_to_corpus_works_as_intended">[docs]</a><span class="k">def</span> <span class="nf">test_whether_add_term_to_corpus_works_as_intended</span><span class="p">():</span>
+
+    <span class="n">test_corpus</span> <span class="o">=</span> <span class="n">Corpus</span><span class="o">.</span><span class="n">Corpus</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+    <span class="n">test_cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="o">.</span><span class="n">Cluster</span><span class="p">(</span><span class="s1">&#39;theclusterwhichwillnotmatchwithtest_termbutlinktemporarily&#39;</span><span class="p">)</span>
+    <span class="n">test_corpus</span><span class="o">.</span><span class="n">add_cluster</span><span class="p">(</span><span class="n">test_cluster</span><span class="p">)</span>
+    <span class="n">test_corpus</span><span class="o">.</span><span class="n">add_term</span><span class="p">(</span><span class="n">test_term</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">test_term</span> <span class="ow">in</span> <span class="n">test_corpus</span><span class="o">.</span><span class="n">unused_dict</span>
+    <span class="k">assert</span> <span class="n">test_corpus</span><span class="o">.</span><span class="n">temp_dict</span><span class="p">[</span><span class="n">test_term</span><span class="p">]</span> <span class="o">==</span> <span class="n">test_cluster</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="n">test_cluster</span><span class="o">.</span><span class="n">has_term</span><span class="p">(</span><span class="n">test_term</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_whether_add_leader_works_as_intended"><a class="viewcode-back" href="../../../src.corpus.xhtml#src.corpus.Corpus_Test.test_whether_add_leader_works_as_intended">[docs]</a><span class="k">def</span> <span class="nf">test_whether_add_leader_works_as_intended</span><span class="p">():</span>
+
+    <span class="n">test_corpus</span> <span class="o">=</span> <span class="n">Corpus</span><span class="o">.</span><span class="n">Corpus</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+    <span class="n">test_term</span> <span class="o">=</span> <span class="s1">&#39;unknown&#39;</span>
+    <span class="n">test_corpus</span><span class="o">.</span><span class="n">add_term</span><span class="p">(</span><span class="n">test_term</span><span class="p">)</span>
+    <span class="n">test_corpus</span><span class="o">.</span><span class="n">add_term</span><span class="p">(</span><span class="n">test_term</span><span class="p">)</span>
+    <span class="n">test_corpus</span><span class="o">.</span><span class="n">add_leader</span><span class="p">(</span><span class="s1">&#39;unknowns&#39;</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="n">test_term</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">test_corpus</span><span class="o">.</span><span class="n">temp_dict</span>
+    <span class="k">assert</span> <span class="n">test_term</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">test_corpus</span><span class="o">.</span><span class="n">unused_dict</span>
+    <span class="k">assert</span> <span class="n">test_term</span> <span class="ow">in</span> <span class="n">test_corpus</span><span class="o">.</span><span class="n">corpus_dict</span>
+
+    <span class="n">assigned_cluster</span> <span class="o">=</span> <span class="n">test_corpus</span><span class="o">.</span><span class="n">corpus_dict</span><span class="p">[</span><span class="n">test_term</span><span class="p">]</span>
+    <span class="k">assert</span> <span class="n">test_term</span> <span class="ow">in</span> <span class="n">assigned_cluster</span><span class="o">.</span><span class="n">term_dict</span>
+    <span class="k">assert</span> <span class="n">assigned_cluster</span><span class="o">.</span><span class="n">term_dict</span><span class="p">[</span><span class="n">test_term</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span></div>
+
+
+</pre></div>
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

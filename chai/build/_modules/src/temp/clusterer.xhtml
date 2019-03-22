@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.temp.clusterer</title>
+    <link rel="stylesheet" href="../../../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for src.temp.clusterer</h1><div class="highlight"><pre>
+<span></span><span class="c1">#Author - Achal Agarwal</span>
+
+<span class="kn">from</span> <span class="nn">fuzzywuzzy</span> <span class="k">import</span> <span class="n">fuzz</span>
+
+
+
+<div class="viewcode-block" id="is_eligible"><a class="viewcode-back" href="../../../src.temp.xhtml#src.temp.clusterer.is_eligible">[docs]</a><span class="k">def</span> <span class="nf">is_eligible</span><span class="p">(</span><span class="n">cluster</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;cluster = &#39;</span> <span class="p">,</span> <span class="n">cluster</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+<div class="viewcode-block" id="get_cluster_index"><a class="viewcode-back" href="../../../src.temp.xhtml#src.temp.clusterer.get_cluster_index">[docs]</a><span class="k">def</span> <span class="nf">get_cluster_index</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;entered&#39;</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="c1"># data = list(filter(lambda x: is_eligible(x, word),data))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_eligible</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">word</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">threshold</span> <span class="o">=</span> <span class="mi">89</span>
+        <span class="nb">max</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])):</span>
+            <span class="n">w_t</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">threshold</span> <span class="o">=</span> <span class="mi">89</span> <span class="o">+</span> <span class="n">j</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">w_t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">fuzz</span><span class="o">.</span><span class="n">ratio</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">word</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">score</span><span class="o">&gt;</span><span class="n">threshold</span> <span class="ow">and</span> <span class="n">score</span><span class="o">&gt;</span><span class="nb">max</span><span class="p">:</span>
+                <span class="nb">max</span> <span class="o">=</span> <span class="n">score</span>
+
+        <span class="k">if</span> <span class="nb">max</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">best</span> <span class="o">=</span> <span class="nb">max</span>
+
+
+    <span class="k">if</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">w_t</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]:</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">w_t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">w</span><span class="o">==</span><span class="n">word</span><span class="p">:</span>
+                <span class="n">w_t_new</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">w_t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+                <span class="c1"># w_t[1] += 1</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">w_t</span><span class="p">)]</span> <span class="o">=</span> <span class="n">w_t_new</span>
+                <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">flag</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">word</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">([(</span><span class="n">word</span><span class="p">,</span><span class="mi">1</span><span class="p">)])</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">return</span> <span class="n">index</span></div>
+
+<div class="viewcode-block" id="isValidWord"><a class="viewcode-back" href="../../../src.temp.xhtml#src.temp.clusterer.isValidWord">[docs]</a><span class="k">def</span> <span class="nf">isValidWord</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="c1">#if len(word) &lt; 3:</span>
+     <span class="c1">#   return False</span>
+
+    <span class="c1">#for char in word:</span>
+    <span class="c1">#    if str(char).isdigit():</span>
+    <span class="c1">#        return False</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">float</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="k">return</span> <span class="ow">not</span> <span class="n">isInvalidWord</span><span class="p">(</span><span class="n">word</span><span class="p">)</span></div>
+    <span class="c1"># return True</span>
+
+
+<div class="viewcode-block" id="isInvalidWord"><a class="viewcode-back" href="../../../src.temp.xhtml#src.temp.clusterer.isInvalidWord">[docs]</a><span class="k">def</span> <span class="nf">isInvalidWord</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;pieces&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;kilos&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;kgs&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;rupees&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;rs&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;packets&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;dozens&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;ltrs&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;litres&#39;</span> <span class="ow">or</span> <span class="s1">&#39;gms&#39;</span> <span class="o">==</span> <span class="n">word</span> <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;mls&#39;</span>  <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;pcs&#39;</span>  <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;litre&#39;</span> <span class="ow">or</span> <span class="n">word</span> <span class="o">==</span> <span class="s1">&#39;grams&#39;</span></div>
+
+<div class="viewcode-block" id="remove_special_symbols"><a class="viewcode-back" href="../../../src.temp.xhtml#src.temp.clusterer.remove_special_symbols">[docs]</a><span class="k">def</span> <span class="nf">remove_special_symbols</span><span class="p">(</span><span class="nb">str</span><span class="p">):</span>
+    <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">str</span></div>
+
+<div class="viewcode-block" id="cleanWord"><a class="viewcode-back" href="../../../src.temp.xhtml#src.temp.clusterer.cleanWord">[docs]</a><span class="k">def</span> <span class="nf">cleanWord</span><span class="p">(</span><span class="n">word</span><span class="p">):</span>
+    <span class="n">word</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">cleanedWord</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">isalpha</span><span class="p">()</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">==</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">word</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="cleanItem"><a class="viewcode-back" href="../../../src.temp.xhtml#src.temp.clusterer.cleanItem">[docs]</a><span class="k">def</span> <span class="nf">cleanItem</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+    <span class="n">item</span>  <span class="o">=</span> <span class="n">remove_special_symbols</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="c1"># cleanedItem = &quot;&quot;</span>
+
+    <span class="n">words</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="c1"># words = list(map(cleanWord,words))</span>
+    <span class="n">words</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="n">isValidWord</span><span class="p">,</span> <span class="n">words</span><span class="p">))</span>
+    <span class="c1"># cleanWordList = []</span>
+
+
+    <span class="k">return</span> <span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">words</span><span class="p">))</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

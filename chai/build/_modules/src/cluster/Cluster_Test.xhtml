@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.cluster.Cluster_Test</title>
+    <link rel="stylesheet" href="../../../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for src.cluster.Cluster_Test</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">src.cluster</span> <span class="k">import</span> <span class="n">Cluster</span>
+
+<span class="n">Cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="o">.</span><span class="n">Cluster</span>
+
+
+<span class="c1"># 01) Test whether a term is getting added to the cache with its cluster score whenever get score is called</span>
+<span class="c1"># 02)   &quot;     &quot;    a term&#39;s score is getting retrieved from the cache if available in the cache</span>
+<span class="c1"># 03)   &quot;     &quot;    the match score returned is justifiable</span>
+<span class="c1"># 04)   &quot;     &quot;    the add_term is adding a term to the cluster</span>
+<span class="c1"># 05)   &quot;     &quot;    the add_term uses the cache to check if the term has been added before and return appropriately</span>
+<span class="c1"># 06)   &quot;     &quot;    the scores of each term in dict is getting incremented correctly</span>
+<span class="c1"># 07)   &quot;     &quot;    the prefix trie is breaking term in to its prefixes and adding all</span>
+<span class="c1"># 09)   &quot;     &quot;    the cluster leader update is working</span>
+<span class="c1"># 10)   &quot;     &quot;    the get_sorted terms is working correctly</span>
+<span class="c1"># 11)   &quot;     &quot;    the an item is getting added to the prefix trie</span>
+<span class="c1"># 12)   &quot;     &quot;    the add_term adds term in to the prefix trie</span>
+
+<span class="c1"># 01</span>
+
+<div class="viewcode-block" id="test_whether_a_term_is_getting_added_to_the_term_cache_when_add_term_is_called_and_its_score_is_likewise_updated"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster_Test.test_whether_a_term_is_getting_added_to_the_term_cache_when_add_term_is_called_and_its_score_is_likewise_updated">[docs]</a><span class="k">def</span> <span class="nf">test_whether_a_term_is_getting_added_to_the_term_cache_when_add_term_is_called_and_its_score_is_likewise_updated</span><span class="p">():</span>
+
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="p">(</span><span class="s1">&#39;leader&#39;</span><span class="p">)</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">add_term</span><span class="p">(</span><span class="s1">&#39;lead&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s1">&#39;lead&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">term_dict</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">add_term</span><span class="p">(</span><span class="s1">&#39;lead&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">cluster</span><span class="o">.</span><span class="n">term_dict</span><span class="p">[</span><span class="s1">&#39;lead&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span></div>
+
+
+<div class="viewcode-block" id="test_whether_the_add_term_is_adding_appropriately_to_prefix_trie"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster_Test.test_whether_the_add_term_is_adding_appropriately_to_prefix_trie">[docs]</a><span class="k">def</span> <span class="nf">test_whether_the_add_term_is_adding_appropriately_to_prefix_trie</span><span class="p">():</span>
+
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="p">(</span><span class="s1">&#39;leader&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s1">&#39;leader&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;leade&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;lead&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;lea&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;le&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;l&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+
+    <span class="n">cluster</span><span class="o">.</span><span class="n">add_term</span><span class="p">(</span><span class="s1">&#39;peader&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s1">&#39;peader&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;peade&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;pead&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;pea&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;pe&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span>
+    <span class="k">assert</span> <span class="s1">&#39;p&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span></div>
+
+
+<div class="viewcode-block" id="test_whether_cluster_leader_update_is_working"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster_Test.test_whether_cluster_leader_update_is_working">[docs]</a><span class="k">def</span> <span class="nf">test_whether_cluster_leader_update_is_working</span><span class="p">():</span>
+
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="p">(</span><span class="s1">&#39;leader&#39;</span><span class="p">)</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">add_leader</span><span class="p">(</span><span class="s1">&#39;fake_leader&#39;</span><span class="p">)</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">add_leader</span><span class="p">(</span><span class="s1">&#39;fake_leader&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">cluster</span><span class="o">.</span><span class="n">leader</span> <span class="o">==</span> <span class="s1">&#39;leader&#39;</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">update_leader</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">cluster</span><span class="o">.</span><span class="n">leader</span> <span class="o">==</span> <span class="s1">&#39;fake_leader&#39;</span></div>
+
+
+<div class="viewcode-block" id="test_whether_add_leader_adds_to_prefix_trie"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster_Test.test_whether_add_leader_adds_to_prefix_trie">[docs]</a><span class="k">def</span> <span class="nf">test_whether_add_leader_adds_to_prefix_trie</span><span class="p">():</span>
+
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="p">(</span><span class="s1">&#39;leader&#39;</span><span class="p">)</span>
+    <span class="n">cluster</span><span class="o">.</span><span class="n">add_leader</span><span class="p">(</span><span class="s1">&#39;fake_leader&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="s1">&#39;fake_leader&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">term_dict</span>
+    <span class="k">assert</span> <span class="s1">&#39;fake&#39;</span> <span class="ow">in</span> <span class="n">cluster</span><span class="o">.</span><span class="n">prefix_trie</span></div>
+
+
+<div class="viewcode-block" id="test_whether_quick_match_score_is_correct"><a class="viewcode-back" href="../../../src.cluster.xhtml#src.cluster.Cluster_Test.test_whether_quick_match_score_is_correct">[docs]</a><span class="k">def</span> <span class="nf">test_whether_quick_match_score_is_correct</span><span class="p">():</span>
+
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">Cluster</span><span class="p">(</span><span class="s1">&#39;leader&#39;</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">cluster</span><span class="o">.</span><span class="n">quick_match_score</span><span class="p">(</span><span class="s1">&#39;lead&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
+    <span class="k">assert</span> <span class="n">cluster</span><span class="o">.</span><span class="n">quick_match_score</span><span class="p">(</span><span class="s1">&#39;peader&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></div>
+</pre></div>
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

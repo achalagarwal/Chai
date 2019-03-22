@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <title>expression package</title>
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="expression-package">
+<h1>expression package</h1>
+<div class="section" id="submodules">
+<h2>Submodules</h2>
+</div>
+<div class="section" id="item">
+<h2>Item</h2>
+<p>Class for defining a User Item</p>
+<span class="target" id="module-src.expression.Item"></span><dl class="class">
+<dt id="src.expression.Item.Item">
+<em class="property">class </em><code class="descclassname">src.expression.Item.</code><code class="descname">Item</code><span class="sig-paren">(</span><em>user_id='Test'</em>, <em>name='Test'</em>, <em>subtag=''</em>, <em>quantity=1</em>, <em>dzer_id='Test'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Item.xhtml#Item"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a><span class="link-target"> [https://docs.python.org/3/library/functions.html#object]</span></p>
+<dl class="method">
+<dt id="src.expression.Item.Item.add_cluster">
+<code class="descname">add_cluster</code><span class="sig-paren">(</span><em>term</em>, <em>cluster</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Item.xhtml#Item.add_cluster"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.expression.Item.Item.get_name">
+<code class="descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Item.xhtml#Item.get_name"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.expression.Item.Item.get_subtag">
+<code class="descname">get_subtag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Item.xhtml#Item.get_subtag"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="sku">
+<h2>SKU</h2>
+<p>Class for defining an SKU</p>
+<span class="target" id="module-src.expression.Sku"></span><dl class="class">
+<dt id="src.expression.Sku.Sku">
+<em class="property">class </em><code class="descclassname">src.expression.Sku.</code><code class="descname">Sku</code><span class="sig-paren">(</span><em>sku_name</em>, <em>sku_subtag=''</em>, <em>sku_id=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Sku.xhtml#Sku"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a><span class="link-target"> [https://docs.python.org/3/library/functions.html#object]</span></p>
+<dl class="method">
+<dt id="src.expression.Sku.Sku.add_cluster">
+<code class="descname">add_cluster</code><span class="sig-paren">(</span><em>term</em>, <em>cluster</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Sku.xhtml#Sku.add_cluster"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.expression.Sku.Sku.add_dzer">
+<code class="descname">add_dzer</code><span class="sig-paren">(</span><em>dzer_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Sku.xhtml#Sku.add_dzer"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.expression.Sku.Sku.add_user">
+<code class="descname">add_user</code><span class="sig-paren">(</span><em>user_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Sku.xhtml#Sku.add_user"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.expression.Sku.Sku.get_name">
+<code class="descname">get_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Sku.xhtml#Sku.get_name"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.expression.Sku.Sku.get_subtag">
+<code class="descname">get_subtag</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Sku.xhtml#Sku.get_subtag"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.expression.Sku.Sku.is_eligible">
+<code class="descname">is_eligible</code><span class="sig-paren">(</span><em>item_name</em>, <em>item_subtag=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Sku.xhtml#Sku.is_eligible"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.expression.Sku.Sku.match_distance">
+<code class="descname">match_distance</code><span class="sig-paren">(</span><em>item_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Sku.xhtml#Sku.match_distance"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.expression.Sku.Sku.setup_popularity">
+<code class="descname">setup_popularity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Sku.xhtml#Sku.setup_popularity"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.expression.Sku.Sku.update_count">
+<code class="descname">update_count</code><span class="sig-paren">(</span><em>quantity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Sku.xhtml#Sku.update_count"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.expression.Sku.Sku.update_popularity">
+<code class="descname">update_popularity</code><span class="sig-paren">(</span><em>popularity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Sku.xhtml#Sku.update_popularity"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.expression.Sku.Sku.update_score">
+<code class="descname">update_score</code><span class="sig-paren">(</span><em>score</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/expression/Sku.xhtml#Sku.update_score"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.expression">
+<span id="module-contents"></span><h2>Module contents</h2>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

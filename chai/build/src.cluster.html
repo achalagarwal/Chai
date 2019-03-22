@@ -1,0 +1,296 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>cluster package &#8212; Chai Official documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="corpus package" href="src.corpus.html" />
+    <link rel="prev" title="Utils package" href="src.Utils.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="cluster-package">
+<h1>cluster package<a class="headerlink" href="#cluster-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src.cluster.Cluster">
+<span id="cluster"></span><h2>Cluster<a class="headerlink" href="#module-src.cluster.Cluster" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="src.cluster.Cluster.Cluster">
+<em class="property">class </em><code class="descclassname">src.cluster.Cluster.</code><code class="descname">Cluster</code><span class="sig-paren">(</span><em>leader_term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.html#Cluster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster.Cluster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Clusters are the primary blocks of the complete NER model.</p>
+<p>They work on individual words i.e. each word is considered separately before cluster assignment</p>
+<p>Clusters are defined with the help of their leader, and may contain more than one leader terms. Clusters contain a prefix trie to enable fast matching, the matching algorithm is plug and play ready and a paramter for tuning the strictness of the cluster is also available</p>
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.add_leader">
+<code class="descname">add_leader</code><span class="sig-paren">(</span><em>leader_term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.html#Cluster.add_leader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster.Cluster.add_leader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds leader term to the cluster</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>leader_term</strong> – the leader term which needs to be added</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.add_term">
+<code class="descname">add_term</code><span class="sig-paren">(</span><em>term</em>, <em>score=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.html#Cluster.add_term"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster.Cluster.add_term" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a term to the cluster</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>term</strong> – the term that needs to be added to the cluster</li>
+<li><strong>score</strong> – the score for the term that needs to be added</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.add_to_trie">
+<code class="descname">add_to_trie</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.html#Cluster.add_to_trie"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster.Cluster.add_to_trie" title="Permalink to this definition">¶</a></dt>
+<dd><p>A helper function for adding a term to a cluster, reursively adds</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>term</strong> – the term whose prefixes need to be added in the trie</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.fuzzy_match_score">
+<code class="descname">fuzzy_match_score</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.html#Cluster.fuzzy_match_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster.Cluster.fuzzy_match_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper Function called by <em>match_score</em> to compute the score for a new term</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>term</strong> – the term which needs to be scored</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.get_sorted_terms">
+<code class="descname">get_sorted_terms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.html#Cluster.get_sorted_terms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster.Cluster.get_sorted_terms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.has_term">
+<code class="descname">has_term</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.html#Cluster.has_term"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster.Cluster.has_term" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a term is in the set of terms</p>
+<p>Params: term -&gt; the term which needs to be checked</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.is_in_trie">
+<code class="descname">is_in_trie</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.html#Cluster.is_in_trie"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster.Cluster.is_in_trie" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.is_leader">
+<code class="descname">is_leader</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.html#Cluster.is_leader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster.Cluster.is_leader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.match_score">
+<code class="descname">match_score</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.html#Cluster.match_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster.Cluster.match_score" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the score of a term’s match in a cluster</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>term</strong> – the term whose cluster match score needs to be computed</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.cluster.Cluster.Cluster.name">
+<code class="descname">name</code><a class="headerlink" href="#src.cluster.Cluster.Cluster.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name i.e. the current leader of the cluster</p>
+<p>Params: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.quick_match_score">
+<code class="descname">quick_match_score</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.html#Cluster.quick_match_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster.Cluster.quick_match_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.update_leader">
+<code class="descname">update_leader</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.html#Cluster.update_leader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster.Cluster.update_leader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the leader of the cluster to the term with the highest scoreself.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.cluster.Cluster_Test">
+<span id="cluster-test"></span><h2>Cluster Test<a class="headerlink" href="#module-src.cluster.Cluster_Test" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="src.cluster.Cluster_Test.test_whether_a_term_is_getting_added_to_the_term_cache_when_add_term_is_called_and_its_score_is_likewise_updated">
+<code class="descclassname">src.cluster.Cluster_Test.</code><code class="descname">test_whether_a_term_is_getting_added_to_the_term_cache_when_add_term_is_called_and_its_score_is_likewise_updated</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster_Test.html#test_whether_a_term_is_getting_added_to_the_term_cache_when_add_term_is_called_and_its_score_is_likewise_updated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster_Test.test_whether_a_term_is_getting_added_to_the_term_cache_when_add_term_is_called_and_its_score_is_likewise_updated" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.cluster.Cluster_Test.test_whether_add_leader_adds_to_prefix_trie">
+<code class="descclassname">src.cluster.Cluster_Test.</code><code class="descname">test_whether_add_leader_adds_to_prefix_trie</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster_Test.html#test_whether_add_leader_adds_to_prefix_trie"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster_Test.test_whether_add_leader_adds_to_prefix_trie" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.cluster.Cluster_Test.test_whether_cluster_leader_update_is_working">
+<code class="descclassname">src.cluster.Cluster_Test.</code><code class="descname">test_whether_cluster_leader_update_is_working</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster_Test.html#test_whether_cluster_leader_update_is_working"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster_Test.test_whether_cluster_leader_update_is_working" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.cluster.Cluster_Test.test_whether_quick_match_score_is_correct">
+<code class="descclassname">src.cluster.Cluster_Test.</code><code class="descname">test_whether_quick_match_score_is_correct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster_Test.html#test_whether_quick_match_score_is_correct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster_Test.test_whether_quick_match_score_is_correct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.cluster.Cluster_Test.test_whether_the_add_term_is_adding_appropriately_to_prefix_trie">
+<code class="descclassname">src.cluster.Cluster_Test.</code><code class="descname">test_whether_the_add_term_is_adding_appropriately_to_prefix_trie</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster_Test.html#test_whether_the_add_term_is_adding_appropriately_to_prefix_trie"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.Cluster_Test.test_whether_the_add_term_is_adding_appropriately_to_prefix_trie" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.cluster.cluster_utils">
+<span id="cluster-utilities"></span><h2>Cluster Utilities<a class="headerlink" href="#module-src.cluster.cluster_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="src.cluster.cluster_utils.match_score">
+<code class="descclassname">src.cluster.cluster_utils.</code><code class="descname">match_score</code><span class="sig-paren">(</span><em>term1</em>, <em>term2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/cluster_utils.html#match_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.cluster.cluster_utils.match_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.cluster">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.cluster" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Chai</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="src.html">src package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="src.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="src.Utils.html">Utils package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">cluster package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.cluster.Cluster">Cluster</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.cluster.Cluster_Test">Cluster Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.cluster.cluster_utils">Cluster Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.cluster">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.corpus.html">corpus package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.expression.html">expression package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.master.html">master package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.singletons.html">singletons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.temp.html">temporary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.wrappers.html">wrappers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src.SKU_Match">SKU Match</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src.self_test">Self Test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="src.html">src package</a><ul>
+      <li>Previous: <a href="src.Utils.html" title="previous chapter">Utils package</a></li>
+      <li>Next: <a href="src.corpus.html" title="next chapter">corpus package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Achal Agarwal, Shovik Ghosh.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/src.cluster.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

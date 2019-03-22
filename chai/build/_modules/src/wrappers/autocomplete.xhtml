@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.wrappers.autocomplete</title>
+    <link rel="stylesheet" href="../../../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for src.wrappers.autocomplete</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">src.Utils.sku_utils</span> <span class="k">import</span> <span class="n">clean_item_with_meta</span>
+<span class="kn">from</span> <span class="nn">fuzzywuzzy</span> <span class="k">import</span> <span class="n">fuzz</span>
+
+
+<div class="viewcode-block" id="AutoComplete"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.autocomplete.AutoComplete">[docs]</a><span class="k">class</span> <span class="nc">AutoComplete</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">match_book</span><span class="p">):</span>
+
+        <span class="c1"># assert type(match_book) is Match.MatchSku</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_matchbook</span> <span class="o">=</span> <span class="n">match_book</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lru_cache</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lru_size</span> <span class="o">=</span> <span class="mi">100000</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_query_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="AutoComplete.get_from_cache"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.autocomplete.AutoComplete.get_from_cache">[docs]</a>    <span class="k">def</span> <span class="nf">get_from_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lru_cache</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lru_cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span> <span class="n">value</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span></div>
+
+<div class="viewcode-block" id="AutoComplete.set_in_cache"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.autocomplete.AutoComplete.set_in_cache">[docs]</a>    <span class="k">def</span> <span class="nf">set_in_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_lru_cache</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lru_cache</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lru_size</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_lru_cache</span><span class="o">.</span><span class="n">popitem</span><span class="p">(</span><span class="n">last</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lru_cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span></div>
+
+    <span class="c1"># def get_cached_results(self, query):</span>
+    <span class="c1">#</span>
+    <span class="c1">#     if query == &#39;&#39;:</span>
+    <span class="c1">#         return []</span>
+    <span class="c1">#</span>
+    <span class="c1">#     return self._lru_cache.get(query, self.get_cached_results(query[0:-1]))</span>
+
+<div class="viewcode-block" id="AutoComplete.get_cluster_match_score"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.autocomplete.AutoComplete.get_cluster_match_score">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_cluster_match_score</span><span class="p">(</span><span class="n">sku</span><span class="p">,</span> <span class="n">query_clusters</span><span class="p">):</span>
+
+        <span class="n">sku_clusters</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">sku</span><span class="o">.</span><span class="n">cluster_terms</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">match_clusters</span> <span class="o">=</span> <span class="n">query_clusters</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">sku_clusters</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">match_clusters</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">match_clusters</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">sku</span><span class="o">.</span><span class="n">terms</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">match_clusters</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">query_clusters</span><span class="p">))</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="AutoComplete.get_meta_match_score"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.autocomplete.AutoComplete.get_meta_match_score">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_meta_match_score</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">sku</span><span class="p">):</span>
+
+        <span class="n">sku_meta</span> <span class="o">=</span> <span class="n">sku</span><span class="o">.</span><span class="n">meta_data</span>
+        <span class="n">query_terms</span><span class="p">,</span> <span class="n">query_meta</span> <span class="o">=</span> <span class="n">clean_item_with_meta</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">query_meta_term</span> <span class="ow">in</span> <span class="n">query_meta</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">sku_meta_term</span> <span class="ow">in</span> <span class="n">sku_meta</span><span class="p">:</span>
+                <span class="n">temp_fuzz</span> <span class="o">=</span> <span class="n">fuzz</span><span class="o">.</span><span class="n">ratio</span><span class="p">(</span><span class="n">query_meta_term</span><span class="p">,</span> <span class="n">sku_meta_term</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">temp_fuzz</span> <span class="o">&gt;=</span> <span class="mi">75</span><span class="p">:</span>
+                    <span class="n">score</span> <span class="o">+=</span> <span class="n">temp_fuzz</span> <span class="o">/</span> <span class="mi">100</span>
+                    <span class="k">break</span>
+
+        <span class="k">return</span> <span class="n">score</span></div>
+
+<div class="viewcode-block" id="AutoComplete.hit_query"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.autocomplete.AutoComplete.hit_query">[docs]</a>    <span class="k">def</span> <span class="nf">hit_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+
+        <span class="n">cached_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_from_cache</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="c1"># if value == -1 then no results in cache</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cached_value</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cached_value</span>
+
+        <span class="n">terms</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">query_clusters</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="c1"># Handling Last Term separately</span>
+        <span class="n">last_term</span> <span class="o">=</span> <span class="n">terms</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">last_term_cluster</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matchbook</span><span class="o">.</span><span class="n">get_term_cluster</span><span class="p">(</span><span class="n">last_term</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">last_term_cluster</span><span class="p">:</span>
+            <span class="n">query_clusters</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">last_term_cluster</span><span class="p">)</span>
+            <span class="n">last_term_score</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">last_term_sku</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matchbook</span><span class="o">.</span><span class="n">cluster_dict</span><span class="p">[</span><span class="n">last_term_cluster</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">last_term_score</span> <span class="o">=</span> <span class="mf">0.5</span>
+            <span class="n">last_term_sku</span><span class="p">,</span> <span class="n">last_term_clusters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matchbook</span><span class="o">.</span><span class="n">get_sku_with_clusters_from_term_prefix_clusters</span><span class="p">(</span><span class="n">last_term</span><span class="p">)</span>
+            <span class="n">query_clusters</span> <span class="o">=</span> <span class="n">query_clusters</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="n">last_term_clusters</span><span class="p">)</span>
+
+        <span class="c1"># Dict to store all relevant sku information</span>
+        <span class="n">sku_info</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># Handling all the other terms</span>
+        <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">terms</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">term_cluster</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matchbook</span><span class="o">.</span><span class="n">get_term_cluster</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">term_cluster</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">query_clusters</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">term_cluster</span><span class="p">)</span>
+            <span class="n">term_sku_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matchbook</span><span class="o">.</span><span class="n">cluster_dict</span><span class="p">[</span><span class="n">term_cluster</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">term_sku_set</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">sku_info</span><span class="p">:</span>
+                    <span class="n">sku_info</span><span class="p">[</span><span class="n">sku</span><span class="p">][</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">sku_info</span><span class="p">[</span><span class="n">sku</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;cluster_match_score&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;meta_match_score&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+        <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">last_term_sku</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">sku_info</span><span class="p">:</span>
+                <span class="n">sku_info</span><span class="p">[</span><span class="n">sku</span><span class="p">][</span><span class="s1">&#39;count&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">last_term_score</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sku_info</span><span class="p">[</span><span class="n">sku</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="n">last_term_score</span><span class="p">,</span> <span class="s1">&#39;cluster_match_score&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;meta_match_score&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+        <span class="c1"># Update two scores for the SKUs in sku_info</span>
+        <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">sku_info</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">sku_info</span><span class="p">[</span><span class="n">sku</span><span class="p">][</span><span class="s1">&#39;cluster_match_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">AutoComplete</span><span class="o">.</span><span class="n">get_cluster_match_score</span><span class="p">(</span><span class="n">sku</span><span class="p">,</span> <span class="n">query_clusters</span><span class="p">)</span>
+            <span class="n">sku_info</span><span class="p">[</span><span class="n">sku</span><span class="p">][</span><span class="s1">&#39;meta_match_score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">AutoComplete</span><span class="o">.</span><span class="n">get_meta_match_score</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">sku</span><span class="p">)</span>
+
+        <span class="c1"># zip all the scores with the sku</span>
+        <span class="n">sku_zip</span> <span class="o">=</span> <span class="p">[(</span><span class="n">sku</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span> <span class="k">for</span> <span class="n">sku</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">sku_info</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+
+        <span class="c1"># Sort based on count</span>
+        <span class="n">sku_zip</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;count&#39;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># truncating sku list to limit paramter</span>
+
+        <span class="n">has_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">truncated_zip</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># remove SKUs with the same name</span>
+        <span class="k">for</span> <span class="n">sku</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">sku_zip</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">sku</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="ow">in</span> <span class="n">has_dict</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">has_dict</span><span class="p">[</span><span class="n">sku</span><span class="o">.</span><span class="n">get_name</span><span class="p">()]</span> <span class="o">=</span> <span class="n">info</span>
+            <span class="n">truncated_zip</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">sku</span><span class="p">,</span> <span class="n">info</span><span class="p">))</span>
+
+        <span class="c1"># Sort based on meta match score</span>
+        <span class="n">truncated_zip</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;meta_match_score&#39;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Sort based on Popularity</span>
+        <span class="n">truncated_zip</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_popularity</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Limit results to 10</span>
+        <span class="n">limited_zip</span> <span class="o">=</span> <span class="n">truncated_zip</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">limit</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Update Cache</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_in_cache</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">limited_zip</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">limited_zip</span></div></div>
+
+
+
+</pre></div>
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

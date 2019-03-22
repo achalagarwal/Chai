@@ -1,0 +1,38 @@
+src.cluster package
+===================
+
+Submodules
+----------
+
+src.cluster.Cluster module
+--------------------------
+
+.. automodule:: src.cluster.Cluster
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+src.cluster.Cluster\_Test module
+--------------------------------
+
+.. automodule:: src.cluster.Cluster_Test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+src.cluster.cluster\_utils module
+---------------------------------
+
+.. automodule:: src.cluster.cluster_utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.cluster
+    :members:
+    :undoc-members:
+    :show-inheritance:

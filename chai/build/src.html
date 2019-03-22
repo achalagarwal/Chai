@@ -1,0 +1,467 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>src package &#8212; Chai Official documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utils package" href="src.Utils.html" />
+    <link rel="prev" title="Welcome to Chai’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="src-package">
+<h1>src package<a class="headerlink" href="#src-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="src.Utils.html">Utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.Utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.Utils.html#module-src.Utils.Pickler">Pickler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.Utils.html#module-src.Utils.logger">Logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.Utils.html#module-src.Utils.scorer">Scorer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.Utils.html#module-src.Utils.scoring_utils">Scoring Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.Utils.html#module-src.Utils.sku_utils">Expression Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.Utils.html#module-src.Utils">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="src.cluster.html">cluster package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.cluster.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.cluster.html#module-src.cluster.Cluster">Cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.cluster.html#module-src.cluster.Cluster_Test">Cluster Test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.cluster.html#module-src.cluster.cluster_utils">Cluster Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.cluster.html#module-src.cluster">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="src.corpus.html">corpus package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.corpus.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.corpus.html#module-src.corpus.Corpus">Corpus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.corpus.html#module-src.corpus.Corpus_Test">Corpus Test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.corpus.html#module-src.corpus">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="src.expression.html">expression package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.expression.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.expression.html#item">Item</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.expression.html#sku">SKU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.expression.html#module-src.expression">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="src.master.html">master package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.master.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.master.html#match-module">Match module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.master.html#tagger">Tagger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.master.html#module-src.master">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="src.singletons.html">singletons</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.singletons.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.singletons.html#module-src.singletons.sku_match">Sku Matchbook Singleton</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.singletons.html#module-src.singletons">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="src.temp.html">temporary</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.temp.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.temp.html#module-src.temp.clusterer">clusterer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.temp.html#module-src.temp.string_cluster">string cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.temp.html#module-src.temp">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="src.wrappers.html">wrappers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="src.wrappers.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.wrappers.html#alcohol-limit">Alcohol Limit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.wrappers.html#module-src.wrappers.autocomplete">AutoComplete</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.wrappers.html#module-src.wrappers">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src.SKU_Match">
+<span id="sku-match"></span><h2>SKU Match<a class="headerlink" href="#module-src.SKU_Match" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="src.SKU_Match.build_sku_list">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">build_sku_list</code><span class="sig-paren">(</span><em>sku_name_tag</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#build_sku_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.build_sku_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.cleanSKUData">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">cleanSKUData</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#cleanSKUData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.cleanSKUData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.computeMatchWeight">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">computeMatchWeight</code><span class="sig-paren">(</span><em>item</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#computeMatchWeight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.computeMatchWeight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.curateData">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">curateData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#curateData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.curateData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.extractFromString">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">extractFromString</code><span class="sig-paren">(</span><em>string</em>, <em>keyword='product'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#extractFromString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.extractFromString" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.extractWords">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">extractWords</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#extractWords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.extractWords" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.extract_number_from_string">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">extract_number_from_string</code><span class="sig-paren">(</span><em>string</em>, <em>keyword</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#extract_number_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.extract_number_from_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.extract_skus_from_name_dict">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">extract_skus_from_name_dict</code><span class="sig-paren">(</span><em>item_name_tag</em>, <em>item_dict</em>, <em>sku_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#extract_skus_from_name_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.extract_skus_from_name_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.find_min_char_index">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">find_min_char_index</code><span class="sig-paren">(</span><em>char</em>, <em>word</em>, <em>index=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#find_min_char_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.find_min_char_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.getAlternate">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">getAlternate</code><span class="sig-paren">(</span><em>item</em>, <em>dict</em>, <em>similar</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#getAlternate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.getAlternate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.getCSV">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">getCSV</code><span class="sig-paren">(</span><em>data</em>, <em>filename='data.csv'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#getCSV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.getCSV" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.getCustomOrderFormDataFromFile">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">getCustomOrderFormDataFromFile</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#getCustomOrderFormDataFromFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.getCustomOrderFormDataFromFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.getData">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">getData</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#getData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.getData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.getDistance">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">getDistance</code><span class="sig-paren">(</span><em>word1</em>, <em>word2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#getDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.getDistance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.getInfoFromOrder">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">getInfoFromOrder</code><span class="sig-paren">(</span><em>order</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#getInfoFromOrder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.getInfoFromOrder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.getLinearSpan">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">getLinearSpan</code><span class="sig-paren">(</span><em>words</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#getLinearSpan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.getLinearSpan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.getLower">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">getLower</code><span class="sig-paren">(</span><em>word</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#getLower"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.getLower" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.getMatch">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">getMatch</code><span class="sig-paren">(</span><em>item</em>, <em>data</em>, <em>func=&lt;function getDistance&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#getMatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.getMatch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.getOrderFormDataFromFile">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">getOrderFormDataFromFile</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#getOrderFormDataFromFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.getOrderFormDataFromFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.getSKUMatch">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">getSKUMatch</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#getSKUMatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.getSKUMatch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.getTypoCSV">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">getTypoCSV</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#getTypoCSV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.getTypoCSV" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.getTypos">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">getTypos</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#getTypos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.getTypos" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.get_alcohol_data">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">get_alcohol_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#get_alcohol_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.get_alcohol_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.get_better_from_best">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">get_better_from_best</code><span class="sig-paren">(</span><em>item</em>, <em>best</em>, <em>best_sku_matched</em>, <em>best_items_matched</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#get_better_from_best"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.get_better_from_best" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.get_class_dict_from_name_dict">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">get_class_dict_from_name_dict</code><span class="sig-paren">(</span><em>name_dict</em>, <em>sku_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#get_class_dict_from_name_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.get_class_dict_from_name_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.get_corresponding_sku_object">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">get_corresponding_sku_object</code><span class="sig-paren">(</span><em>sku_name</em>, <em>sku_names</em>, <em>sku_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#get_corresponding_sku_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.get_corresponding_sku_object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.get_decay">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">get_decay</code><span class="sig-paren">(</span><em>prev_decay</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#get_decay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.get_decay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.get_info_from_order_form">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">get_info_from_order_form</code><span class="sig-paren">(</span><em>orderform</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#get_info_from_order_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.get_info_from_order_form" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.get_match">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">get_match</code><span class="sig-paren">(</span><em>item</em>, <em>sku_list</em>, <em>func=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#get_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.get_match" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.get_name_dict_from_class_dict">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">get_name_dict_from_class_dict</code><span class="sig-paren">(</span><em>class_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#get_name_dict_from_class_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.get_name_dict_from_class_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.get_sku_list">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">get_sku_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#get_sku_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.get_sku_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.get_sku_list_csv">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">get_sku_list_csv</code><span class="sig-paren">(</span><em>sku_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#get_sku_list_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.get_sku_list_csv" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.have_similar_length">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">have_similar_length</code><span class="sig-paren">(</span><em>word1</em>, <em>word2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#have_similar_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.have_similar_length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.helperGetElligiblePair">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">helperGetElligiblePair</code><span class="sig-paren">(</span><em>item1</em>, <em>item2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#helperGetElligiblePair"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.helperGetElligiblePair" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.helper_typo_distance">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">helper_typo_distance</code><span class="sig-paren">(</span><em>incorrect</em>, <em>correct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#helper_typo_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.helper_typo_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.importBigBasketDataFromFile">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">importBigBasketDataFromFile</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#importBigBasketDataFromFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.importBigBasketDataFromFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.importSKUDataFromFile">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">importSKUDataFromFile</code><span class="sig-paren">(</span><em>fileName</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#importSKUDataFromFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.importSKUDataFromFile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.import_madhuloka_data">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">import_madhuloka_data</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#import_madhuloka_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.import_madhuloka_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.isVowel">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">isVowel</code><span class="sig-paren">(</span><em>char</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#isVowel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.isVowel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.is_good_match">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">is_good_match</code><span class="sig-paren">(</span><em>sku_name</em>, <em>itemname</em>, <em>list1</em>, <em>list2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#is_good_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.is_good_match" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.load_english_words">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">load_english_words</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#load_english_words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.load_english_words" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.main">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.match_item_to_raw_data">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">match_item_to_raw_data</code><span class="sig-paren">(</span><em>item</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#match_item_to_raw_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.match_item_to_raw_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.match_item_to_sku">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">match_item_to_sku</code><span class="sig-paren">(</span><em>item_data_tuple_with_uid_dzid_tag</em>, <em>sku_data_tuple_with_tag</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#match_item_to_sku"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.match_item_to_sku" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.merge_list_of_lists">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">merge_list_of_lists</code><span class="sig-paren">(</span><em>list_of_lists</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#merge_list_of_lists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.merge_list_of_lists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.minimalSimilarity">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">minimalSimilarity</code><span class="sig-paren">(</span><em>word1</em>, <em>word2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#minimalSimilarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.minimalSimilarity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.populate">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">populate</code><span class="sig-paren">(</span><em>item</em>, <em>sku_matches</em>, <em>sku_list</em>, <em>sku_count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#populate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.populate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.printPercentage">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">printPercentage</code><span class="sig-paren">(</span><em>count</em>, <em>total</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#printPercentage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.printPercentage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.printVector">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">printVector</code><span class="sig-paren">(</span><em>vec</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#printVector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.printVector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.sort_sku_list">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">sort_sku_list</code><span class="sig-paren">(</span><em>sku_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#sort_sku_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.sort_sku_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.tag_and_score">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">tag_and_score</code><span class="sig-paren">(</span><em>items</em>, <em>sku_list</em>, <em>item_dict={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#tag_and_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.tag_and_score" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.test_cluster_popularity">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">test_cluster_popularity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#test_cluster_popularity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.test_cluster_popularity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.test_pickled_data">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">test_pickled_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#test_pickled_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.test_pickled_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.SKU_Match.typo_distance">
+<code class="descclassname">src.SKU_Match.</code><code class="descname">typo_distance</code><span class="sig-paren">(</span><em>incorrect</em>, <em>correct</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/SKU_Match.html#typo_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.SKU_Match.typo_distance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.self_test">
+<span id="self-test"></span><h2>Self Test<a class="headerlink" href="#module-src.self_test" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Chai</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">src package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="src.Utils.html">Utils package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.cluster.html">cluster package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.corpus.html">corpus package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.expression.html">expression package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.master.html">master package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.singletons.html">singletons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.temp.html">temporary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.wrappers.html">wrappers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-src.SKU_Match">SKU Match</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-src.self_test">Self Test</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-src">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Chai’s documentation!</a></li>
+      <li>Next: <a href="src.Utils.html" title="next chapter">Utils package</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Achal Agarwal, Shovik Ghosh.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="_sources/src.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<ncx version="2005-1" xmlns="http://www.daisy.org/z3986/2005/ncx/">
+  <head>
+    <meta name="dtb:uid" content="unknown"/>
+    <meta name="dtb:depth" content="3"/>
+    <meta name="dtb:totalPageCount" content="0"/>
+    <meta name="dtb:maxPageNumber" content="0"/>
+  </head>
+  <docTitle>
+    <text>Chai</text>
+  </docTitle>
+  <navMap>    
+    <navPoint id="navPoint1" playOrder="1">
+      <navLabel>
+        <text>Welcome to Chai’s documentation!</text>
+      </navLabel>
+      <content src="index.xhtml" />  
+    </navPoint>
+    <navPoint id="navPoint2" playOrder="2">
+      <navLabel>
+        <text>src package</text>
+      </navLabel>
+      <content src="src.xhtml" />  
+      <navPoint id="navPoint3" playOrder="2">
+        <navLabel>
+          <text>src package</text>
+        </navLabel>
+        <content src="src.xhtml" />  
+      </navPoint>
+      <navPoint id="navPoint4" playOrder="3">
+        <navLabel>
+          <text>Subpackages</text>
+        </navLabel>
+        <content src="src.xhtml#subpackages" />  
+        <navPoint id="navPoint5" playOrder="3">
+          <navLabel>
+            <text>Subpackages</text>
+          </navLabel>
+          <content src="src.xhtml#subpackages" />  
+        </navPoint>
+        <navPoint id="navPoint6" playOrder="4">
+          <navLabel>
+            <text>Utils package</text>
+          </navLabel>
+          <content src="src.Utils.xhtml" />  
+        </navPoint>
+        <navPoint id="navPoint7" playOrder="5">
+          <navLabel>
+            <text>cluster package</text>
+          </navLabel>
+          <content src="src.cluster.xhtml" />  
+        </navPoint>
+        <navPoint id="navPoint8" playOrder="6">
+          <navLabel>
+            <text>corpus package</text>
+          </navLabel>
+          <content src="src.corpus.xhtml" />  
+        </navPoint>
+        <navPoint id="navPoint9" playOrder="7">
+          <navLabel>
+            <text>expression package</text>
+          </navLabel>
+          <content src="src.expression.xhtml" />  
+        </navPoint>
+        <navPoint id="navPoint10" playOrder="8">
+          <navLabel>
+            <text>master package</text>
+          </navLabel>
+          <content src="src.master.xhtml" />  
+        </navPoint>
+        <navPoint id="navPoint11" playOrder="9">
+          <navLabel>
+            <text>singletons</text>
+          </navLabel>
+          <content src="src.singletons.xhtml" />  
+        </navPoint>
+        <navPoint id="navPoint12" playOrder="10">
+          <navLabel>
+            <text>temporary</text>
+          </navLabel>
+          <content src="src.temp.xhtml" />  
+        </navPoint>
+        <navPoint id="navPoint13" playOrder="11">
+          <navLabel>
+            <text>wrappers</text>
+          </navLabel>
+          <content src="src.wrappers.xhtml" />  
+        </navPoint>
+      </navPoint>
+      <navPoint id="navPoint14" playOrder="12">
+        <navLabel>
+          <text>Submodules</text>
+        </navLabel>
+        <content src="src.xhtml#submodules" />  
+      </navPoint>
+      <navPoint id="navPoint15" playOrder="13">
+        <navLabel>
+          <text>SKU Match</text>
+        </navLabel>
+        <content src="src.xhtml#module-src.SKU_Match" />  
+      </navPoint>
+      <navPoint id="navPoint16" playOrder="14">
+        <navLabel>
+          <text>Self Test</text>
+        </navLabel>
+        <content src="src.xhtml#module-src.self_test" />  
+      </navPoint>
+      <navPoint id="navPoint17" playOrder="15">
+        <navLabel>
+          <text>Module contents</text>
+        </navLabel>
+        <content src="src.xhtml#module-src" />  
+      </navPoint>
+    </navPoint>
+  </navMap>
+</ncx>

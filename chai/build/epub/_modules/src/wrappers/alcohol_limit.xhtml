@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.wrappers.alcohol_limit</title>
+    <link rel="stylesheet" href="../../../_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for src.wrappers.alcohol_limit</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">src.Utils.sku_utils</span> <span class="k">import</span> <span class="n">extract_alcohol_liquid_quantity</span>
+<span class="kn">from</span> <span class="nn">src.master</span> <span class="k">import</span> <span class="n">Tagger</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="k">import</span> <span class="n">maxsize</span>
+<span class="kn">from</span> <span class="nn">src.Utils</span> <span class="k">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">src.expression</span> <span class="k">import</span> <span class="n">Item</span>
+<span class="kn">from</span> <span class="nn">src.singletons</span> <span class="k">import</span> <span class="n">sku_match</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">logger</span>
+<span class="n">Tagger</span> <span class="o">=</span> <span class="n">Tagger</span><span class="o">.</span><span class="n">Tagger</span>
+<span class="n">sku_matcher_singleton</span> <span class="o">=</span> <span class="n">sku_match</span><span class="o">.</span><span class="n">SkuSingleton</span><span class="p">()</span>
+<span class="n">matcher</span> <span class="o">=</span> <span class="n">sku_matcher_singleton</span><span class="o">.</span><span class="n">get_obj</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="AlcoholLimit"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimit">[docs]</a><span class="k">class</span> <span class="nc">AlcoholLimit</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">,</span> <span class="n">matcher</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">strategy</span>
+
+        <span class="c1"># add dict for matching common tags</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;beer&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;pint&#39;</span><span class="p">:</span> <span class="mi">330</span><span class="p">,</span> <span class="s1">&#39;can&#39;</span><span class="p">:</span> <span class="mi">500</span><span class="p">},</span>
+                            <span class="s1">&#39;others&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;quarter&#39;</span><span class="p">:</span> <span class="mi">180</span><span class="p">,</span> <span class="s1">&#39;half&#39;</span><span class="p">:</span> <span class="mi">375</span><span class="p">,</span> <span class="s1">&#39;full&#39;</span><span class="p">:</span> <span class="mi">750</span><span class="p">,</span> <span class="s1">&#39;magnum&#39;</span><span class="p">:</span> <span class="mi">1500</span><span class="p">}}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">alcohol_tagger</span> <span class="o">=</span> <span class="n">Tagger</span><span class="p">(</span><span class="n">matcher</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">terms</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;beer&#39;</span><span class="p">,</span> <span class="s1">&#39;wine&#39;</span><span class="p">,</span> <span class="s1">&#39;brandy&#39;</span><span class="p">,</span> <span class="s1">&#39;gin&#39;</span><span class="p">,</span> <span class="s1">&#39;rum&#39;</span><span class="p">,</span> <span class="s1">&#39;vodka&#39;</span><span class="p">,</span> <span class="s1">&#39;breezer&#39;</span><span class="p">,</span> <span class="s1">&#39;tequila&#39;</span><span class="p">,</span> <span class="s1">&#39;whisky&#39;</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">terms</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alcohol_tagger</span><span class="o">.</span><span class="n">add_term</span><span class="p">(</span><span class="n">term</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_term_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_term_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">terms</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_term_dict</span><span class="p">[</span><span class="n">term</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">min_term_dict</span><span class="p">[</span><span class="n">term</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span> <span class="o">=</span> <span class="n">matcher</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">broad_categories</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;hard_liquor&#39;</span><span class="p">,</span> <span class="s1">&#39;wine&#39;</span><span class="p">,</span> <span class="s1">&#39;beer&#39;</span><span class="p">,</span> <span class="s1">&#39;toddy&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">category_limit</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;hard_liquor&#39;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span> <span class="s1">&#39;wine&#39;</span><span class="p">:</span> <span class="mi">9000</span><span class="p">,</span> <span class="s1">&#39;beer&#39;</span><span class="p">:</span> <span class="mi">18000</span><span class="p">,</span> <span class="s1">&#39;toddy&#39;</span><span class="p">:</span> <span class="mi">2500</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_category_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_category_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">broad_categories</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">max_category_dict</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">min_category_dict</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">term_category</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;beer&#39;</span><span class="p">:</span> <span class="s1">&#39;beer&#39;</span><span class="p">,</span> <span class="s1">&#39;wine&#39;</span><span class="p">:</span> <span class="s1">&#39;wine&#39;</span><span class="p">,</span> <span class="s1">&#39;brandy&#39;</span><span class="p">:</span> <span class="s1">&#39;hard_liquor&#39;</span><span class="p">,</span> <span class="s1">&#39;gin&#39;</span><span class="p">:</span> <span class="s1">&#39;hard_liquor&#39;</span><span class="p">,</span> <span class="s1">&#39;rum&#39;</span><span class="p">:</span> <span class="s1">&#39;hard_liquor&#39;</span><span class="p">,</span> <span class="s1">&#39;vodka&#39;</span><span class="p">:</span> <span class="s1">&#39;hard_liquor&#39;</span><span class="p">,</span> <span class="s1">&#39;breezer&#39;</span><span class="p">:</span> <span class="s1">&#39;beer&#39;</span><span class="p">,</span> <span class="s1">&#39;tequila&#39;</span><span class="p">:</span> <span class="s1">&#39;hard_liquor&#39;</span><span class="p">,</span> <span class="s1">&#39;whisky&#39;</span><span class="p">:</span> <span class="s1">&#39;hard_liquor&#39;</span><span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_quantities</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;beer&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">330</span><span class="p">,</span> <span class="mi">650</span><span class="p">),</span>
+                                   <span class="s1">&#39;wine&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">375</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span>
+                                   <span class="s1">&#39;brandy&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span>
+                                   <span class="s1">&#39;gin&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span>
+                                   <span class="s1">&#39;rum&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span>
+                                   <span class="s1">&#39;vodka&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span>
+                                   <span class="s1">&#39;breezer&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">650</span><span class="p">),</span>
+                                   <span class="s1">&#39;tequila&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span>
+                                   <span class="s1">&#39;whisky&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)}</span>
+
+<div class="viewcode-block" id="AlcoholLimit.update_values"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimit.update_values">[docs]</a>    <span class="k">def</span> <span class="nf">update_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tag</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">lower</span> <span class="o">&lt;</span> <span class="n">upper</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Type: &quot;</span><span class="p">,</span> <span class="n">tag</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Lower Bound (mls) : &quot;</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Upper Bound (mls) : &quot;</span><span class="p">,</span> <span class="n">upper</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">lower</span> <span class="o">==</span> <span class="n">upper</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Type: &quot;</span><span class="p">,</span> <span class="n">tag</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Quantity (mls) : &quot;</span><span class="p">,</span> <span class="n">lower</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_term_dict</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">+=</span> <span class="n">lower</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_term_dict</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">+=</span> <span class="n">upper</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_category_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">term_category</span><span class="p">[</span><span class="n">tag</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">lower</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_category_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">term_category</span><span class="p">[</span><span class="n">tag</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">upper</span>
+        <span class="k">return</span> <span class="n">tag</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span></div>
+
+<div class="viewcode-block" id="AlcoholLimit.update_default_values"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimit.update_default_values">[docs]</a>    <span class="k">def</span> <span class="nf">update_default_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alcohol_tag</span><span class="p">):</span>
+
+        <span class="n">min_q</span><span class="p">,</span> <span class="n">max_q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_quantities</span><span class="p">[</span><span class="n">alcohol_tag</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_values</span><span class="p">(</span><span class="n">alcohol_tag</span><span class="p">,</span> <span class="n">min_q</span><span class="p">,</span> <span class="n">max_q</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AlcoholLimit.get_ml"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimit.get_ml">[docs]</a>    <span class="k">def</span> <span class="nf">get_ml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">metric</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">metric</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_dict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_dict</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="s1">&#39;m&#39;</span> <span class="ow">in</span> <span class="n">metric</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">quantity</span>
+
+        <span class="k">return</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">quantity</span></div>
+
+    <span class="c1"># def hit_item(self, item):</span>
+    <span class="c1">#</span>
+    <span class="c1">#     # if item.get_subtag() == &#39;Grocery&#39;:</span>
+    <span class="c1">#     #     logger.info(&quot;%s has the subtag Grocery and hence ignored&quot;, item.get_name())</span>
+    <span class="c1">#     #     return</span>
+    <span class="c1">#</span>
+    <span class="c1">#     try:</span>
+    <span class="c1">#         assert item in self.matcher.item_list</span>
+    <span class="c1">#     except AssertionError:</span>
+    <span class="c1">#         self.matcher.add_item(item)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     min_ml = maxsize</span>
+    <span class="c1">#     max_ml = 0</span>
+    <span class="c1">#     flag = False</span>
+    <span class="c1">#     item_tag = self.alcohol_tagger.tag_item(item)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     if item_tag is None:</span>
+    <span class="c1">#</span>
+    <span class="c1">#         logger.info(&quot;%s was not detected to be a standard alcohol&quot;, item.get_name())</span>
+    <span class="c1">#         return None, 0, 0</span>
+    <span class="c1">#</span>
+    <span class="c1">#     quantity, metric = extract_alcohol_liquid_quantity(item, self.metric_dict.get(item_tag, self.metric_dict[&#39;others&#39;]))</span>
+    <span class="c1">#</span>
+    <span class="c1">#     if quantity:</span>
+    <span class="c1">#         min_ml = self.get_ml(quantity, metric)</span>
+    <span class="c1">#         max_ml = min_ml</span>
+    <span class="c1">#         flag = True</span>
+    <span class="c1">#</span>
+    <span class="c1">#     if quantity is None:</span>
+    <span class="c1">#</span>
+    <span class="c1">#         item_sku_list = self.matcher.match_item(item)</span>
+    <span class="c1">#         if not item_sku_list:</span>
+    <span class="c1">#             return self.update_default_values(item_tag)</span>
+    <span class="c1">#         max_score = max([x[1] for x in item_sku_list])</span>
+    <span class="c1">#         item_sku_list = list(filter(lambda x: x[1] == max_score, item_sku_list))</span>
+    <span class="c1">#         item_sku_list = list(map(lambda x: x[0], item_sku_list))</span>
+    <span class="c1">#</span>
+    <span class="c1">#         for sku in item_sku_list:</span>
+    <span class="c1">#</span>
+    <span class="c1">#             quantity, metric = extract_alcohol_liquid_quantity(sku, self.metric_dict)</span>
+    <span class="c1">#</span>
+    <span class="c1">#             if quantity is None:</span>
+    <span class="c1">#                 continue</span>
+    <span class="c1">#</span>
+    <span class="c1">#             flag = True</span>
+    <span class="c1">#</span>
+    <span class="c1">#             ml = self.get_ml(quantity, metric)</span>
+    <span class="c1">#</span>
+    <span class="c1">#             min_ml = min(min_ml, ml)</span>
+    <span class="c1">#             max_ml = max(max_ml, ml)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     if flag:</span>
+    <span class="c1">#         return self.update_values(item_tag, min_ml, max_ml)</span>
+    <span class="c1">#</span>
+    <span class="c1">#     else:</span>
+    <span class="c1">#         return self.update_default_values(item_tag)</span>
+
+<div class="viewcode-block" id="AlcoholLimit.check_order"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimit.check_order">[docs]</a>    <span class="k">def</span> <span class="nf">check_order</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">order_item</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span><span class="o">.</span><span class="n">hit_item</span><span class="p">(</span><span class="n">Item</span><span class="o">.</span><span class="n">Item</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">order_item</span><span class="p">,</span> <span class="n">subtag</span><span class="o">=</span><span class="s1">&#39;Alcohol&#39;</span><span class="p">))</span>
+        
+        <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="AlcoholLimit.get_order_details"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimit.get_order_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_order_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">order</span><span class="p">):</span>
+
+        <span class="n">order_details</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">order_item</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
+            <span class="n">item_tag</span><span class="p">,</span> <span class="n">item_lower</span><span class="p">,</span> <span class="n">item_upper</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span><span class="o">.</span><span class="n">hit_item</span><span class="p">(</span><span class="n">Item</span><span class="o">.</span><span class="n">Item</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">order_item</span><span class="p">,</span> <span class="n">subtag</span><span class="o">=</span><span class="s1">&#39;Alcohol&#39;</span><span class="p">))</span>
+            <span class="n">order_details</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;alcohol_type&#39;</span><span class="p">:</span> <span class="n">item_tag</span><span class="p">,</span> <span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="n">item_lower</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="n">item_upper</span><span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">order_details</span></div></div>
+
+
+
+<div class="viewcode-block" id="AlcoholLimitBangalore"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimitBangalore">[docs]</a><span class="k">class</span> <span class="nc">AlcoholLimitBangalore</span><span class="p">(</span><span class="n">AlcoholLimit</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">category_limit</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;hard_liquor&#39;</span><span class="p">:</span> <span class="mi">4000</span><span class="p">,</span> <span class="s1">&#39;wine&#39;</span><span class="p">:</span> <span class="mi">9000</span><span class="p">,</span> <span class="s1">&#39;beer&#39;</span><span class="p">:</span> <span class="mi">18000</span><span class="p">,</span> <span class="s1">&#39;toddy&#39;</span><span class="p">:</span> <span class="mi">2500</span><span class="p">}</span>
+
+<div class="viewcode-block" id="AlcoholLimitBangalore.hit_item"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimitBangalore.hit_item">[docs]</a>    <span class="k">def</span> <span class="nf">hit_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+
+        <span class="c1"># if item.get_subtag() == &#39;Grocery&#39;:</span>
+        <span class="c1">#     logger.info(&quot;%s has the subtag Grocery and hence ignored&quot;, item.get_name())</span>
+        <span class="c1">#     return</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span><span class="o">.</span><span class="n">item_list</span>
+        <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span><span class="o">.</span><span class="n">add_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="n">min_ml</span> <span class="o">=</span> <span class="n">maxsize</span>
+        <span class="n">max_ml</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">item_tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alcohol_tagger</span><span class="o">.</span><span class="n">tag_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">item_tag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> was not detected to be a standard alcohol&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+        <span class="n">quantity</span><span class="p">,</span> <span class="n">metric</span> <span class="o">=</span> <span class="n">extract_alcohol_liquid_quantity</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">item_tag</span><span class="p">,</span>
+                                                                                      <span class="bp">self</span><span class="o">.</span><span class="n">metric_dict</span><span class="p">[</span><span class="s1">&#39;others&#39;</span><span class="p">]))</span>
+
+        <span class="k">if</span> <span class="n">quantity</span><span class="p">:</span>
+            <span class="n">min_ml</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ml</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">metric</span><span class="p">)</span>
+            <span class="n">max_ml</span> <span class="o">=</span> <span class="n">min_ml</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">quantity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="n">item_sku_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span><span class="o">.</span><span class="n">match_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">item_sku_list</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_default_values</span><span class="p">(</span><span class="n">item_tag</span><span class="p">)</span>
+            <span class="n">max_score</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">item_sku_list</span><span class="p">])</span>
+            <span class="n">item_sku_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">max_score</span><span class="p">,</span> <span class="n">item_sku_list</span><span class="p">))</span>
+            <span class="n">item_sku_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item_sku_list</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">item_sku_list</span><span class="p">:</span>
+
+                <span class="n">quantity</span><span class="p">,</span> <span class="n">metric</span> <span class="o">=</span> <span class="n">extract_alcohol_liquid_quantity</span><span class="p">(</span><span class="n">sku</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_dict</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">quantity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="n">ml</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ml</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">metric</span><span class="p">)</span>
+
+                <span class="n">min_ml</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">min_ml</span><span class="p">,</span> <span class="n">ml</span><span class="p">)</span>
+                <span class="n">max_ml</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_ml</span><span class="p">,</span> <span class="n">ml</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">flag</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_values</span><span class="p">(</span><span class="n">item_tag</span><span class="p">,</span> <span class="n">min_ml</span><span class="p">,</span> <span class="n">max_ml</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_default_values</span><span class="p">(</span><span class="n">item_tag</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AlcoholLimitBangalore.get_rule_details"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimitBangalore.get_rule_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_rule_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">rule_details</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">broad_categories</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_category_dict</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_limit</span><span class="p">[</span><span class="n">category</span><span class="p">]:</span>
+                <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">rule_details</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                                     <span class="s1">&#39;rule_limit&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_limit</span><span class="p">[</span><span class="n">category</span><span class="p">],</span>
+                                     <span class="s1">&#39;ordered_quantity&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_category_dict</span><span class="p">[</span><span class="n">category</span><span class="p">],</span>
+                                     <span class="s1">&#39;out_of_limits&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">rule_details</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                                     <span class="s1">&#39;rule_limit&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_limit</span><span class="p">[</span><span class="n">category</span><span class="p">],</span>
+                                     <span class="s1">&#39;ordered_quantity&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_category_dict</span><span class="p">[</span><span class="n">category</span><span class="p">],</span>
+                                     <span class="s1">&#39;out_of_limits&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">flag</span><span class="p">,</span> <span class="n">rule_details</span></div></div>
+
+
+<div class="viewcode-block" id="AlcoholLimitGurgaon"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimitGurgaon">[docs]</a><span class="k">class</span> <span class="nc">AlcoholLimitGurgaon</span><span class="p">(</span><span class="n">AlcoholLimit</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">)</span>
+
+        <span class="c1"># TODO add rules</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">category_limit</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">broad_categories</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">category_limit</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+
+<div class="viewcode-block" id="AlcoholLimitGurgaon.hit_item"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimitGurgaon.hit_item">[docs]</a>    <span class="k">def</span> <span class="nf">hit_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span><span class="o">.</span><span class="n">add_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">item_tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alcohol_tagger</span><span class="o">.</span><span class="n">tag_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">item_tag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> was not detected to be a standard alcohol&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_values</span><span class="p">(</span><span class="n">item_tag</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AlcoholLimitGurgaon.get_rule_details"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimitGurgaon.get_rule_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_rule_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">rule_details</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">for</span> <span class="n">category</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">broad_categories</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_category_dict</span><span class="p">[</span><span class="n">category</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_limit</span><span class="p">[</span><span class="n">category</span><span class="p">]:</span>
+                <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">rule_details</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                                     <span class="s1">&#39;rule_limit&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_limit</span><span class="p">[</span><span class="n">category</span><span class="p">],</span>
+                                     <span class="s1">&#39;ordered_units&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_category_dict</span><span class="p">[</span><span class="n">category</span><span class="p">],</span>
+                                     <span class="s1">&#39;out_of_limits&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">rule_details</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="n">category</span><span class="p">,</span>
+                                     <span class="s1">&#39;rule_limit&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_limit</span><span class="p">[</span><span class="n">category</span><span class="p">],</span>
+                                     <span class="s1">&#39;ordered_units&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_category_dict</span><span class="p">[</span><span class="n">category</span><span class="p">],</span>
+                                     <span class="s1">&#39;out_of_limits&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">flag</span><span class="p">,</span> <span class="n">rule_details</span></div></div>
+
+
+<div class="viewcode-block" id="AlcoholLimitPune"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimitPune">[docs]</a><span class="k">class</span> <span class="nc">AlcoholLimitPune</span><span class="p">(</span><span class="n">AlcoholLimit</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matcher</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">matcher</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">terms</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;beer&#39;</span><span class="p">,</span> <span class="s1">&#39;wine&#39;</span><span class="p">,</span> <span class="s1">&#39;brandy&#39;</span><span class="p">,</span> <span class="s1">&#39;gin&#39;</span><span class="p">,</span> <span class="s1">&#39;rum&#39;</span><span class="p">,</span> <span class="s1">&#39;vodka&#39;</span><span class="p">,</span> <span class="s1">&#39;breezer&#39;</span><span class="p">,</span> <span class="s1">&#39;tequila&#39;</span><span class="p">,</span> <span class="s1">&#39;whisky&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">category_limit</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;beer&#39;</span><span class="p">:</span> <span class="mi">7800</span><span class="p">,</span>
+                               <span class="s1">&#39;wine&#39;</span><span class="p">:</span> <span class="mi">9000</span><span class="p">,</span>
+                               <span class="s1">&#39;brandy&#39;</span><span class="p">:</span> <span class="mi">4500</span><span class="p">,</span>
+                               <span class="s1">&#39;gin&#39;</span><span class="p">:</span> <span class="mi">4500</span><span class="p">,</span>
+                               <span class="s1">&#39;rum&#39;</span><span class="p">:</span> <span class="mi">3900</span><span class="p">,</span>
+                               <span class="s1">&#39;vodka&#39;</span><span class="p">:</span> <span class="mi">4500</span><span class="p">,</span>
+                               <span class="s1">&#39;breezer&#39;</span><span class="p">:</span> <span class="mi">9000</span><span class="p">,</span>
+                               <span class="s1">&#39;tequila&#39;</span><span class="p">:</span> <span class="mi">4500</span><span class="p">,</span>
+                               <span class="s1">&#39;whisky&#39;</span><span class="p">:</span> <span class="mi">4500</span><span class="p">}</span>
+
+<div class="viewcode-block" id="AlcoholLimitPune.hit_item"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimitPune.hit_item">[docs]</a>    <span class="k">def</span> <span class="nf">hit_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span><span class="o">.</span><span class="n">add_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">min_ml</span> <span class="o">=</span> <span class="n">maxsize</span>
+        <span class="n">max_ml</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">item_tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alcohol_tagger</span><span class="o">.</span><span class="n">tag_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">item_tag</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> was not detected to be a standard alcohol&quot;</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+        <span class="n">quantity</span><span class="p">,</span> <span class="n">metric</span> <span class="o">=</span> <span class="n">extract_alcohol_liquid_quantity</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">item_tag</span><span class="p">,</span>
+                                                                                      <span class="bp">self</span><span class="o">.</span><span class="n">metric_dict</span><span class="p">[</span><span class="s1">&#39;others&#39;</span><span class="p">]))</span>
+
+        <span class="k">if</span> <span class="n">quantity</span><span class="p">:</span>
+            <span class="n">min_ml</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ml</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">metric</span><span class="p">)</span>
+            <span class="n">max_ml</span> <span class="o">=</span> <span class="n">min_ml</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">quantity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="n">item_sku_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">matcher</span><span class="o">.</span><span class="n">match_item</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">item_sku_list</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_default_values</span><span class="p">(</span><span class="n">item_tag</span><span class="p">)</span>
+            <span class="n">max_score</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">item_sku_list</span><span class="p">])</span>
+            <span class="n">item_sku_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">max_score</span><span class="p">,</span> <span class="n">item_sku_list</span><span class="p">))</span>
+            <span class="n">item_sku_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">item_sku_list</span><span class="p">))</span>
+
+            <span class="k">for</span> <span class="n">sku</span> <span class="ow">in</span> <span class="n">item_sku_list</span><span class="p">:</span>
+
+                <span class="n">quantity</span><span class="p">,</span> <span class="n">metric</span> <span class="o">=</span> <span class="n">extract_alcohol_liquid_quantity</span><span class="p">(</span><span class="n">sku</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">metric_dict</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">quantity</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="n">ml</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ml</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">metric</span><span class="p">)</span>
+
+                <span class="n">min_ml</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">min_ml</span><span class="p">,</span> <span class="n">ml</span><span class="p">)</span>
+                <span class="n">max_ml</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_ml</span><span class="p">,</span> <span class="n">ml</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">flag</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_values</span><span class="p">(</span><span class="n">item_tag</span><span class="p">,</span> <span class="n">min_ml</span><span class="p">,</span> <span class="n">max_ml</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_default_values</span><span class="p">(</span><span class="n">item_tag</span><span class="p">)</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="AlcoholLimitPune.get_rule_details"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.AlcoholLimitPune.get_rule_details">[docs]</a>    <span class="k">def</span> <span class="nf">get_rule_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">rule_details</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">terms</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_term_dict</span><span class="p">[</span><span class="n">term</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_limit</span><span class="p">[</span><span class="n">term</span><span class="p">]:</span>
+                <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">rule_details</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="n">term</span><span class="p">,</span>
+                                     <span class="s1">&#39;rule_limit&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_limit</span><span class="p">[</span><span class="n">term</span><span class="p">],</span>
+                                     <span class="s1">&#39;ordered_units&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_term_dict</span><span class="p">[</span><span class="n">term</span><span class="p">],</span>
+                                     <span class="s1">&#39;out_of_limits&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">rule_details</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;category&#39;</span><span class="p">:</span> <span class="n">term</span><span class="p">,</span>
+                                     <span class="s1">&#39;rule_limit&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_limit</span><span class="p">[</span><span class="n">term</span><span class="p">],</span>
+                                     <span class="s1">&#39;ordered_units&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_term_dict</span><span class="p">[</span><span class="n">term</span><span class="p">],</span>
+                                     <span class="s1">&#39;out_of_limits&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">flag</span><span class="p">,</span> <span class="n">rule_details</span></div></div>
+
+
+<div class="viewcode-block" id="hit_order"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.hit_order">[docs]</a><span class="k">def</span> <span class="nf">hit_order</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="n">city_id</span><span class="p">):</span>
+
+    <span class="n">strategy</span> <span class="o">=</span> <span class="n">get_strategy</span><span class="p">(</span><span class="n">city_id</span><span class="p">)</span>
+    <span class="c1"># self.hit_item = strategy.hit_item</span>
+
+    <span class="n">order_details</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">get_order_details</span><span class="p">(</span><span class="n">order</span><span class="p">)</span>
+
+    <span class="n">order_bound</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="n">strategy</span><span class="o">.</span><span class="n">min_term_dict</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="n">strategy</span><span class="o">.</span><span class="n">max_term_dict</span><span class="p">}</span>
+    <span class="n">broad_order_bound</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;min&#39;</span><span class="p">:</span> <span class="n">strategy</span><span class="o">.</span><span class="n">min_category_dict</span><span class="p">,</span> <span class="s1">&#39;max&#39;</span><span class="p">:</span> <span class="n">strategy</span><span class="o">.</span><span class="n">max_category_dict</span><span class="p">}</span>
+
+    <span class="n">order_valid_flag</span><span class="p">,</span> <span class="n">rule_details</span> <span class="o">=</span> <span class="n">strategy</span><span class="o">.</span><span class="n">get_rule_details</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">order_valid_flag</span><span class="p">,</span> <span class="n">rule_details</span><span class="p">,</span> <span class="n">order_details</span><span class="p">,</span> <span class="n">order_bound</span><span class="p">,</span> <span class="n">broad_order_bound</span></div>
+
+
+<div class="viewcode-block" id="get_strategy"><a class="viewcode-back" href="../../../src.wrappers.xhtml#src.wrappers.alcohol_limit.get_strategy">[docs]</a><span class="k">def</span> <span class="nf">get_strategy</span><span class="p">(</span><span class="n">city_id</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">city_id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Bangalore Rules Applied&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AlcoholLimitBangalore</span><span class="p">(</span><span class="n">matcher</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">city_id</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Gurgaon Rules Applied&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AlcoholLimitGurgaon</span><span class="p">(</span><span class="n">matcher</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">city_id</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Pune Rules Applied&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AlcoholLimitPune</span><span class="p">(</span><span class="n">matcher</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Not a valid city id hence Bangalore Rules Applied&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">AlcoholLimitBangalore</span><span class="p">(</span><span class="n">matcher</span><span class="p">)</span></div>
+
+
+
+</pre></div>
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+django\_wrapper package
+=======================
+
+Submodules
+----------
+
+django\_wrapper.settings module
+-------------------------------
+
+.. automodule:: django_wrapper.settings
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+django\_wrapper.urls module
+---------------------------
+
+.. automodule:: django_wrapper.urls
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+django\_wrapper.wsgi module
+---------------------------
+
+.. automodule:: django_wrapper.wsgi
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: django_wrapper
+    :members:
+    :undoc-members:
+    :show-inheritance:

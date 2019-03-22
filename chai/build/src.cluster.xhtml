@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+  <head>
+    <meta charset="utf-8" />
+    <title>cluster package</title>
+    <link rel="stylesheet" href="_static/epub.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" /> 
+  </head><body>
+
+    <div class="document">
+      <div class="documentwrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cluster-package">
+<h1>cluster package</h1>
+<div class="section" id="submodules">
+<h2>Submodules</h2>
+</div>
+<div class="section" id="module-src.cluster.Cluster">
+<span id="cluster"></span><h2>Cluster</h2>
+<dl class="class">
+<dt id="src.cluster.Cluster.Cluster">
+<em class="property">class </em><code class="descclassname">src.cluster.Cluster.</code><code class="descname">Cluster</code><span class="sig-paren">(</span><em>leader_term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.xhtml#Cluster"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a><span class="link-target"> [https://docs.python.org/3/library/functions.html#object]</span></p>
+<p>Clusters are the primary blocks of the complete NER model.</p>
+<p>They work on individual words i.e. each word is considered separately before cluster assignment</p>
+<p>Clusters are defined with the help of their leader, and may contain more than one leader terms. Clusters contain a prefix trie to enable fast matching, the matching algorithm is plug and play ready and a paramter for tuning the strictness of the cluster is also available</p>
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.add_leader">
+<code class="descname">add_leader</code><span class="sig-paren">(</span><em>leader_term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.xhtml#Cluster.add_leader"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Adds leader term to the cluster</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>leader_term</strong> – the leader term which needs to be added</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.add_term">
+<code class="descname">add_term</code><span class="sig-paren">(</span><em>term</em>, <em>score=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.xhtml#Cluster.add_term"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Adds a term to the cluster</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>term</strong> – the term that needs to be added to the cluster</p></li>
+<li><p><strong>score</strong> – the score for the term that needs to be added</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.add_to_trie">
+<code class="descname">add_to_trie</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.xhtml#Cluster.add_to_trie"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>A helper function for adding a term to a cluster, reursively adds</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>term</strong> – the term whose prefixes need to be added in the trie</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.fuzzy_match_score">
+<code class="descname">fuzzy_match_score</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.xhtml#Cluster.fuzzy_match_score"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Helper Function called by <em>match_score</em> to compute the score for a new term</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>term</strong> – the term which needs to be scored</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.get_sorted_terms">
+<code class="descname">get_sorted_terms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.xhtml#Cluster.get_sorted_terms"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.has_term">
+<code class="descname">has_term</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.xhtml#Cluster.has_term"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Checks if a term is in the set of terms</p>
+<p>Params: term -&gt; the term which needs to be checked</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.is_in_trie">
+<code class="descname">is_in_trie</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.xhtml#Cluster.is_in_trie"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.is_leader">
+<code class="descname">is_leader</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.xhtml#Cluster.is_leader"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.match_score">
+<code class="descname">match_score</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.xhtml#Cluster.match_score"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Returns the score of a term’s match in a cluster</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>term</strong> – the term whose cluster match score needs to be computed</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.cluster.Cluster.Cluster.name">
+<code class="descname">name</code></dt>
+<dd><p>Returns the name i.e. the current leader of the cluster</p>
+<p>Params: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.quick_match_score">
+<code class="descname">quick_match_score</code><span class="sig-paren">(</span><em>term</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.xhtml#Cluster.quick_match_score"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.cluster.Cluster.Cluster.update_leader">
+<code class="descname">update_leader</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster.xhtml#Cluster.update_leader"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Updates the leader of the cluster to the term with the highest scoreself.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.cluster.Cluster_Test">
+<span id="cluster-test"></span><h2>Cluster Test</h2>
+<dl class="function">
+<dt id="src.cluster.Cluster_Test.test_whether_a_term_is_getting_added_to_the_term_cache_when_add_term_is_called_and_its_score_is_likewise_updated">
+<code class="descclassname">src.cluster.Cluster_Test.</code><code class="descname">test_whether_a_term_is_getting_added_to_the_term_cache_when_add_term_is_called_and_its_score_is_likewise_updated</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster_Test.xhtml#test_whether_a_term_is_getting_added_to_the_term_cache_when_add_term_is_called_and_its_score_is_likewise_updated"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.cluster.Cluster_Test.test_whether_add_leader_adds_to_prefix_trie">
+<code class="descclassname">src.cluster.Cluster_Test.</code><code class="descname">test_whether_add_leader_adds_to_prefix_trie</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster_Test.xhtml#test_whether_add_leader_adds_to_prefix_trie"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.cluster.Cluster_Test.test_whether_cluster_leader_update_is_working">
+<code class="descclassname">src.cluster.Cluster_Test.</code><code class="descname">test_whether_cluster_leader_update_is_working</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster_Test.xhtml#test_whether_cluster_leader_update_is_working"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.cluster.Cluster_Test.test_whether_quick_match_score_is_correct">
+<code class="descclassname">src.cluster.Cluster_Test.</code><code class="descname">test_whether_quick_match_score_is_correct</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster_Test.xhtml#test_whether_quick_match_score_is_correct"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="src.cluster.Cluster_Test.test_whether_the_add_term_is_adding_appropriately_to_prefix_trie">
+<code class="descclassname">src.cluster.Cluster_Test.</code><code class="descname">test_whether_the_add_term_is_adding_appropriately_to_prefix_trie</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/Cluster_Test.xhtml#test_whether_the_add_term_is_adding_appropriately_to_prefix_trie"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.cluster.cluster_utils">
+<span id="cluster-utilities"></span><h2>Cluster Utilities</h2>
+<dl class="function">
+<dt id="src.cluster.cluster_utils.match_score">
+<code class="descclassname">src.cluster.cluster_utils.</code><code class="descname">match_score</code><span class="sig-paren">(</span><em>term1</em>, <em>term2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/cluster/cluster_utils.xhtml#match_score"><span class="viewcode-link">[source]</span></a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-src.cluster">
+<span id="module-contents"></span><h2>Module contents</h2>
+</div>
+</div>
+
+
+          </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  </body>
+</html>
